@@ -36,15 +36,20 @@ public class Alimentos extends HttpServlet {
             String arg = request.getParameter("arg");
             if(arg == null){
                 request.getRequestDispatcher("vistas/menu.jsp").forward(request, response);
-            }else if(arg == "pzz"){
+            }else if(arg.contains("pzz")){
+                request.getSession().setAttribute("valor", "categoria pizza");
                 request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg == "ham"){
+            }else if(arg.contains("ham")){
+                request.getSession().setAttribute("valor", "categoria hamburguesas");
                 request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg == "sndw"){
+            }else if(arg.contains("sndw")){
+                request.getSession().setAttribute("valor", "categoria sandwiches");
                 request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg == "beb"){
+            }else if(arg.contains("beb")){
+                request.getSession().setAttribute("valor", "categoria bebidas");
                 request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg == "post"){
+            }else if(arg.contains("post")){
+                request.getSession().setAttribute("valor", "categoria postres");
                 request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
             }
 

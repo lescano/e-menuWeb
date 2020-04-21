@@ -12,8 +12,10 @@
         <title>E-menu</title>
     </head>
     <body>
+        <%String v = (String) request.getSession().getAttribute("valor");%>
         <jsp:include page="cabecera.jsp"/>
         <div>
+            <h1><%=v%></h1>
             <ul>
                 <li>
                     <img src="" alt="Imagen ilustrativa de ..." width="350px"/>
