@@ -1,6 +1,6 @@
 <%-- 
-    Document   : inicio
-    Created on : 21/04/2020, 01:10:00 PM
+    Document   : cabecera
+    Created on : 21/04/2020, 02:30:48 PM
     Author     : vanessa
 --%>
 
@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>E-menu</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="cabecera.jsp"/>
+        <h1>Acá tengo ganas de poner ofertas o productos destacados</h1>
     </body>
 </html>
