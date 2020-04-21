@@ -33,17 +33,20 @@ public class Alimentos extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Alimentos</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Alimentos at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");*/
-            request.getRequestDispatcher("vistas/menu.jsp").forward(request, response);
+            String arg = request.getParameter("arg");
+            if(arg == null){
+                request.getRequestDispatcher("vistas/menu.jsp").forward(request, response);
+            }else if(arg == "pzz"){
+                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            }else if(arg == "ham"){
+                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            }else if(arg == "sndw"){
+                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            }else if(arg == "beb"){
+                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            }else if(arg == "post"){
+                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            }
 
         }
     }
