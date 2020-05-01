@@ -16,6 +16,7 @@
         <script src="vistas/assets/js/jquery.js" type="text/javascript"></script>
         <link href="vistas/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="vistas/assets/css/miEstilo.css" rel="stylesheet" type="text/css"/>
+        <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
         <script src="vistas/assets/js/bootstrap.min.js" type="text/javascript"></script>
         
         <div class="carrito bg-primary shadow">
