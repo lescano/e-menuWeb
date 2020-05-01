@@ -5,7 +5,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<div>
+<footer class="page-footer font-small blue">
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="#"> Tecnologo en Informatica</a>
+  </div>
+</footer>
+</div>
 
 	<!-- jQuery -->
 	<script src="vistas/assets/js/jquery.min.js"></script>

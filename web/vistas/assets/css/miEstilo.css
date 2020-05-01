@@ -1,0 +1,28 @@
+.imgNavbar{
+    width: 40px;
+    height: auto;
+}
+.fotoIcono{
+    filter: invert(100%); 
+}
+.categoria{
+    width: 110%;
+    height: auto;
+}
+.rectangulo{
+    background-color: red;
+}
+.foter{
+    padding-top: 60px;
+}
+.carrito{
+    position:fixed;
+    bottom: 0;
+    right: 0;
+    z-index:5;
+    margin: 10px;
+}
+.carrito_icono{
+    width: 60px;
+    height: auto;
+}
