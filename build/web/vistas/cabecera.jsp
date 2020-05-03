@@ -19,9 +19,9 @@
         <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
         <script src="vistas/assets/js/bootstrap.min.js" type="text/javascript"></script>
         
-        <div class="carrito bg-primary shadow">
-            <img class="carrito_icono float-left p-2" src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
-            <h5 class="float-left p-2">Resumen<br>del Pedido</h5>           
+        <div class="carrito bg-primary shadow rounded ">
+            <img class="carrito_icono float-left p-2 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
+            <h5 class="float-left p-2 ">Resumen<br>del Pedido</h5>           
        </div>
 	</head>
         <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
