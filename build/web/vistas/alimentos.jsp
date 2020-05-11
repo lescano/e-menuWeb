@@ -25,7 +25,7 @@
                 <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_hamburg.jpg" alt=""/>
             </div>
             <div class="col px-3 py-1">
-                <a href="vistas/detallesCategoria.jsp">
+                <a href="?caso=chivito">
                 <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                 </a>
             </div>

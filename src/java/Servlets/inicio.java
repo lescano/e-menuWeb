@@ -33,17 +33,24 @@ public class inicio extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code.
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet inicio</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet inicio at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");*/
-            request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);
+            
+            
+            String caso = request.getParameter("caso");
+            
+            if(caso == null){
+                caso = "inicio";
+            }
+            
+            switch(caso){
+                case "chivito":
+                    request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
+                    break;
+                case "inicio":
+                    request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);
+                    break;
+                default:
+                    break;
+            }
 
         }
     }

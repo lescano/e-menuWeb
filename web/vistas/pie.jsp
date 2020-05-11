@@ -19,6 +19,7 @@
 <!--<script src="vistas/assets/js/jquery.easing.1.3.js"></script>-->
 <!-- Bootstrap -->
 <script src="vistas/assets/js/bootstrap.min.js"></script>
+<script src="vistas/assets/js/scripts.js" type="text/javascript"></script>
 <!-- Waypoints -->
 <!--<script src="vistas/assets/js/jquery.waypoints.min.js"></script>-->
 <!-- Main JS -->
