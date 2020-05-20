@@ -6,13 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
-<!DOCTYPE html>
-<html lang="es">
-    <script src="assets/js/jquery.js" type="text/javascript"></script>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/miEstilo.css" rel="stylesheet" type="text/css"/>
-    <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<%--
     <script type="text/javascript">
          function mostrar(value){
              var caja = document.getElementsByClassName("caja")[value];
@@ -31,9 +25,11 @@
              }
          }
     </script>
-    <!--<%@ include file="cabecera.jsp" %>-->
+--%>
+
     <jsp:include page="cabecera.jsp" />
-<img class="p-2 imagenPrincipioPlatos" src="assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+    
+<img class="p-2 imagenPrincipioPlatos" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
 <div class="card m-1">
   <div class="card-body">
     <h4 class="card-title">Canadiense al plato $350</h4>
@@ -77,18 +73,18 @@
             <div class="container">
                 <div class="row my-1 ">
                     <div class="col ">
-                        <img class="img-fluid" src="assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+                        <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                     </div>
                     <div class="col">
-                        <img class="img-fluid" src="assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+                        <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <img class="img-fluid" src="assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+                        <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                     </div>
                     <div class="col">
-                        <img class="img-fluid" src="assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+                        <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                     </div>
                 </div>
             </div>
@@ -157,12 +153,11 @@
   </div>
   <div class=" bg-transparent border d-flex justify-content-center">
       <buttom  class="botonDesplegar " type="submit"  value="" onclick="mostrar('0')" >
-          <img  class="botonDesplegar botonGira" src="assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
+          <img  class="botonDesplegar botonGira" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
       </buttom>  
   </div>
 </div>
     
-  
 </body>
 <jsp:include page="pie.jsp"/> 
 </html>
