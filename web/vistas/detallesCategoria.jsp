@@ -47,7 +47,7 @@
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reseña</a>
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reseñas</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -94,12 +94,61 @@
             </div>
         </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <div class="card m-1">
+            <!--<div class="card m-1">
                 <div class="card-header">
                     Usuario1
                 </div>
                 <div class="card-body">
                     <p class="card-text">Muy bueno el chivito, lo recomiendo!</p>
+                </div>
+            </div>
+            -->
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="card m-1 mx-5">
+                            <div class="card-header">
+                                Usuario1
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Muy bueno el chivito, lo recomiendo!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card m-1 mx-5">
+                            <div class="card-header">
+                                Usuario2
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">buenardo ese chivito.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card m-1 mx-5 ">
+                            <div class="card-header">
+                                Usuario3
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">no me gusto</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next " href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" style="filter: brightness(0);" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <div class="input-group my-1">
+                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="comente aqui..." aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-success input-group-text" id="basic-addon2">Comentar</button>
                 </div>
             </div>
         </div>
@@ -113,37 +162,7 @@
   </div>
 </div>
     
-    
-    <!-- -------------------------------------------------------------------------------------------------------------------------- -->
-    <div class="card m-3">
-  <div class="card-body">
-    <h5 class="card-title">Canadiense al plato</h5>
-    <p class="card-text">Jamon, lechuga ,tomate,panceta, huevofrito,mozzarella,mayonesa y fritas</p>
-    <div class="caja"  style="display: none;">
-    <ul class="nav nav-tabs " id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Añadir</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reseña</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">cosas de aniadir</div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">cosas de detalles</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">las resenias</div>
-    </div>
-  </div>
-  </div>
-  <div class=" bg-transparent border d-flex justify-content-center">
-      <buttom class="botonDesplegar " type="submit"  value="" onclick="mostrar('1')">
-          <img  class="botonDesplegar botonGira" src="assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
-      </buttom>  
-  </div>
-</div>
+  
 </body>
 <jsp:include page="pie.jsp"/> 
 </html>

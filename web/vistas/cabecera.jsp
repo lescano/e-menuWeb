@@ -18,14 +18,49 @@
         <link href="vistas/assets/css/miEstilo.css" rel="stylesheet" type="text/css"/>
         <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
         <script src="vistas/assets/js/bootstrap.min.js" type="text/javascript"></script>
-        
         <div class="carrito bg-primary shadow rounded ">
             <img class="carrito_icono float-left p-2 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
             <h5 class="float-left p-2 ">Resumen<br>del Pedido</h5>           
        </div>
 	</head>
-        <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
-            <img class="imgNavbar" src="vistas/assets/images/e_menu.png" alt="">
+
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebar -->
+            <div class="bg-dark border-right " id="sidebar-wrapper">
+                <div class="list-group list-group-flush bg-light">
+                    <h2 class="mx-3 my-3">E-Menu</h2>
+                    <div class="input-group md-form form-sm form-2 py-1 px-1">
+                        <input class="form-control my-0 py-1" type="text" placeholder="Buscar plato..." aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn input-group-text lighten-2" id="basic-text1">Buscar</button>
+                        </div>
+                    </div>
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Ver menu</a>    
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Añadir reseña</a>    
+
+                    <div class="container list-group-item list-group-item-action bg-light ">
+                        
+                        <div class="row">
+                            <div class="col my-0 py-0">
+                                <p>Redes:</p>
+                            </div>
+                            <div class="col m-0 p-0">
+                                <button class="btn m-0 p-0"><img  class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/instagram.png" alt=""/></button>
+                            </div>
+                            <div class="col m-0 p-0">
+                                <button class="btn m-0 p-0"><img class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/fb.png" alt=""/></button>
+                            </div>
+                        </div>
+                    </div>
+                        <a href="#" class="list-group-item list-group-item-action bg-light">Ayuda</a>
+                    </div>
+
+            </div>
+
+            <div id="page-content-wrapper">
+                <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
+            <button class="btn" id="menu-toggle"><img class="imgNavbar" src="vistas/assets/images/e_menu.png" alt=""></button>
 
 
             <div class="navbar-collapse ml-auto" id="navbarSupportedContent">
@@ -38,6 +73,14 @@
                 </a>
             </div>
         </nav>
-        <body>
+        <!--</div>
+        </div>
+        <body>-->
+            <script>
+        $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+        });
+            </script>    
         
 </html>
