@@ -29,7 +29,7 @@
 
     <jsp:include page="cabecera.jsp" />
     
-<img class="p-2 imagenPrincipioPlatos" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
+<img class="p-2 imagenPrincipioPlatos" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt="amigen de chivito"/>
 <div class="card m-1">
   <div class="card-body">
     <h4 class="card-title">Canadiense al plato $350</h4>

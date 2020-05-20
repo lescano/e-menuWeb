@@ -24,7 +24,7 @@
                     <h5 class="float-left p-2 ">Resumen<br>del Pedido</h5>           
                </div>
             <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
-                <img class="imgNavbar" src="vistas/assets/images/e_menu.png" alt="">
+                <a href="?caso=inicio"> <img class="imgNavbar" src="vistas/assets/images/e_menu.png" alt=""></a>
 
 
                 <div class="navbar-collapse ml-auto" id="navbarSupportedContent">
