@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <div>
 <footer class="page-footer font-small blue">
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
@@ -27,5 +28,5 @@
 <!--<script src="vistas/assets/bootstrap4/jquery-3.4.1.slim.min.js"></script>-->
 <!--<script src="vistas/assets/bootstrap4/popper.min.js"></script>-->
 
-	</body>
+    </body>
 </html>
