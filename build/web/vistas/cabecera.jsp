@@ -20,9 +20,9 @@
             <script src="vistas/assets/js/bootstrap.min.js" type="text/javascript"></script>
         </head>
         <body>
-            <div class="carrito bg-primary shadow rounded " onclick="verPedido()">
+            <div class="carrito bg-primary shadow rounded " onclick="verPedido()" id="resumen">
                 <img class="carrito_icono float-left p-2 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
-                <h5 class="float-left p-2 ">Resumen<br>del Pedido</h5>           
+                <h5 class="float-left p-2" >Resumen<br>del Pedido</h5>           
             </div>
 
         <div class="d-flex toggled" id="wrapper">
