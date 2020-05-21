@@ -42,35 +42,16 @@ public class Alimentos extends HttpServlet {
             
             switch(caso){
                 case "chivito":
+                    request.getSession().setAttribute("caso", "inicio");
                     request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
                     break;
                 case "inicio":
-                    request.getSession().setAttribute("caso", "inicio");
                     response.sendRedirect("inicio");
                     break;
                 default:
                     break;
             }
-            
-//            if(arg == null){
-//                request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
-//            }else if(arg.contains("pzz")){
-//                request.getSession().setAttribute("valor", "categoria pizza");
-//                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-//            }else if(arg.contains("ham")){
-//                request.getSession().setAttribute("valor", "categoria hamburguesas");
-//                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-//            }else if(arg.contains("sndw")){
-//                request.getSession().setAttribute("valor", "categoria sandwiches");
-//                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-//            }else if(arg.contains("beb")){
-//                request.getSession().setAttribute("valor", "categoria bebidas");
-//                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-//            }else if(arg.contains("post")){
-//                request.getSession().setAttribute("valor", "categoria postres");
-//                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-//            }
-//
+
         }
     }
 
