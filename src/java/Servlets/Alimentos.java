@@ -33,24 +33,23 @@ public class Alimentos extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String arg = request.getParameter("arg");
-            if(arg == null){
-                request.getRequestDispatcher("vistas/menu.jsp").forward(request, response);
-            }else if(arg.contains("pzz")){
-                request.getSession().setAttribute("valor", "categoria pizza");
-                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg.contains("ham")){
-                request.getSession().setAttribute("valor", "categoria hamburguesas");
-                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg.contains("sndw")){
-                request.getSession().setAttribute("valor", "categoria sandwiches");
-                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg.contains("beb")){
-                request.getSession().setAttribute("valor", "categoria bebidas");
-                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
-            }else if(arg.contains("post")){
-                request.getSession().setAttribute("valor", "categoria postres");
-                request.getRequestDispatcher("vistas/alimentos.jsp").forward(request, response);
+            String caso = request.getParameter("caso");
+            String seleccion = (String) request.getSession().getAttribute("caso");
+            
+            if (caso == null) {
+                caso = seleccion;
+            }
+            
+            switch(caso){
+                case "chivito":
+                    request.getSession().setAttribute("caso", "inicio");
+                    request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
+                    break;
+                case "inicio":
+                    response.sendRedirect("inicio");
+                    break;
+                default:
+                    break;
             }
 
         }

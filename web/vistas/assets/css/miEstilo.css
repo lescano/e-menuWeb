@@ -84,3 +84,8 @@ body {
     width: 100%;
     height: auto;
 }
+
+.carrito.bg-primary.shadow.rounded{
+ display: none;
+cursor: pointer; 
+}

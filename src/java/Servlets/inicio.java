@@ -5,8 +5,13 @@
  */
 package Servlets;
 
+import Controladores_Interfaces.IAlimentoController;
+import Persistencia.Conexion;
+import Logica.Categoria;
+import Logica.Fabrica;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "inicio", urlPatterns = {"/inicio"})
 public class inicio extends HttpServlet {
+    IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,21 +40,29 @@ public class inicio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            
             String caso = request.getParameter("caso");
+            String seleccion = (String) request.getSession().getAttribute("caso");
             
-            if(caso == null){
+            if (caso == null) {
+                caso = seleccion;
+            }
+            if (caso == null) {
                 caso = "inicio";
             }
+
             
             switch(caso){
                 case "chivito":
-                    request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
+                    request.getSession().setAttribute("caso", "chivito");
+                    response.sendRedirect("alimentos");
                     break;
                 case "inicio":
+                    List<Categoria> categorias =  alimentoContoller.listarCategoria();
+                    request.setAttribute("categorias", categorias);
                     request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);
                     break;
                 default:
+                    
                     break;
             }
 
