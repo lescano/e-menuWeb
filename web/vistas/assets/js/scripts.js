@@ -23,11 +23,16 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 
+    var data = JSON.parse(sessionStorage.getItem("pedido"));
+    if(data !== null){
+        $('#resumen').css('display','block');
+    }
+
 //Va agregando pedidos 
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
+    $('#resumen').css('display','block');
     if(data === null){
-        $('#resumen').css('display','block');
         var p = [$("#agregarAlPedido"+value).val()];
         sessionStorage.setItem('pedido', JSON.stringify(p));
     }else{

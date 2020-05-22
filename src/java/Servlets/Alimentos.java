@@ -5,8 +5,12 @@
  */
 package Servlets;
 
+import Controladores_Interfaces.IAlimentoController;
+import Logica.Categoria;
+import Logica.Fabrica;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Alimentos", urlPatterns = {"/alimentos"})
 public class Alimentos extends HttpServlet {
+    IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,14 +44,25 @@ public class Alimentos extends HttpServlet {
             if (caso == null) {
                 caso = seleccion;
             }
+//            else{
+//                List<Categoria> categorias =  alimentoContoller.listarCategoria();
+//                if(categorias.contains(caso)){
+//                    caso = "detallesCategoria";
+//                }else{
+//                    caso = "404";
+//                }
+//            }
             
             switch(caso){
+//                case "detallesCategoria":
                 case "chivito":
                     request.getSession().setAttribute("caso", "inicio");
                     request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
                     break;
                 case "inicio":
                     response.sendRedirect("inicio");
+                    break;
+                case "404":
                     break;
                 default:
                     break;
