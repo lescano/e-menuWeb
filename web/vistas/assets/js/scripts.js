@@ -2,7 +2,7 @@
 function mostrar(value){
     var caja = document.getElementsByClassName("caja")[value];
     var boton = document.getElementsByClassName("botonGira")[value];
-    var h1Text = document.querySelector("#chivito"+value).textContent;
+    var h1Text = document.querySelector("#alimento"+value).textContent;
     if(caja.style.display=="none"){
         caja.style.display="block";
         boton.style.webkitTransform = "rotate(" + -180 + "deg)";
