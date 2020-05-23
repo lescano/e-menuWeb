@@ -4,15 +4,32 @@
     Author     : Danilo
 --%>
 
+<%@page import="Logica.Plato"%>
+<%@page import="java.sql.Blob"%>
+<%@page import="java.util.List"%>
+<%@page import="Logica.Alimento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-    <jsp:include page="cabecera.jsp" />
+<jsp:include page="cabecera.jsp" />
+
+<% 
+    List<Plato> lista = (List<Plato>) request.getAttribute("alimentos");
+    Blob imagen = (Blob) request.getAttribute("foto");
+    String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
+
+%>
     
-<img class="p-2 imagenPrincipioPlatos" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt="amigen de chivito"/>
+<img class="p-2 imagenPrincipioPlatos" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="Imigen de categoria"/>
 <div class="card m-1">
+    
+<%  int i = 0;
+    for(Plato alimento : lista){
+    
+%>
+    
   <div class="card-body">
-    <h4 class="card-title" id="chivito0">Canadiense al plato $350</h4>
-    <p class="card-text">Ingredientes: Jamon, lechuga , tomate, panceta, huevofrito, mozzarella,mayonesa y fritas</p>
+      <h4 class="card-title" id="chivito0">"<%= alimento.getNombre() %>"</h4>
+    <p class="card-text">"<%= alimento.getIngredientes() %>"</p>
     <div class="caja" style="display: none;">
     <ul class="nav nav-tabs " id="myTab" role="tablist">
         <li class="nav-item">
@@ -40,16 +57,16 @@
                         <textarea class="form-control w-20 float-left" id="" rows="3" style="resize: none;"></textarea>
                     </div>
                     <div class="col-5">
-                        <button type="button" id="agregarAlPedido0" class="btn btn-success w-20" onclick="agregar('0')">Añadir al Pedido</button>
+                        <button type="button" id="agregarAlPedido'<%= +i %>'"  class="btn btn-success w-20" onclick="agregar('<%= i %>')">Añadir al Pedido</button>
                     </div>
                 </div>
             </div>
             
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <p class="mt-2">Tiempo de Preparacion: 20 min</p>
+            <p class="mt-2">Tiempo de Preparacion: "<%= alimento.getTiempoPreparacion() %>" min</p>
             <p>Calorias: 500</p>
-            <div class="container">
+            <%--            <div class="container">
                 <div class="row my-1 ">
                     <div class="col ">
                         <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
@@ -66,7 +83,7 @@
                         <img class="img-fluid" src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
                     </div>
                 </div>
-            </div>
+            </div> --%>
         </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
             <!--<div class="card m-1">
@@ -131,10 +148,18 @@
   </div>
   </div>
   <div class=" bg-transparent border d-flex justify-content-center">
-      <buttom  class="botonDesplegar " type="submit"  value="" onclick="mostrar('0')" >
+      <buttom  class="botonDesplegar " type="submit"  value="" onclick="mostrar('<%= i %>')" >
           <img  class="botonDesplegar botonGira" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
       </buttom>  
   </div>
+    
+    
+<%
+    i++;
+    }
+%>
+
+<%--
       <div class="card-body">
     <h4 class="card-title" id="chivito1">Canadiense de lomo $ 430</h4>
     <p class="card-text">Ingredientes: Jamon, lechuga , tomate, panceta, huevofrito, mozzarella,mayonesa y fritas</p>
@@ -386,6 +411,8 @@
       </buttom>  
   </div>
 </div>
+
+--%>
 
 <jsp:include page="pie.jsp"/> 
 
