@@ -51,8 +51,8 @@ window.addEventListener( "pageshow", function ( event ) {
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
-    var nuevoPrecio = document.querySelector("#precio"+value).textContent;
-    var nuevoCantidad= document.querySelector("#cantidad"+value).textContent;
+    var nuevoPrecio = $("#precioAlimentos"+value).val();
+    var nuevoCantidad= $("#cantidadAlimentos"+value).val();
     var agregar = [nuevoAlimento,nuevoPrecio,nuevoCantidad];
     
     if(data === null){
