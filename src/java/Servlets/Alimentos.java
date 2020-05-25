@@ -64,9 +64,8 @@ public class Alimentos extends HttpServlet {
                 case "inicio":
                     response.sendRedirect("inicio");
                     break;
-                case "404":
-                    break;
                 default:
+                    response.sendRedirect("ERROR");
                     break;
             }
 

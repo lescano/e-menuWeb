@@ -6,6 +6,21 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+        <h3>TU PEDIDO</h3>
+        <form>
+            <ol class="contenedor-inputs" id="pedido">
+         <%-- Con javascript le meto el contenido --%>
+            </ol>
+            <div id="total">
+            </div>
+            <input type="submit" id="cancelar" class="btn-submit" value="CANCELAR">
+            <input type="submit" id="aceptar" class="btn-submit" value="ACEPTAR">
+        </form>
+    </div>
+</div>
+
 <div>
 <footer class="page-footer font-small blue">
   <div class="footer-copyright text-center py-3">© 2020 Copyright:

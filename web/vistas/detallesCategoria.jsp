@@ -45,10 +45,10 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home<%= +i %>" role="tabpanel" aria-labelledby="home-tab">
             <div class="my-2">
-                <h5 class="float-left my-1">Cantidad: 1</h5>
+                <h5 class="float-left my-1" id="cantidad<%= +i %>">Cantidad: 1</h5>
                 <button type="button" class="ml-5 mx-1 btn btn-dark float-left ">-</button>
                 <button type="button" class="mx-1 btn btn-dark">+</button>
-                <h5>Total: 350$</h5>
+                <h5 id="precio<%= +i %>">Total: 350$</h5>
             </div>
             <p>Alguna aclaracion?</p>   
             <div class="container">
