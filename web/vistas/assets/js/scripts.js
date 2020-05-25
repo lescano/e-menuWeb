@@ -77,10 +77,12 @@ btnAbrirPopup.addEventListener('click', function(){
     
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var total = 0;
+    var i =0;
 
     for (let entry of data) {
 //        for (let item of entry) {
-            $("#pedido").append('<i class="fas fa-times"></i><li>'+entry+'</li>');
+            $("#pedido").append('<i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i><li id="opcion'+i+'">'+entry+'</li>');
+            i++;
 //        }
     }
     $("#total").append("<h4>Total: $"+total+"</h4>");
@@ -106,3 +108,18 @@ $("#cancelar").click(function (){
     $( "li" ).remove();
     $("#total h4").remove();
 });
+
+function eliminar (eliminar){
+    $("#fas"+eliminar).remove();
+    $("#opcion"+eliminar).remove();
+    var data = JSON.parse(sessionStorage.getItem("pedido"));
+    
+    data.splice(eliminar, 1); 
+    sessionStorage.setItem('pedido',JSON.stringify(data));
+    
+    if(data.length < 1){
+        $('#resumen').hide();
+        overlay.classList.remove('active');
+        popup.classList.remove('active');
+    }
+}
