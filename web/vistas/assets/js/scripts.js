@@ -106,3 +106,54 @@ $("#cancelar").click(function (){
     $( "li" ).remove();
     $("#total h4").remove();
 });
+
+function aumentarcantidad(){
+    //En este bloque se consulta una variable de session 
+    //para saber si es la primera vez que entra a la funcion o no
+    //en caso de ser la primera vez se va a guardar en la session el precio del alimento
+    //para despues poder sumarlo cuando se aumente la cantidad
+    var data = JSON.parse(sessionStorage.getItem("precio"));
+    var cantidad = document.getElementById('cantidadAlimentos');
+    var precioAl = document.getElementById('precioAlimentos');
+    if(data === null){
+        var p = [$("#precioAlimentos").val()];
+        sessionStorage.setItem('precio', JSON.stringify(p));
+    }else{
+        //en este if controlo que si se setea una cantidad menor a uno, esa cantidad sea uno
+        //el precio queda acorde a la cantidad
+        if (cantidad.value < 1){
+            cantidad.value = 1;
+            precioAl.value = data;
+        }
+        //si la cantidad es 1 o mas la cantidad se aumenta y el precio tambien
+        else {
+            cantidad.value = ++cantidad.value;
+            precioAl.value = parseInt(precioAl.value)+parseInt(data);
+        }
+    }
+}
+
+function disminuircantidad(){
+    
+    var data = JSON.parse(sessionStorage.getItem("precio"));
+    var cantidad = document.getElementById('cantidadAlimentos');
+    var precioAl = document.getElementById('precioAlimentos');
+    if(data === null){
+        var p = [$("#precioAlimentos").val()];
+        sessionStorage.setItem('precio', JSON.stringify(p));
+    }else{
+        //en este primer if disminuto la cantidad si el valor es 2 o mas,
+        //entonces al disminuir la menor cantidad que queda es 1
+        //tambien se disminuye el precio
+        if (cantidad.value > 1){
+            cantidad.value = --cantidad.value;
+            precioAl.value = parseInt(precioAl.value)-parseInt(data);
+        }
+        //si se setea un valor 1 o menor a la cantidad, el valor de la cantidad queda en 1
+        //el precio queda como al principio
+        else{
+            cantidad.value = 1;
+            precioAl.value = data;
+        }
+    }
+}

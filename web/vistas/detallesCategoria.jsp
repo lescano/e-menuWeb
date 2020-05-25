@@ -16,6 +16,7 @@
     List<Plato> lista = (List<Plato>) request.getAttribute("alimentos");
     Blob imagen = (Blob) request.getAttribute("foto");
     String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
+    int preciototal = 0;
 
 %>
 
@@ -45,10 +46,10 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home<%= +i %>" role="tabpanel" aria-labelledby="home-tab">
             <div class="my-2">
-                <h5 class="float-left my-1" id="cantidad<%= +i %>">Cantidad: 1</h5>
-                <button type="button" class="ml-5 mx-1 btn btn-dark float-left ">-</button>
-                <button type="button" class="mx-1 btn btn-dark">+</button>
-                <h5 id="precio<%= +i %>">Total: 350$</h5>
+                <h5 class="float-left my-1" id="cantidad<%= +i %>">Cantidad: <input type='text' id="cantidadAlimentos" value="1" readonly></h5>
+                <button id="botonMenos" type="button" class="ml-5 mx-1 btn btn-dark float-left " onclick="disminuircantidad()">-</button>
+                <button id="botonMas" type="button" class="mx-1 btn btn-dark" onclick="aumentarcantidad()">+</button>
+                <h5 id="precio<%= +i %>">Total: $<input type='text' id="precioAlimentos" value="<% out.println(preciototal); %>" readonly></h5>
             </div>
             <p>Alguna aclaracion?</p>   
             <div class="container">
