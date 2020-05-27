@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author vanessa
  */
-@WebServlet(name = "Personal", urlPatterns = {"/personal"})
-public class Personal extends HttpServlet {
+@WebServlet(name = "ERROR", urlPatterns = {"/ERROR"})
+public class ERROR extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,16 +33,8 @@ public class Personal extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Personal</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Personal at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            request.getRequestDispatcher("vistas/ERROR/404.jsp").forward(request, response);
         }
     }
 

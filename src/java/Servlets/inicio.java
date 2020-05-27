@@ -6,7 +6,7 @@
 package Servlets;
 
 import Controladores_Interfaces.IAlimentoController;
-import Persistencia.Conexion;
+import Logica.Alimento;
 import Logica.Categoria;
 import Logica.Fabrica;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "inicio", urlPatterns = {"/inicio"})
 public class inicio extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
+    List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,29 +41,37 @@ public class inicio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String caso = request.getParameter("caso");
+            String caso = null;
+            String comida = null;
             String seleccion = (String) request.getSession().getAttribute("caso");
+            
+            if(!request.getParameterMap().containsKey("caso")){
+//Cuando recien entra a la aplicacion en caso no va a haber nada y lo redireccionamos al inicio
+                caso = "inicio";
+            }else{
+                comida = request.getParameter("caso");
+//Si el caso tiene algo y esta dentro de las categorias lo mandamos a mostrar los detalles de la categoria que eliguio
+                for(Categoria aux: listaCategorias){
+                    if(aux.getNombre().equals(comida)){
+                        request.getSession().setAttribute("categoria", aux);
+                        caso = "detalle";
+                    }
+                }
+            }
             
             if (caso == null) {
                 caso = seleccion;
             }
-            if (caso == null) {
-                caso = "inicio";
-            }
-
-            
+         
             switch(caso){
-                case "chivito":
-                    request.getSession().setAttribute("caso", "chivito");
+                case "detalle":
                     response.sendRedirect("alimentos");
                     break;
                 case "inicio":
-                    List<Categoria> categorias =  alimentoContoller.listarCategoria();
-                    request.setAttribute("categorias", categorias);
+                    request.setAttribute("categorias", listaCategorias);
                     request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);
                     break;
                 default:
-                    
                     break;
             }
 
@@ -82,6 +91,9 @@ public class inicio extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+
+
     }
 
     /**
@@ -108,4 +120,10 @@ public class inicio extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+
+
+
+
 }
+
+

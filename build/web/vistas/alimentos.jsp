@@ -15,24 +15,23 @@
     
 <div class="container">
         
-        <div class="row w-100">
-           <div class="col px-1 py-1">
-                <img class="categoria" src="vistas/assets/images/categoriasComida/elbar_categ_promos_generica.jpg" alt=""/>
-            </div>
-        </div>
+
         
         <div class="row py-1">
-  <%--           <% 
+          <% 
             List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
                         for(Categoria aux : categorias){
                             String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
             %>
 
-            
-            <div class="col px-3 py-1">
-                <img class="categoria" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+            <div class="row w-100">
+                <div class="col px-3 py-1">
+                    <a href="?caso=<%= aux.getNombre() %>">
+                        <img class="<%= aux.getNombre() %>" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+                    </a>
+                </div>
             </div>
-   --%>                  
+   <%--                  
             <div class="col px-3 py-1">
                 <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_hamburg.jpg" alt=""/>
             </div>
@@ -63,7 +62,7 @@
                 <img class="categoria " src="vistas/assets/images/categoriasComida/pizzas_especiales.jpg" alt=""/>
             </div>
             
-  <%--           <% } %>        --%>
+--%>          <% } %>        
             
         </div>
     </div>
