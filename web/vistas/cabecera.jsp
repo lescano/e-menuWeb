@@ -10,6 +10,7 @@
 <html lang="es">
 	<head>
             <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>eMenu</title>
             <link rel="icon" href="vistas/assets/images/favicon.ico" type="image/x-icon" />
             <script src="vistas/assets/js/jquery.js" type="text/javascript"></script>
@@ -68,9 +69,9 @@
                 <ul class="navbar-nav mr-auto"> 
                 </ul>
                 
-                <a href="#">
+                <!--<a href="#">
                 <span  class="text-white small" href="#">Leer Codigo QR</span>
                 <img class="nav-item imgNavbar fotoIcono" src="vistas/assets/images/iconos/ic_linked_camera_black_48dp.png" alt="">
-                </a>
+                </a>-->
             </div>
         </nav>
