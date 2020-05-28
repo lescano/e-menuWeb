@@ -1,3 +1,9 @@
+
+.aImagen{
+    display: box;
+    width: 49vw !important;
+    height: auto !important;
+}
 /*sidebR*/
 body {
   overflow-x: hidden;
@@ -43,6 +49,10 @@ body {
     margin-left: -15rem;
   }
 }/*sidebR*/
+.imagenCategoria{
+    width: 50px;
+    height: auto;
+}
 .imgNavbar{
     width: 40px;
     height: auto;
