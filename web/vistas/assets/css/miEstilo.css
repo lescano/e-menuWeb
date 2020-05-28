@@ -87,8 +87,16 @@ body {
 
 .carrito.bg-primary.shadow.rounded{
     cursor: pointer;
+    display: none;
 }
 
+
+/*estilo de la ventana POPUP*/
+
+.contenedor-inputs{
+    width: 100%;
+    text-align: left
+}
 .overlay {
 	background: rgba(0,0,0,.3);
 	position: fixed;

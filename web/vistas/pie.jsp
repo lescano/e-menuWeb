@@ -10,10 +10,12 @@
     <div class="popup" id="popup">
         <h3>TU PEDIDO</h3>
         <form>
-            <ol class="contenedor-inputs" id="pedido">
-         <%-- Con javascript le meto el contenido --%>
-            </ol>
+            <table class="contenedor-inputs" id="pedido">
+        <%-- Con javascript le meto el contenido --%>
+            </table>
+            
             <div id="total">
+        <%-- Con javascript le meto el contenido --%>
             </div>
             <input type="submit" id="cancelar" class="btn-submit" value="CANCELAR">
             <input type="submit" id="aceptar" class="btn-submit" value="ACEPTAR">

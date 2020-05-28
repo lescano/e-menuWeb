@@ -6,13 +6,24 @@
 package Servlets;
 
 import Controladores_Interfaces.IAlimentoController;
+import Controladores_Interfaces.ictrl_Pedido;
 import Logica.Alimento;
 import Logica.Categoria;
 import Logica.Fabrica;
+import Logica.Mesa;
+import Logica.Observaciones;
+import Logica.Pago;
 import Logica.Plato;
+import Logica.Pedidos;
+import Logica.enum_Estado;
+import Logica.enum_Pago;
+import Persistencia.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Alimentos extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
     List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
+    ictrl_Pedido controladorPedido = Fabrica.getInstancia().getPedidoController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -99,6 +111,38 @@ public class Alimentos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        if(request.getParameterMap().containsKey("pedido")){
+            String pedido = (String) request.getParameter("pedido");        //Este dato me lo manda del javascript por ajax
+            String[] p = pedido.split("\\,");                               //Lo parceo ya que los datos vienen en un string
+            List<Alimento> alimentosPedidos = new ArrayList<Alimento>();    
+            HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
+            Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
+            int precio_total = 0;
+            String pass = (String) request.getSession().getAttribute("contrasenia");    //La contraseña que el usuario puso cuando ingreso
+            
+            String idMesa = (String) request.getSession().getAttribute("mesa");
+            List<Observaciones> observaciones = new ArrayList<Observaciones>();
+            Pago pago = new Pago();
+                    
+ //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
+
+            for(int i=0; i<p.length; i= i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
+                String idAlimento = p[i+3];         
+                Alimento ap = getAlimentoPorId(idAlimento);
+                alimentosPedidos.add(ap);
+                alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
+                precio_total += ap.getPrecio();
+            }
+
+            Mesa mesa = getMesaPorId("41");
+            Pedidos nuevo = new Pedidos(fecha,precio_total,pass,enum_Estado.Pendiente,mesa,alimentosPedidos,observaciones,pago,alimentos_cantidad);
+
+            Conexion.getInstance().alta(pago);
+            Conexion.getInstance().alta(nuevo);
+            pago.setPedido(controladorPedido.getUltimoInsertado());
+            Conexion.getInstance().modificar(pago);
+        }
     }
 
     /**
@@ -120,6 +164,20 @@ public class Alimentos extends HttpServlet {
             }
         }
         return alimentoDeCategoria;
+    }
+    
+    Alimento getAlimentoPorId(String id){
+        Long idAlimento = Long.parseLong(id);
+        for (Plato aux : listaAlimentos){
+            if(aux.getId() == idAlimento ){
+                return aux;
+            }
+        }
+        return null;
+    }
+    
+    Mesa getMesaPorId(String id){
+        return controladorPedido.buscarMesaPorId(Integer.parseInt(id));
     }
     
 }

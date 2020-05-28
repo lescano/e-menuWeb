@@ -29,6 +29,7 @@
 
  <div class="card-body">
     <h4 class="card-title" id="alimento<%= +i %>"><%= alimento.getNombre() %></h4>
+    <input id="idAlimento<%= +i %>" value="<%= alimento.getId() %>" style="display:none;">
     <p class="card-text">"<%= alimento.getIngredientes() %>"</p>
     <div class="caja" style="display: none;">
         <ul class="nav nav-tabs " id="myTab<%= +i %>" role="tablist">
@@ -54,7 +55,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-7">
-                        <textarea class="form-control w-20 float-left" rows="3" style="resize: none;"></textarea>
+                        <textarea class="form-control w-20 float-left" rows="3" style="resize: none;" id="aclaracion<%= +i %>"></textarea>
                     </div>
                     <div class="col-5">
                         <button type="button" id="agregarAlPedido<%= +i %>"  class="btn btn-success w-20" onclick="agregar(<%= i %>)">Añadir al Pedido</button>

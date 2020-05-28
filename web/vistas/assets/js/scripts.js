@@ -1,4 +1,21 @@
 
+$(document).ready(function(){
+//muestro el carrito
+    var data = JSON.parse(sessionStorage.getItem("pedido"));
+    if(data !== null){
+        if(data.length > 0){
+            $('#resumen').show();
+        }
+    }
+      
+//muestra y esconde el menu que se despliega
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    
+});
+
 function mostrar(value){
     var caja = document.getElementsByClassName("caja")[value];
     var boton = document.getElementsByClassName("botonGira")[value];
@@ -16,27 +33,7 @@ function mostrar(value){
    }
 }
 
-
-
-
-$(document).ready(function(){
-//muestro y oculto el carrito
-    var data = JSON.parse(sessionStorage.getItem("pedido"));
-    if(data !== null){
-        $('#resumen').show();
-    }else{
-        $('#resumen').hide();
-    }
-      
-//muestra y esconde el menu que se despliega
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    
-});
-
-//para obligar a la pagina que se recarge
+//para obligar a la pagina que se recarge cuando navegas con la flecha para atras del navegador
 window.addEventListener( "pageshow", function ( event ) {
   var historyTraversal = event.persisted || 
                          ( typeof window.performance != "undefined" && 
@@ -52,8 +49,11 @@ function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
     var nuevoPrecio = $("#precioAlimentos"+value).val();
-    var nuevoCantidad= $("#cantidadAlimentos"+value).val();
-    var agregar = [nuevoAlimento,nuevoPrecio,nuevoCantidad];
+    var nuevoCantidad = $("#cantidadAlimentos"+value).val();
+    var idAlimento = $("#idAlimento"+value).val();
+    var aclaracion = $("#aclaracion"+value).val();
+    
+    var agregar = [nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];
     
     if(data === null){
         data = [];
@@ -72,18 +72,24 @@ var btnAbrirPopup = document.getElementById('resumen'),
 
 //Cuando le dan click al carrito muestro el pedido
 btnAbrirPopup.addEventListener('click', function(){
+    $('#resumen').hide();
     overlay.classList.add('active');
     popup.classList.add('active');
     
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var total = 0;
-    var i =0;
+    var i = 0;
 
+//Armo la tabla de pedidos entry[0] es el nombre entry[1] es el precio entry[2] es la cantidad
     for (let entry of data) {
-//        for (let item of entry) {
-            $("#pedido").append('<i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i><li id="opcion'+i+'">'+entry+'</li>');
-            i++;
-//        }
+        $("#pedido").append('<tr id="opcion'+i+'">\n\
+                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
+                                <td>'+entry[2]+'</td>\n\
+                                <td>'+entry[0]+'</td>\n\
+                                <td>'+entry[1]+'</td>\n\
+                            </tr>');
+        i++;
+        total = parseInt(total) + parseInt(entry[1]);
     }
     $("#total").append("<h4>Total: $"+total+"</h4>");
 });
@@ -91,21 +97,32 @@ btnAbrirPopup.addEventListener('click', function(){
 //Cuando el usuario hace click afuera de la pantalla se cierra y borra toda la lista que habia mostrado
 window.onclick = function(event) {
   if (event.target === overlay) {
+    $('#resumen').show();
     overlay.classList.remove('active');
     popup.classList.remove('active');
-    $( "li" ).remove();
+    $( "#pedido *" ).remove();
     $("#total h4").remove();
   }
 };
 
 $("#aceptar").click(function (e){
+    e.preventDefault();
+    var data = JSON.parse(sessionStorage.getItem("pedido"));
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "pedido="+data
+    })
     alert("Aceptaste");
 });
 
-$("#cancelar").click(function (){
+//Cuando el usuario cancela se cierra y borra toda la lista que habia mostrado
+$("#cancelar").click(function (e){
+    e.preventDefault();
+    $('#resumen').show();
     overlay.classList.remove('active');
     popup.classList.remove('active');
-    $( "li" ).remove();
+    $( "#pedido *" ).remove();
     $("#total h4").remove();
 });
 
@@ -162,14 +179,30 @@ function disminuircantidad(){
    
 //Para eliminar los productos que el usuario quiera de la lista
 function eliminar (eliminar){
-    $("#fas"+eliminar).remove();
-    $("#opcion"+eliminar).remove();
     var data = JSON.parse(sessionStorage.getItem("pedido"));
+    var total = 0;
+    var i =0;
+ //borro todo
+    $( "#pedido *" ).remove();
+    $("#total h4").remove();
     
     data.splice(eliminar, 1); 
     sessionStorage.setItem('pedido',JSON.stringify(data));
+ //Vuelvo a crear la tabla 
+    for (let entry of data) {
+        $("#pedido").append('<tr id="opcion'+i+'">\n\
+                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
+                                <td>'+entry[2]+'</td>\n\
+                                <td>'+entry[0]+'</td>\n\
+                                <td>'+entry[1]+'</td>\n\
+                            </tr>');
+        i++;
+        total = parseInt(total) + parseInt(entry[1]);
+    }
+    $("#total").append("<h4>Total: $"+total+"</h4>");
     
     if(data.length < 1){
+        $("#total h4").remove();
         $('#resumen').hide();
         overlay.classList.remove('active');
         popup.classList.remove('active');
