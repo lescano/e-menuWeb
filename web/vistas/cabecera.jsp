@@ -26,7 +26,7 @@
                 <h5 class="float-left p-2" >Resumen<br>del Pedido</h5>           
             </div>
 
-        <div class="d-flex toggled" id="wrapper">
+        <div class="d-flex " id="wrapper">
 
             <!-- Sidebar -->
             <div class="bg-dark border-right " id="sidebar-wrapper">

@@ -20,16 +20,18 @@
         <div class="row py-1">
           <% 
             List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
-                        for(Categoria aux : categorias){
-                            String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
+            int indice=0;
+            for(Categoria aux : categorias){
+                String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
+                if(indice%2==0&&indice!=0){
+                    %><div class="w-100"></div><% 
+                }
+                indice++;
             %>
-
-            <div class="row w-100">
-                <div class="col px-3 py-1">
-                    <a href="?caso=<%= aux.getNombre() %>">
-                        <img class="<%= aux.getNombre() %>" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
-                    </a>
-                </div>
+            <div class="col-auto m-0 p-0">
+                <button class="m-0 p-0 overflow-hidden" type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
+                    <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+                </button>
             </div>
    <%--                  
             <div class="col px-3 py-1">
