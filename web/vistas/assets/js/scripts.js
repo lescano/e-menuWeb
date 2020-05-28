@@ -113,7 +113,11 @@ $("#aceptar").click(function (e){
         type: "POST",
         data: "pedido="+data
     })
-    alert("Aceptaste");
+    sessionStorage.setItem('pedido',null);
+    overlay.classList.remove('active');
+    popup.classList.remove('active');
+    $( "#pedido *" ).remove();
+    $("#total h4").remove();
 });
 
 //Cuando el usuario cancela se cierra y borra toda la lista que habia mostrado

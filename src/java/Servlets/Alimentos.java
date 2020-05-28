@@ -16,7 +16,6 @@ import Logica.Pago;
 import Logica.Plato;
 import Logica.Pedidos;
 import Logica.enum_Estado;
-import Logica.enum_Pago;
 import Persistencia.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
