@@ -6,7 +6,6 @@
 package Servlets;
 
 import Controladores_Interfaces.IAlimentoController;
-import Logica.Alimento;
 import Logica.Categoria;
 import Logica.Fabrica;
 import java.io.IOException;
@@ -92,8 +91,9 @@ public class inicio extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-
-
+//        if(request.getSession().getAttribute("messa") == null){
+//            request.getSession().setAttribute("mesa", request.getParameter("caso"));
+//        }
     }
 
     /**

@@ -8,7 +8,7 @@
 
 <div class="overlay" id="overlay">
     <div class="popup" id="popup">
-        <h3>TU PEDIDO</h3>
+        <h3 id="tituloPedido"></h3>
         <form>
             <table class="contenedor-inputs" id="pedido">
         <%-- Con javascript le meto el contenido --%>
@@ -18,6 +18,7 @@
         <%-- Con javascript le meto el contenido --%>
             </div>
             <input type="submit" id="cancelar" class="btn-submit" value="CANCELAR">
+            <input type="submit" id="siguiente" class="btn-submit" value="SIGUIENTE">
             <input type="submit" id="aceptar" class="btn-submit" value="ACEPTAR">
         </form>
     </div>

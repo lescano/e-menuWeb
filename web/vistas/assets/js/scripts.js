@@ -73,6 +73,9 @@ var btnAbrirPopup = document.getElementById('resumen'),
 //Cuando le dan click al carrito muestro el pedido
 btnAbrirPopup.addEventListener('click', function(){
     $('#resumen').hide();
+    $("#aceptar").hide();
+    $("#siguiente").show();
+    $("#tituloPedido").text("TU PEDIDO");
     overlay.classList.add('active');
     popup.classList.add('active');
     
@@ -105,19 +108,35 @@ window.onclick = function(event) {
   }
 };
 
+//Cuando acepta el pedido se manda la info a la base de datos a traves del servlet Alimentos
 $("#aceptar").click(function (e){
     e.preventDefault();
-    var data = JSON.parse(sessionStorage.getItem("pedido"));
-    $.ajax({
-        url: "/e-menuWeb/alimentos",
-        type: "POST",
-        data: "pedido="+data
-    })
-    sessionStorage.setItem('pedido',null);
-    overlay.classList.remove('active');
-    popup.classList.remove('active');
+    if($("#passwd").val()){
+        var passwd = $("#passwd").val();
+        var data = JSON.parse(sessionStorage.getItem("pedido"));
+        $.ajax({
+            url: "/e-menuWeb/alimentos",
+            type: "POST",
+            data: "pedido="+data+"&password="+passwd
+        })
+        sessionStorage.setItem('pedido',null);
+        overlay.classList.remove('active');
+        popup.classList.remove('active');
+        $( "#pedido *" ).remove();
+        $("#total h4").remove();
+    }else{
+        $("#passwd").css('background-color', 'lightcoral')
+    }
+});
+
+$("#siguiente").click(function (e){
+    e.preventDefault();
+    $("#tituloPedido").text("Contraseña de seguridad");
     $( "#pedido *" ).remove();
     $("#total h4").remove();
+    $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido">');
+    $("#siguiente").hide();
+    $("#aceptar").show();
 });
 
 //Cuando el usuario cancela se cierra y borra toda la lista que habia mostrado

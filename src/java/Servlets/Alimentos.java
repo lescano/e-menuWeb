@@ -114,14 +114,14 @@ public class Alimentos extends HttpServlet {
         if(request.getParameterMap().containsKey("pedido")){
             String pedido = (String) request.getParameter("pedido");        //Este dato me lo manda del javascript por ajax
             String[] p = pedido.split("\\,");                               //Lo parceo ya que los datos vienen en un string
-            List<Alimento> alimentosPedidos = new ArrayList<Alimento>();    
+            List<Alimento> alimentosPedidos = new ArrayList<>();    
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
             int precio_total = 0;
-            String pass = (String) request.getSession().getAttribute("contrasenia");    //La contraseña que el usuario puso cuando ingreso
+            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso
             
             String idMesa = (String) request.getSession().getAttribute("mesa");
-            List<Observaciones> observaciones = new ArrayList<Observaciones>();
+            List<Observaciones> observaciones = new ArrayList<>();
             Pago pago = new Pago();
                     
  //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
@@ -137,10 +137,8 @@ public class Alimentos extends HttpServlet {
             Mesa mesa = getMesaPorId("41");
             Pedidos nuevo = new Pedidos(fecha,precio_total,pass,enum_Estado.Pendiente,mesa,alimentosPedidos,observaciones,pago,alimentos_cantidad);
 
-            Conexion.getInstance().alta(pago);
+            pago.setPedido(nuevo);
             Conexion.getInstance().alta(nuevo);
-            pago.setPedido(controladorPedido.getUltimoInsertado());
-            Conexion.getInstance().modificar(pago);
         }
     }
 
