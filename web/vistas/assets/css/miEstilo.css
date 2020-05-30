@@ -1,3 +1,9 @@
+.inputWidth{
+    width: 60px;
+}
+.inputWidthTotal{
+    width: 100px;
+}
 .containerText {
   position: relative;
 }
@@ -97,8 +103,8 @@ body {
     height: auto;
 }
 .botonDesplegar{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: none;
     color: inherit;
     border: none;
@@ -108,6 +114,11 @@ body {
 .imagenPrincipioPlatos{
     width: 100%;
     height: auto;
+    transform: translate(0, -25%);  
+}
+.divPrincipioPlatos{
+    height:120px;
+    overflow: hidden;
 }
 
 .carrito.bg-primary.shadow.rounded{
