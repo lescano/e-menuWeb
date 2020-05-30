@@ -1,4 +1,18 @@
-
+.containerText {
+  position: relative;
+}
+.centeredText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 1000;
+  text-shadow: 0px 0px 4px black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  transform: translate(-50%, -50%);  
+}
 .aImagen{
     display: box;
     width: 49vw !important;

@@ -29,8 +29,11 @@
                 indice++;
             %>
             <div class="col-auto m-0 p-0">
-                <button class="m-0 p-0 overflow-hidden" type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
-                    <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+                <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
+                    <div class="containerText">
+                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+                        <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
+                    </div>
                 </button>
             </div>
    <%--                  
