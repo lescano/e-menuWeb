@@ -15,7 +15,8 @@
 }
 .aImagen{
     display: box;
-    width: 49vw !important;
+    width: 100%;
+    /*width: 49vw !important;*/
     height: auto !important;
 }
 /*sidebR*/
