@@ -1,8 +1,19 @@
+.divFlecha{
+    height: 2em;
+}
+.altura{
+    height: 11vh;
+}
+
 .inputWidth{
     width: 60px;
 }
 .inputWidthTotal{
     width: 100px;
+    outline: none;
+}
+.inputWidthTotal, textarea:focus, input:focus{
+    outline: none;
 }
 .containerText {
   position: relative;
@@ -75,7 +86,7 @@ body {
     height: auto;
 }
 .imgNavbar{
-    width: 40px;
+    width: 2.5em;
     height: auto;
 }
 .fotoIcono{
@@ -99,12 +110,12 @@ body {
     margin: 10px;
 }
 .carrito_icono{
-    width: 60px;
+    width: 3.5em;
     height: auto;
 }
 .botonDesplegar{
-    width: 40px;
-    height: 40px;
+    height: 1.5em;
+    width: auto;
     background: none;
     color: inherit;
     border: none;
@@ -117,7 +128,7 @@ body {
     transform: translate(0, -25%);  
 }
 .divPrincipioPlatos{
-    height:120px;
+    height:100px;
     overflow: hidden;
 }
 

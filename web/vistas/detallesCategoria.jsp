@@ -19,8 +19,8 @@
 
 %>
 
-<div class="m-1 divPrincipioPlatos">
-    <img class="imagenPrincipioPlatos" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="Imigen de categoria"/>
+<div class="m-0 p-0 divPrincipioPlatos">
+    <img class="imagenPrincipioPlatos mb-0 pb-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="Imigen de categoria"/>
 </div>
 <div class="card mx-1 shadow">
     
@@ -29,8 +29,8 @@
     
 %>
 
- <div class="card-body p-1 m-2 shadow-sm">
-    <h4 class="card-title" id="alimento<%= +i %>"><%= alimento.getNombre() %></h4>
+ <div class="card-body p-1 m-1 shadow-sm">
+    <h4 class="card-title m-0 p-0" id="alimento<%= +i %>"><%= alimento.getNombre() %></h4>
     <input id="idAlimento<%= +i %>" value="<%= alimento.getId() %>" style="display:none;">
     <p class="card-text p-0 m-1">"<%= alimento.getIngredientes() %>"</p>
     <div class="caja" style="display: none;">
@@ -48,37 +48,33 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home<%= +i %>" role="tabpanel" aria-labelledby="home-tab">
 
-                <div class="container my-1">
+                <div class="container pl-1">
                     <div class="row my-2">
-                        <div class="col-3">
-                            <h5 class="float-left mb-2 ">Cantidad:</h5>
+                        <div class="col-6">
+                            <h5 class="float-left mb-1" id="cantidadAlimentos<%= +i %>">Cantidad: <%= +i %></h5>
                         </div>
-                        <div class="col-2">
-                            <input class="inputWidth" type='text' id="cantidadAlimentos<%= +i %>" value="1" readonly>
+                        <div class="col-1 ml-2">
+                            <button id="botonMenos" type="button" class=" btn btn-dark float-left " onclick="disminuircantidad()">-</button>
                         </div>
-                        <div class="col-2">
-                            <button id="botonMenos" type="button" class="ml-5 mx-1 btn btn-dark float-left " onclick="disminuircantidad()">-</button>
-                        </div>
-                        <div class="col-2">
-                            <button id="botonMas" type="button" class="mx-4 btn btn-dark" onclick="aumentarcantidad()">+</button>
+                        <div class="col-1 ml-1">
+                            <button id="botonMas" type="button" class=" btn btn-dark" onclick="aumentarcantidad()">+</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm">
-                          <h5>Total: $<input class="ml-1 inputWidthTotal" type='text' id="precioAlimentos<%= +i %>" value="<%= alimento.getPrecio() %>" readonly></h5>
-                        </div>
+                    <div class="w-100 m-0 p-0">
+                       <h5 class="" type='text' id="precioAlimentos<%= +i %>" value="<%= alimento.getPrecio() %>" readonly>Total: $<%= alimento.getPrecio() %></h5>
                     </div>
+
 
     
             </div>
-            <p class="ml-3">Alguna aclaracion?</p>   
-            <div class="container">
+            <p class="m-0 ml-1 p-0">Alguna aclaracion?</p>   
+            <div class="container altura mb-1">
                 <div class="row">
-                    <div class="col-7">
-                        <textarea class="form-control w-20 float-left" rows="3" style="resize: none;" id="aclaracion<%= +i %>"></textarea>
+                    <div class="col-7 pb-1 ml-0 pl-0">
+                        <textarea class="form-control float-left" rows="2" style="resize: none;" id="aclaracion<%= +i %>"></textarea>
                     </div>
-                    <div class="col-5">
-                        <button type="button" id="agregarAlPedido<%= +i %>"  class="btn btn-success w-20" onclick="agregar(<%= i %>)">Añadir al Pedido</button>
+                    <div class="col-5 p-0 ">
+                        <button type="button" id="agregarAlPedido<%= +i %>"  class="btn btn-success w-20 py-1 px-0" onclick="agregar(<%= i %>)">Añadir al Pedido</button>
                     </div>
                 </div>
             </div>
@@ -139,9 +135,9 @@
         </div>
     </div>
   </div>
-                    <div class=" bg-transparent border d-flex justify-content-center p-0 m-0">
-                        <buttom  class="botonDesplegar p-0 m-0" type="submit"  value="" onclick="mostrar(<%= i%>)" >
-                            <img  class="botonDesplegar botonGira p-0 m-0" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
+                    <div class=" bg-transparent border d-flex justify-content-center divFlecha m-0 p-0">
+                        <buttom  class="botonDesplegar p-1 m-0" type="submit"  value="" onclick="mostrar(<%= i%>)" >
+                            <img  class="botonDesplegar botonGira p-0 m-0 h-100" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
                         </buttom>  
                     </div>           
   </div>
