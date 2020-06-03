@@ -30,44 +30,27 @@
             %>
             <div class="col-6 m-0 p-0">
                 <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
-                    <div class="containerText">
-                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>
+                    <div class="containerText bg-primary">
+                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
                         <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
                     </div>
                 </button>
             </div>
-   <%--                  
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_hamburg.jpg" alt=""/>
-            </div>
-            <div class="col px-3 py-1">
-                <a href="?caso=chivito">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_chivitos.jpg" alt=""/>
-                </a>
-            </div>
-            <div class="w-100"></div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_sandw.jpg" alt=""/>
-            </div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_milanesas.jpg" alt=""/>
-            </div>
-            <div class="w-100"></div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_minutas.jpg" alt=""/>
-            </div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_ensaladas.jpg" alt=""/>
-            </div>
-            <div class="w-100"></div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/elbar_categ_bebidas.jpg" alt=""/>
-            </div>
-            <div class="col px-3 py-1">
-                <img class="categoria " src="vistas/assets/images/categoriasComida/pizzas_especiales.jpg" alt=""/>
-            </div>
-            
---%>          <% } %>        
+        <% } %>  
+        <script>
+            $(".containerText").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
+            var refRatio = 240/300;
+
+            var imgH = $(this).children("img").height();
+            var imgW = $(this).children("img").width();
+
+            if ( (imgW/imgH) < refRatio ) { 
+                $(this).addClass("portrait");
+            } else {
+                $(this).addClass("landscape");
+            }
+        })
+        </script>
             
         </div>
     </div>

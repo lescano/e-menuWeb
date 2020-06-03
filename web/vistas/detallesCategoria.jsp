@@ -18,10 +18,15 @@
     String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
 
 %>
-
-<div class="m-0 p-0 divPrincipioPlatos">
-    <img class="imagenPrincipioPlatos mb-0 pb-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="Imigen de categoria"/>
+<div class="m-0 p-0 overflow-hidden " type="button" style="border:none;">
+                    <div class="containerTextCat bg-primary">
+                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>"/>  
+                        <div class="centeredText">Nombre Cat</div>
+                    </div>
 </div>
+<!--<div class="m-0 p-0 divPrincipioPlatos">
+    <img class="imagenPrincipioPlatos mb-0 pb-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="Imigen de categoria"/>
+</div>-->
 <div class="card mx-1 shadow">
     
 <%  int i = 0;
@@ -148,6 +153,18 @@
     i++;
     }
 %>
+<script>
+            $(".containerTextCat").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
+            var refRatio = 240/300;
+            var imgH = $(this).children("img").height();
+            var imgW = $(this).children("img").width();
 
+            if ( (imgW/imgH) < refRatio ) { 
+                $(this).addClass("landscape");
+            } else {
+                $(this).addClass("portrait");
+            }
+        })
+        </script>
 <jsp:include page="pie.jsp"/> 
 

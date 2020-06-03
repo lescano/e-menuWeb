@@ -21,8 +21,8 @@
             <script src="https://kit.fontawesome.com/87277c0c3b.js" crossorigin="anonymous"></script>
         </head>
         <body>
-            <div class="carrito bg-primary shadow rounded " onclick="verPedido()" id="resumen">
-                <img class="carrito_icono float-left p-1 m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
+            <div class="carrito bg-primary shadow rounded p-1" onclick="verPedido()" id="resumen">
+                <img class="carrito_icono float-left m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
                 <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
             </div>
 
