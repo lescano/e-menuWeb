@@ -63,6 +63,12 @@ function agregar(value){
     data.push(agregar);
     sessionStorage.setItem('pedido',JSON.stringify(data));
     
+    var cantidad = parseInt(nuevoCantidad);
+    var precioAl = parseInt(nuevoPrecio);
+    var precioInicial = precioAl/cantidad;
+    $('#cantidadAlimentos'+value).text(1);
+    $('#precioAlimentos'+value).text(precioInicial);
+    
     $('#resumen').show();
 }
 //Variables que voy a usar en la ventana popup del pedido
@@ -89,7 +95,7 @@ btnAbrirPopup.addEventListener('click', function(){
                                 <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
                                 <td>'+entry[2]+'</td>\n\
                                 <td>'+entry[0]+'</td>\n\
-                                <td>'+entry[1]+'</td>\n\
+                                <td>$'+entry[1]+'</td>\n\
                                 <td>'+entry[4]+'</td>\n\
                             </tr>');
         i++;
@@ -150,56 +156,31 @@ $("#cancelar").click(function (e){
     $("#total h4").remove();
 });
 
-function aumentarcantidad(){
-    //En este bloque se consulta una variable de session 
-    //para saber si es la primera vez que entra a la funcion o no
-    //en caso de ser la primera vez se va a guardar en la session el precio del alimento
-    //para despues poder sumarlo cuando se aumente la cantidad
-    var data = JSON.parse(sessionStorage.getItem("precio"));
-    var cantidad = document.getElementById('cantidadAlimentos');
-    var precioAl = document.getElementById('precioAlimentos');
-    if(data === null){
-        var p = [$("#precioAlimentos").val()];
-        sessionStorage.setItem('precio', JSON.stringify(p));
-    }else{
-        //en este if controlo que si se setea una cantidad menor a uno, esa cantidad sea uno
-        //el precio queda acorde a la cantidad
-        if (cantidad.value < 1){
-            cantidad.value = 1;
-            precioAl.value = data;
-        }
-        //si la cantidad es 1 o mas la cantidad se aumenta y el precio tambien
-        else {
-            cantidad.value = ++cantidad.value;
-            precioAl.value = parseInt(precioAl.value)+parseInt(data);
-        }
-    }
+function aumentarcantidad(item){
+    var cant = $('#cantidadAlimentos'+item).text();
+    var prAl = $('#precioAlimentos'+item).text();
+    
+    var cantidad = parseInt(cant);
+    var precioAl = parseInt(prAl);
+    var precioInicial = precioAl/cantidad;
+    $('#cantidadAlimentos'+item).text(cantidad+1);
+    $('#precioAlimentos'+item).text(precioInicial*(cantidad+1));
+    
 }
 
-function disminuircantidad(){
+function disminuircantidad(item){
+    var cant = $('#cantidadAlimentos'+item).text();
+    var prAl = $('#precioAlimentos'+item).text();
     
-    var data = JSON.parse(sessionStorage.getItem("precio"));
-    var cantidad = document.getElementById('cantidadAlimentos');
-    var precioAl = document.getElementById('precioAlimentos');
-    if(data === null){
-        var p = [$("#precioAlimentos").val()];
-        sessionStorage.setItem('precio', JSON.stringify(p));
-    }else{
-        //en este primer if disminuto la cantidad si el valor es 2 o mas,
-        //entonces al disminuir la menor cantidad que queda es 1
-        //tambien se disminuye el precio
-        if (cantidad.value > 1){
-            cantidad.value = --cantidad.value;
-            precioAl.value = parseInt(precioAl.value)-parseInt(data);
-        }
-        //si se setea un valor 1 o menor a la cantidad, el valor de la cantidad queda en 1
-        //el precio queda como al principio
-        else{
-            cantidad.value = 1;
-            precioAl.value = data;
-        }
+    var cantidad = parseInt(cant);
+    var precioAl = parseInt(prAl);
+    var precioInicial = precioAl/cantidad;
+    
+    if(cantidad > 1){
+        $('#cantidadAlimentos'+item).text(cantidad-1);
+        $('#precioAlimentos'+item).text(precioInicial*(cantidad-1));        
     }
-   }
+}
    
 //Para eliminar los productos que el usuario quiera de la lista
 function eliminar (eliminar){
@@ -218,7 +199,7 @@ function eliminar (eliminar){
                                 <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
                                 <td>'+entry[2]+'</td>\n\
                                 <td>'+entry[0]+'</td>\n\
-                                <td>'+entry[1]+'</td>\n\
+                                <td>$'+entry[1]+'</td>\n\
                                 <td>'+entry[4]+'</td>\n\
                             </tr>');
         i++;

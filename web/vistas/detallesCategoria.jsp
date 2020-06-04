@@ -59,10 +59,10 @@
                             <h5 class="float-left mb-1"> Cantidad: </h5><h5 class="float-left mb-1" id="cantidadAlimentos<%= i %>">1</h5>
                         </div>
                         <div class="col-1 ml-2">
-                            <button id="botonMenos" type="button" class=" btn btn-dark float-left " onclick="disminuircantidad()">-</button>
+                            <button id="botonMenos" type="button" class=" btn btn-dark float-left " onclick="disminuircantidad(<%= i %>)">-</button>
                         </div>
                         <div class="col-1 ml-1">
-                            <button id="botonMas" type="button" class=" btn btn-dark" onclick="aumentarcantidad()">+</button>
+                            <button id="botonMas" type="button" class=" btn btn-dark" onclick="aumentarcantidad(<%= i %>)">+</button>
                         </div>
                     </div>
                     <div class="w-100 m-0 p-0">
