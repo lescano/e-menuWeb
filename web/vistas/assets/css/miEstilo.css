@@ -1,11 +1,29 @@
+.divFlecha{
+    height: 2em;
+}
+.altura{
+    height: 11vh;
+}
+
 .inputWidth{
     width: 60px;
 }
 .inputWidthTotal{
     width: 100px;
+    outline: none;
+}
+.inputWidthTotal, textarea:focus, input:focus{
+    outline: none;
 }
 .containerText {
   position: relative;
+  width: 49.9vw;
+  height: 22vw;
+}
+.containerTextCat{
+  position: relative;
+  width: 100vw;
+  height: 22vw;
 }
 .centeredText {
   font-family: Arial, Helvetica, sans-serif;
@@ -20,10 +38,18 @@
   transform: translate(-50%, -50%);  
 }
 .aImagen{
-    display: box;
+        /*max-width: 100%;
+        max-height: 100%;*/
+        display: block;
+
+}
+.portrait img {
     width: 100%;
-    /*width: 49vw !important;*/
-    height: auto !important;
+    height: auto;
+}
+.landscape img {
+    height: 100%;
+    width: auto;
 }
 /*sidebR*/
 body {
@@ -75,7 +101,7 @@ body {
     height: auto;
 }
 .imgNavbar{
-    width: 40px;
+    width: 2.5em;
     height: auto;
 }
 .fotoIcono{
@@ -99,12 +125,12 @@ body {
     margin: 10px;
 }
 .carrito_icono{
-    width: 60px;
+    width: 3.5em;
     height: auto;
 }
 .botonDesplegar{
-    width: 40px;
-    height: 40px;
+    height: 1.5em;
+    width: auto;
     background: none;
     color: inherit;
     border: none;
@@ -112,12 +138,12 @@ body {
     outline: inherit;
 }
 .imagenPrincipioPlatos{
-    width: 100%;
-    height: auto;
-    transform: translate(0, -25%);  
+    /*width: 100%;
+    height: auto;*/
+    /*transform: translate(0, -25%);  */
 }
 .divPrincipioPlatos{
-    height:120px;
+    height:100px;
     overflow: hidden;
 }
 

@@ -21,9 +21,9 @@
             <script src="https://kit.fontawesome.com/87277c0c3b.js" crossorigin="anonymous"></script>
         </head>
         <body>
-            <div class="carrito bg-primary shadow rounded " onclick="verPedido()" id="resumen">
-                <img class="carrito_icono float-left p-2 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
-                <h5 class="float-left p-2" >Resumen<br>del Pedido</h5>           
+            <div class="carrito bg-primary shadow rounded p-1" onclick="verPedido()" id="resumen">
+                <img class="carrito_icono float-left m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
+                <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
             </div>
 
         <div class="d-flex " id="wrapper">
@@ -62,7 +62,7 @@
 
             <div id="page-content-wrapper">
                 <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
-            <button class="btn" id="menu-toggle"><img class="imgNavbar" src="vistas/assets/images/e_menu.png" alt=""></button>
+            <button class="btn m-0 p-0" id="menu-toggle"><img class="imgNavbar p-0 m-0" src="vistas/assets/images/e_menu.png" alt=""></button>
 
 
             <div class="navbar-collapse ml-auto" id="navbarSupportedContent">

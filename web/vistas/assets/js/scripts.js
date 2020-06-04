@@ -48,8 +48,8 @@ window.addEventListener( "pageshow", function ( event ) {
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
-    var nuevoPrecio = $("#precioAlimentos"+value).val();
-    var nuevoCantidad = $("#cantidadAlimentos"+value).val();
+    var nuevoPrecio = $("#precioAlimentos"+value).text();
+    var nuevoCantidad = $("#cantidadAlimentos"+value).text();
     var idAlimento = $("#idAlimento"+value).val();
     var aclaracion = $("#aclaracion"+value).val();
     
@@ -233,3 +233,15 @@ function eliminar (eliminar){
         popup.classList.remove('active');
     }
 }
+
+$(".containerTextCat").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
+    var refRatio = 240/300;
+    var imgH = $(this).children("img").height();
+    var imgW = $(this).children("img").width();
+
+    if ( (imgW/imgH) < refRatio ) { 
+        $(this).addClass("landscape");
+    } else {
+        $(this).addClass("portrait");
+    }
+})
