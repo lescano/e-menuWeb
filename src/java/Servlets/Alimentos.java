@@ -56,7 +56,11 @@ public class Alimentos extends HttpServlet {
             
             String caso = (String) request.getSession().getAttribute("caso");
             
-            if(!request.getParameterMap().containsKey("caso")){
+            if(request.getParameterMap().containsKey("pedido")){
+                caso = "finalizo";
+            }
+            
+            if(caso == null){
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
             
@@ -74,6 +78,9 @@ public class Alimentos extends HttpServlet {
                     break;
                 case "inicio":
                     response.sendRedirect("inicio");
+                    break;
+                case "finalizo":
+                    response.sendRedirect("salir");
                     break;
                 default:
                     response.sendRedirect("ERROR");
@@ -118,8 +125,7 @@ public class Alimentos extends HttpServlet {
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
             int precio_total = 0;
-            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso
-            
+            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso          
             String idMesa = (String) request.getSession().getAttribute("mesa");
             List<Observaciones> observaciones = new ArrayList<>();
             Pago pago = new Pago();
@@ -132,11 +138,20 @@ public class Alimentos extends HttpServlet {
                 alimentosPedidos.add(ap);
                 alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
                 precio_total += ap.getPrecio();
+                Observaciones obs = new Observaciones();
+                obs.setAlimento(ap);
+                if(i+4 < p.length){
+                    obs.setObservacion(p[i+4]);
+                }
+                observaciones.add(obs);
             }
 
             Mesa mesa = getMesaPorId("41");
             Pedidos nuevo = new Pedidos(fecha,precio_total,pass,enum_Estado.Pendiente,mesa,alimentosPedidos,observaciones,pago,alimentos_cantidad);
 
+            for(Observaciones o : observaciones){
+                o.setPedido(nuevo);
+            }
             pago.setPedido(nuevo);
             Conexion.getInstance().alta(nuevo);
         }

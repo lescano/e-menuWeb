@@ -1,7 +1,28 @@
-
+.inputWidth{
+    width: 60px;
+}
+.inputWidthTotal{
+    width: 100px;
+}
+.containerText {
+  position: relative;
+}
+.centeredText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 1000;
+  text-shadow: 0px 0px 4px black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  transform: translate(-50%, -50%);  
+}
 .aImagen{
     display: box;
-    width: 49vw !important;
+    width: 100%;
+    /*width: 49vw !important;*/
     height: auto !important;
 }
 /*sidebR*/
@@ -82,8 +103,8 @@ body {
     height: auto;
 }
 .botonDesplegar{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: none;
     color: inherit;
     border: none;
@@ -93,6 +114,11 @@ body {
 .imagenPrincipioPlatos{
     width: 100%;
     height: auto;
+    transform: translate(0, -25%);  
+}
+.divPrincipioPlatos{
+    height:120px;
+    overflow: hidden;
 }
 
 .carrito.bg-primary.shadow.rounded{

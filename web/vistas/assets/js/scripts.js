@@ -90,6 +90,7 @@ btnAbrirPopup.addEventListener('click', function(){
                                 <td>'+entry[2]+'</td>\n\
                                 <td>'+entry[0]+'</td>\n\
                                 <td>'+entry[1]+'</td>\n\
+                                <td>'+entry[4]+'</td>\n\
                             </tr>');
         i++;
         total = parseInt(total) + parseInt(entry[1]);
@@ -218,6 +219,7 @@ function eliminar (eliminar){
                                 <td>'+entry[2]+'</td>\n\
                                 <td>'+entry[0]+'</td>\n\
                                 <td>'+entry[1]+'</td>\n\
+                                <td>'+entry[4]+'</td>\n\
                             </tr>');
         i++;
         total = parseInt(total) + parseInt(entry[1]);
