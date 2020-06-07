@@ -39,7 +39,8 @@
                         </div>
                     </div>
                     <a href="#" class="list-group-item list-group-item-action bg-light">Ver menu</a>    
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Añadir reseña</a>    
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Añadir reseña</a>
+                    <a href="#" class="list-group-item list-group-item-action bg-light" id="pagar">Pagar</a> 
 
                     <div class="container list-group-item list-group-item-action bg-light ">
                         

@@ -250,6 +250,14 @@ body {
 	background: rgba(94,125,227, .9);
 }
 
+#pagar{
+    visibility: collapse;
+}
+
+.pedido{
+    display: none;
+}
+
 /* ------------------------- */
 /* ANIMACIONES */
 /* ------------------------- */

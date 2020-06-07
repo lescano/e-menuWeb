@@ -4,6 +4,8 @@
     Author     : vanessa
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="Logica.Pedidos"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="javax.imageio.ImageIO"%>
 <%@page import="java.awt.image.BufferedImage"%>
@@ -14,43 +16,64 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     
 <div class="container">
-        
-
-        
-        <div class="row py-1">
-          <% 
-            List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
-            int indice=0;
-            for(Categoria aux : categorias){
-                String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
-                if(indice%2==0&&indice!=0){
-                    %><div class="w-100"></div><% 
-                }
-                indice++;
-            %>
-            <div class="col-6 m-0 p-0">
-                <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
-                    <div class="containerText bg-primary">
-                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
-                        <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
-                    </div>
-                </button>
-            </div>
-        <% } %>  
-        <script>
-            $(".containerText").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
-            var refRatio = 240/300;
-
-            var imgH = $(this).children("img").height();
-            var imgW = $(this).children("img").width();
-
-            if ( (imgW/imgH) < refRatio ) { 
-                $(this).addClass("portrait");
-            } else {
-                $(this).addClass("landscape");
+    <div class="row py-1">
+      <% 
+        List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
+        List<Pedidos> pedidos = (List<Pedidos>)request.getAttribute("pedidos");
+        int indice=0;
+        int cant=0;
+        int total=0;
+        String mozo="";
+        ArrayList<String> claves = new ArrayList<String>();
+        for(Categoria aux : categorias){
+            String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
+            if(indice%2==0&&indice!=0){
+                %> <div class="w-100"></div> <% 
             }
-        })
-        </script>
-            
+            indice++;
+        %>
+        <div class="col-6 m-0 p-0">
+            <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
+                <div class="containerText bg-primary">
+                    <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
+                    <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
+                </div>
+            </button>
         </div>
+    <% } %>  
     </div>
+</div>
+
+    <% 
+        if(pedidos != null){
+    %>
+<div class="overlay active" id="overlayPedido">
+    <div class="popup active" id="popupPedido">
+        <h3 id="tituloPedido">Pedidos realizados</h3>
+        <form>
+            <table class="contenedor-inputs" >
+        <% 
+            for(Pedidos pedido : pedidos){
+                cant++;
+        %>
+            <tr>
+                <td><%= cant %></td>
+                <td><%= pedido.getFecha_hora() %></td>
+                <td>$ <%= pedido.getPrecio_total() %></td>
+                <% total+=pedido.getPrecio_total(); 
+                   claves.add(pedido.getContrasenia()); 
+                   mozo = pedido.getPersonal().getNombre(); %>
+            </tr>
+        <% } %>
+            </table>
+            <div id="totalPedidos">
+                <h3>$ <%= total %></h3>
+            </div>
+            <input type="button" id="solicitarPagar" class="btn-submit" value="SOLICITAR PAGO" onclick="pagar( '<%= mozo %>' )">
+            <input type="button" id="pedidoNuevo" class="btn-submit" value="PEDIDO NUEVO">
+        </form>
+    </div>
+</div>
+        
+<% } %>
+        

@@ -125,10 +125,12 @@ public class Alimentos extends HttpServlet {
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
             int precio_total = 0;
-            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso          
+            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso
+            Long rut = Long.parseLong(request.getParameter("rut"));
             String idMesa = (String) request.getSession().getAttribute("mesa");
             List<Observaciones> observaciones = new ArrayList<>();
             Pago pago = new Pago();
+            pago.setRut(rut);
                     
  //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
 

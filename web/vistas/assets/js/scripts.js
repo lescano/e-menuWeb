@@ -86,22 +86,7 @@ btnAbrirPopup.addEventListener('click', function(){
     popup.classList.add('active');
     
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var total = 0;
-    var i = 0;
-
-//Armo la tabla de pedidos entry[0] es el nombre entry[1] es el precio entry[2] es la cantidad
-    for (let entry of data) {
-        $("#pedido").append('<tr id="opcion'+i+'">\n\
-                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
-                                <td>'+entry[2]+'</td>\n\
-                                <td>'+entry[0]+'</td>\n\
-                                <td>$'+entry[1]+'</td>\n\
-                                <td>'+entry[4]+'</td>\n\
-                            </tr>');
-        i++;
-        total = parseInt(total) + parseInt(entry[1]);
-    }
-    $("#total").append("<h4>Total: $"+total+"</h4>");
+    cargarPedido(data);
 });
 
 //Cuando el usuario hace click afuera de la pantalla se cierra y borra toda la lista que habia mostrado
@@ -120,28 +105,31 @@ $("#aceptar").click(function (e){
     e.preventDefault();
     if($("#passwd").val()){
         var passwd = $("#passwd").val();
+        var rut = $("#rut").val();
         var data = JSON.parse(sessionStorage.getItem("pedido"));
         $.ajax({
             url: "/e-menuWeb/alimentos",
             type: "POST",
-            data: "pedido="+data+"&password="+passwd
-        })
+            data: "pedido="+data+"&password="+passwd+"&rut="+rut
+        });
         sessionStorage.setItem('pedido',null);
         overlay.classList.remove('active');
         popup.classList.remove('active');
         $( "#pedido *" ).remove();
         $("#total h4").remove();
+        $("#pagar").css('visibility','visible');
     }else{
-        $("#passwd").css('background-color', 'lightcoral')
+        $("#passwd").css('background-color', 'lightcoral');
     }
 });
 
 $("#siguiente").click(function (e){
     e.preventDefault();
-    $("#tituloPedido").text("Contraseña de seguridad");
+    $("#tituloPedido").text("Clave de seguridad");
     $( "#pedido *" ).remove();
     $("#total h4").remove();
     $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido">');
+    $("#pedido").append('<input type="text" id="rut" placeholder="Si quiere factura con rut, escribalo">');
     $("#siguiente").hide();
     $("#aceptar").show();
 });
@@ -185,27 +173,14 @@ function disminuircantidad(item){
 //Para eliminar los productos que el usuario quiera de la lista
 function eliminar (eliminar){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var total = 0;
-    var i =0;
  //borro todo
     $( "#pedido *" ).remove();
     $("#total h4").remove();
     
     data.splice(eliminar, 1); 
     sessionStorage.setItem('pedido',JSON.stringify(data));
- //Vuelvo a crear la tabla 
-    for (let entry of data) {
-        $("#pedido").append('<tr id="opcion'+i+'">\n\
-                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
-                                <td>'+entry[2]+'</td>\n\
-                                <td>'+entry[0]+'</td>\n\
-                                <td>$'+entry[1]+'</td>\n\
-                                <td>'+entry[4]+'</td>\n\
-                            </tr>');
-        i++;
-        total = parseInt(total) + parseInt(entry[1]);
-    }
-    $("#total").append("<h4>Total: $"+total+"</h4>");
+
+    cargarPedido(data);
     
     if(data.length < 1){
         $("#total h4").remove();
@@ -226,3 +201,53 @@ $(".containerTextCat").each(function(){            //esto es para que las imagen
         $(this).addClass("portrait");
     }
 })
+
+$("#pagar").click(function (e){
+    e.preventDefault();
+    pagar();
+});
+
+$("#pedidoNuevo").click(function (e){
+    e.preventDefault();
+    $("#overlayPedido").removeClass("active");
+    $("#popupPedido").removeClass("active");
+});
+
+function cargarPedido(data){
+    
+    var total = 0;
+    var i =0;
+    
+     //Vuelvo a crear la tabla 
+    for (let entry of data) {
+        $("#pedido").append('<tr id="opcion'+i+'">\n\
+                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
+                                <td>'+entry[2]+'</td>\n\
+                                <td>'+entry[0]+'</td>\n\
+                                <td>$'+entry[1]+'</td>\n\
+                                <td>'+entry[4]+'</td>\n\
+                            </tr>');
+        i++;
+        total = parseInt(total) + parseInt(entry[1]);
+    }
+    $("#total").append("<h4>Total: $"+total+"</h4>");
+}
+
+function pagar(mozo){
+    alert("En un instante sera atendido por "+mozo);
+    $("#overlayPedido").removeClass("active");
+    $("#popupPedido").removeClass("active");
+}
+
+function comprobarClave(claves){
+    var text = $("#passwdPedido").val();
+    
+    for(let item of claves){
+        if(text === item){
+            alert("BIEN");
+            break;
+        }else{
+            $("#passwdPedido").css('background-color', 'lightcoral');
+        }
+    }
+}
