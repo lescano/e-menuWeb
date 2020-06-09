@@ -6,10 +6,12 @@
 package Servlets;
 
 import Controladores_Interfaces.IAlimentoController;
+import Controladores_Interfaces.ictrl_Pedido;
 import Logica.Categoria;
 import Logica.Fabrica;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class inicio extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
     List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
+    ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,37 +43,42 @@ public class inicio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String caso = null;
-            String comida = null;
-            String seleccion = (String) request.getSession().getAttribute("caso");
-            
-            if(!request.getParameterMap().containsKey("caso")){
-//Cuando recien entra a la aplicacion en caso no va a haber nada y lo redireccionamos al inicio
+            String caso = "";
+            String comida = "";
+            int nMesa;
+            List<Logica.Pedidos> pedidos = new ArrayList<>();
+
+            if(request.getParameterMap().containsKey("mesa")){
                 caso = "inicio";
-            }else{
-                comida = request.getParameter("caso");
-//Si el caso tiene algo y esta dentro de las categorias lo mandamos a mostrar los detalles de la categoria que eliguio
-                for(Categoria aux: listaCategorias){
-                    if(aux.getNombre().equals(comida)){
-                        request.getSession().setAttribute("categoria", aux);
-                        caso = "detalle";
-                    }
-                }
             }
-            
-            if (caso == null) {
-                caso = seleccion;
+            if(request.getParameterMap().containsKey("caso")){
+                caso = "detalle";
             }
          
             switch(caso){
                 case "detalle":
+                    comida = request.getParameter("caso");
+//Si el caso tiene algo y esta dentro de las categorias lo mandamos a mostrar los detalles de la categoria que eliguio
+                    for(Categoria aux: listaCategorias){
+                        if(aux.getNombre().equals(comida)){
+                            request.getSession().setAttribute("categoria", aux);
+
+                        }
+                    }
                     response.sendRedirect("alimentos");
                     break;
                 case "inicio":
+                    nMesa = Integer.parseInt(request.getParameter("mesa"));
+                    request.getSession().setAttribute("mesa", nMesa);
+                    pedidos=pedidosController.consultaPedidosMesa(nMesa);
+                    if(!pedidos.isEmpty()){
+                        request.setAttribute("pedidos", pedidos);
+                    }
                     request.setAttribute("categorias", listaCategorias);
                     request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);
                     break;
                 default:
+                    response.sendRedirect("ERROR");
                     break;
             }
 
@@ -90,10 +98,8 @@ public class inicio extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
 
-//        if(request.getSession().getAttribute("messa") == null){
-//            request.getSession().setAttribute("mesa", request.getParameter("caso"));
-//        }
     }
 
     /**
@@ -119,9 +125,6 @@ public class inicio extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
-
 
 
 }
