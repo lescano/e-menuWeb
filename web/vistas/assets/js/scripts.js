@@ -1,4 +1,9 @@
 
+//Variables que voy a usar en la ventana popup del pedido
+var btnAbrirPopup = document.getElementById('resumen'),
+          overlay = document.getElementById('overlay'),
+            popup = document.getElementById('popup');
+
 $(document).ready(function(){
 //muestro el carrito
     var data = JSON.parse(sessionStorage.getItem("pedido"));
@@ -71,10 +76,6 @@ function agregar(value){
     
     $('#resumen').show();
 }
-//Variables que voy a usar en la ventana popup del pedido
-var btnAbrirPopup = document.getElementById('resumen'),
-          overlay = document.getElementById('overlay'),
-            popup = document.getElementById('popup');
 
 //Cuando le dan click al carrito muestro el pedido
 btnAbrirPopup.addEventListener('click', function(){
@@ -105,19 +106,17 @@ $("#aceptar").click(function (e){
     e.preventDefault();
     if($("#passwd").val()){
         var passwd = $("#passwd").val();
-        var rut = $("#rut").val();
-        var data = JSON.parse(sessionStorage.getItem("pedido"));
-        $.ajax({
-            url: "/e-menuWeb/alimentos",
-            type: "POST",
-            data: "pedido="+data+"&password="+passwd+"&rut="+rut
-        });
-        sessionStorage.setItem('pedido',null);
-        overlay.classList.remove('active');
-        popup.classList.remove('active');
-        $( "#pedido *" ).remove();
-        $("#total h4").remove();
-        $("#pagar").css('visibility','visible');
+        var clave = sessionStorage.getItem("clave");
+        if( clave === null){
+            guardarPedido(passwd);
+        }else{
+            if( clave === passwd){
+                guardarPedido(passwd);
+            }else{
+                $("#passwd").val("");
+                $("#passwd").attr("placeholder", "Hay una clave activa, repitala.");
+            }
+        }
     }else{
         $("#passwd").css('background-color', 'lightcoral');
     }
@@ -128,8 +127,8 @@ $("#siguiente").click(function (e){
     $("#tituloPedido").text("Clave de seguridad");
     $( "#pedido *" ).remove();
     $("#total h4").remove();
-    $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido">');
-    $("#pedido").append('<input type="text" id="rut" placeholder="Si quiere factura con rut, escribalo">');
+    $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido.">');
+    $("#pedido").append('<input type="text" id="rut" placeholder="Si quiere factura con rut, escribalo.">');
     $("#siguiente").hide();
     $("#aceptar").show();
 });
@@ -190,7 +189,7 @@ function eliminar (eliminar){
     }
 }
 
-$(".containerTextCat").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
+$(".containerText").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
     var refRatio = 240/300;
     var imgH = $(this).children("img").height();
     var imgW = $(this).children("img").width();
@@ -200,17 +199,12 @@ $(".containerTextCat").each(function(){            //esto es para que las imagen
     } else {
         $(this).addClass("portrait");
     }
-})
+});
 
 $("#pagar").click(function (e){
     e.preventDefault();
-    pagar();
-});
-
-$("#pedidoNuevo").click(function (e){
-    e.preventDefault();
-    $("#overlayPedido").removeClass("active");
-    $("#popupPedido").removeClass("active");
+    var mozo = sessionStorage.getItem("mozo");
+    pagar(mozo);
 });
 
 function cargarPedido(data){
@@ -237,17 +231,77 @@ function pagar(mozo){
     alert("En un instante sera atendido por "+mozo);
     $("#overlayPedido").removeClass("active");
     $("#popupPedido").removeClass("active");
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "pagar=si"
+    });
 }
 
-function comprobarClave(claves){
-    var text = $("#passwdPedido").val();
-    
-    for(let item of claves){
-        if(text === item){
-            alert("BIEN");
-            break;
-        }else{
-            $("#passwdPedido").css('background-color', 'lightcoral');
-        }
+function comprobarClave(claveActual,mozo){
+    sessionStorage.setItem('clave',claveActual);
+    sessionStorage.setItem('mozo',mozo);
+    $("#overlayPedido").removeClass("active");
+    $("#popupPedido").removeClass("active");
+    $("#pagar").removeClass("pedido");
+}
+
+function guardarPedido(passwd){
+    var rut = $("#rut").val();
+    let valido = validate_isRUT(rut);
+    if( valido !== true){
+        $("#rut").val("");
+        $("#rut").attr("placeholder", "Aparentemente el RUT no es valido, verifiquelo.");
+        $("#rut").css('background-color', 'lightcoral');
+    }else{
+        var data = JSON.parse(sessionStorage.getItem("pedido"));
+        $.ajax({
+            url: "/e-menuWeb/alimentos",
+            type: "POST",
+            data: "pedido="+data+"&password="+passwd+"&rut="+rut,
+            success: function(respuesta) {
+                sessionStorage.setItem('clave',respuesta);
+            },
+            error: function() {
+        console.log("Ocurrio un error.");
+            }
+        });
+        sessionStorage.setItem('pedido',null);
+        overlay.classList.remove('active');
+        popup.classList.remove('active');
+        $( "#pedido *" ).remove();
+        $("#total h4").remove();
+        $("#pagar").removeClass("pedido");
     }
+}
+
+function validate_isRUT(rut)
+{
+	if (rut.length != 12){
+		return false;
+	}
+	if (!/^([0-9])*$/.test(rut)){
+               return false;
+  	}
+	var dc = rut.substr(11, 1);
+	var rut = rut.substr(0, 11);
+	var total = 0;
+	var factor = 2;
+ 
+	for (i = 10; i >= 0; i--) {
+		total += (factor * rut.substr(i, 1));
+		factor = (factor == 9)?2:++factor;
+	}
+ 
+	var dv = 11 - (total % 11);
+ 
+	if (dv == 11){
+		dv = 0;
+	}else if(dv == 10){
+		dv = 1;
+	}
+	if(dv == dc){
+		return true;
+	}
+	return false;
 }

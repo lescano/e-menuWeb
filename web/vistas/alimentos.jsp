@@ -4,6 +4,7 @@
     Author     : vanessa
 --%>
 
+<%@page import="Logica.enum_Estado"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Logica.Pedidos"%>
 <%@page import="java.io.FileInputStream"%>
@@ -24,7 +25,7 @@
         int cant=0;
         int total=0;
         String mozo="";
-        ArrayList<String> claves = new ArrayList<String>();
+        String clave = "";
         for(Categoria aux : categorias){
             String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
             if(indice%2==0&&indice!=0){
@@ -54,6 +55,7 @@
             <table class="contenedor-inputs" >
         <% 
             for(Pedidos pedido : pedidos){
+                if(pedido.getEstado() == enum_Estado.Pendiente ){
                 cant++;
         %>
             <tr>
@@ -61,16 +63,19 @@
                 <td><%= pedido.getFecha_hora() %></td>
                 <td>$ <%= pedido.getPrecio_total() %></td>
                 <% total+=pedido.getPrecio_total(); 
-                   claves.add(pedido.getContrasenia()); 
-                   mozo = pedido.getPersonal().getNombre(); %>
+                   clave = pedido.getContrasenia();
+                   if(pedido.getPersonal() != null){
+                        mozo = pedido.getPersonal().getNombre();
+                   }   %>
             </tr>
-        <% } %>
+        <% }
+                }%>
             </table>
             <div id="totalPedidos">
                 <h3>$ <%= total %></h3>
             </div>
             <input type="button" id="solicitarPagar" class="btn-submit" value="SOLICITAR PAGO" onclick="pagar( '<%= mozo %>' )">
-            <input type="button" id="pedidoNuevo" class="btn-submit" value="PEDIDO NUEVO">
+            <input type="button" id="pedidoNuevo" class="btn-submit" value="PEDIDO NUEVO" onclick="comprobarClave( '<%= clave %>','<%= mozo %>' )">
         </form>
     </div>
 </div>
