@@ -335,3 +335,41 @@ function validate_isRUT(rut)
 	}
 	return false;
 }
+
+///                                              scripts busqueda
+
+$("#buscar").click(function(){
+  $("#wrapper").toggleClass("toggled");
+  
+  var containerCat=document.getElementById("container-categorias");
+  var containerBus=document.getElementById("container-busqueda");
+  containerCat.style.display = "none";
+  containerBus.style.display = "block";
+  
+  var texto=document.getElementById("texto-Buscar").value;
+
+  $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "textobuscar="+texto,
+        success:function(respuesta){
+            
+            var textoResultado=document.getElementById("textoResultado");
+            textoResultado.innerHTML = respuesta;
+
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+  
+});
+
+$("#cancelarBusqueda").click(function(){
+  var containerCat=document.getElementById("container-categorias");
+  var containerBus=document.getElementById("container-busqueda");
+  containerCat.style.display = "block";
+  containerBus.style.display = "none";
+});
+
+///                                               fin scripts busqueda

@@ -64,6 +64,10 @@ public class Alimentos extends HttpServlet {
                 caso = "pagar";
                 out.write("Se ha solicitado el pago."); 
             }
+            if(request.getParameterMap().containsKey("textobuscar")){
+                String buscar=request.getParameter("textobuscar");
+                out.write("Se ha solicitado buscar"+buscar); 
+            }
             
             if(caso == null){
                 caso = "detallesCategoria";

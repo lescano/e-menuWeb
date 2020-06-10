@@ -33,9 +33,9 @@
                 <div class="list-group list-group-flush bg-light">
                     <h2 class="mx-3 my-3">E-Menu</h2>
                     <div class="input-group md-form form-sm form-2 py-1 px-1">
-                        <input class="form-control my-0 py-1" type="text" placeholder="Buscar plato..." aria-label="Search">
+                        <input class="form-control my-0 py-1" type="text" placeholder="Buscar plato..." aria-label="Search" id="texto-Buscar">
                         <div class="input-group-append">
-                            <button class="btn input-group-text lighten-2" id="basic-text1">Buscar</button>
+                            <button class="btn input-group-text lighten-2" id="buscar">Buscar</button>
                         </div>
                     </div>
                     <a href="#" class="list-group-item list-group-item-action bg-light">Ver menu</a>    

@@ -17,7 +17,7 @@
 <%@page import="Logica.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     
-<div class="container">
+<div class="container" id="container-categorias">
     <div class="row py-1">
       <% 
         List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
@@ -45,7 +45,10 @@
     <% } %>  
     </div>
 </div>
-
+<div class="container" id="container-busqueda" style="">
+    <h5 class="m-1">Resultado de la busqueda<button id="cancelarBusqueda" class="btn bg-danger ml-2">X</button></h5>
+    <p id="textoResultado"></p>
+</div>
     <% 
         if(pedidos != null){
     %>
