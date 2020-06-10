@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Alimentos extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
     List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
-    ictrl_Pedido controladorPedido = Fabrica.getInstancia().getPedidoController();
+    ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,6 +59,10 @@ public class Alimentos extends HttpServlet {
             if(request.getParameterMap().containsKey("pedido")){
                 caso = "finalizo";
                 out.write(request.getParameter("password")); 
+            }
+            if(request.getParameterMap().containsKey("pagar")){
+                caso = "pagar";
+                out.write("Se ha solicitado el pago."); 
             }
             
             if(caso == null){
@@ -158,7 +162,14 @@ public class Alimentos extends HttpServlet {
             Conexion.getInstance().alta(nuevo);
         }
         if(request.getParameterMap().containsKey("pagar")){
-            String hola="hola";
+            if(request.getParameter("idPedido") == null ){
+                int numMesa = (int) request.getSession().getAttribute("mesa");
+                pedidosController.solicitarPagarTodo(numMesa);
+            }else{
+                String idPedido = (String) request.getParameter("idPedido");
+                Long id = Long.parseLong(idPedido);
+                pedidosController.solicitarPago(id);
+            }
         }
     }
 
@@ -194,7 +205,7 @@ public class Alimentos extends HttpServlet {
     }
     
     Mesa getMesaPorId(int numMesa){
-        return controladorPedido.buscarMesaPorNum(numMesa);
+        return pedidosController.buscarMesaPorNum(numMesa);
     }
     
 }

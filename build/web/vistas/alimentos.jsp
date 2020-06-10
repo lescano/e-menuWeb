@@ -4,6 +4,7 @@
     Author     : vanessa
 --%>
 
+<%@page import="Logica.Alimento"%>
 <%@page import="Logica.enum_Estado"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Logica.Pedidos"%>
@@ -55,26 +56,25 @@
             <table class="contenedor-inputs" >
         <% 
             for(Pedidos pedido : pedidos){
-                if(pedido.getEstado() == enum_Estado.Pendiente ){
                 cant++;
+                total+=pedido.getPrecio_total(); 
+                clave = pedido.getContrasenia();
+                if(pedido.getPersonal() != null){
+                    mozo = pedido.getPersonal().getNombre();
+                }
         %>
-            <tr>
+        <tr id="numPedido<%= cant %>" >
                 <td><%= cant %></td>
                 <td><%= pedido.getFecha_hora() %></td>
                 <td>$ <%= pedido.getPrecio_total() %></td>
-                <% total+=pedido.getPrecio_total(); 
-                   clave = pedido.getContrasenia();
-                   if(pedido.getPersonal() != null){
-                        mozo = pedido.getPersonal().getNombre();
-                   }   %>
+                <td><input type="button" id="btnPagar<%= cant %>" class="btnPagar" value="PAGAR" onclick="pagar( '<%= mozo %>', '<%= pedido.getId() %>', <%= cant %>)"></td>
             </tr>
-        <% }
-                }%>
+        <% } %>
             </table>
             <div id="totalPedidos">
                 <h3>$ <%= total %></h3>
             </div>
-            <input type="button" id="solicitarPagar" class="btn-submit" value="SOLICITAR PAGO" onclick="pagar( '<%= mozo %>' )">
+            <input type="button" id="solicitarPagar" class="btn-submit" value="PAGAR TODO" onclick="pagarTodo( '<%= mozo %>' )">
             <input type="button" id="pedidoNuevo" class="btn-submit" value="PEDIDO NUEVO" onclick="comprobarClave( '<%= clave %>','<%= mozo %>' )">
         </form>
     </div>

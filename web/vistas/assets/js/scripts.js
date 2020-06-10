@@ -227,14 +227,44 @@ function cargarPedido(data){
     $("#total").append("<h4>Total: $"+total+"</h4>");
 }
 
-function pagar(mozo){
-    alert("En un instante sera atendido por "+mozo);
-    $("#overlayPedido").removeClass("active");
-    $("#popupPedido").removeClass("active");
+function pagarTodo(mozo){
     $.ajax({
         url: "/e-menuWeb/alimentos",
         type: "POST",
-        data: "pagar=si"
+        data: "pagar=si",
+        success:function(){
+                sessionStorage.setItem('clave',null);
+                sessionStorage.setItem('mozo',null);
+                $("#overlayPedido").removeClass("active");
+                $("#popupPedido").removeClass("active");
+                $("#pagar").removeClass("pedido");
+                alert("En un instante sera atendido por "+mozo);
+                $("#overlayPedido").removeClass("active");
+                $("#popupPedido").removeClass("active");
+        },
+        error: function() {
+            alert("Ocurrio un error, informelo.");
+        }
+    });
+}
+
+function pagar(mozo, idPedido, n){
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "pagar=si&idPedido="+idPedido,
+        success:function(){
+                sessionStorage.setItem('clave',null);
+                sessionStorage.setItem('mozo',null);
+                $("#numPedido"+n).css("text-decoration", "line-through");
+                $("#numPedido"+n).css("text-decoration-thickness", ".2em");
+                $("#btnPagar"+n).css("background-color", "red");
+                $("#btnPagar"+n).attr("disabled", true);
+                alert("En un instante sera atendido por "+mozo);
+        },
+        error: function() {
+            alert("Ocurrio un error, informelo.");
+        }
     });
 }
 
@@ -263,7 +293,7 @@ function guardarPedido(passwd){
                 sessionStorage.setItem('clave',respuesta);
             },
             error: function() {
-        console.log("Ocurrio un error.");
+                alert("Ocurrio un error, informelo.");
             }
         });
         sessionStorage.setItem('pedido',null);
