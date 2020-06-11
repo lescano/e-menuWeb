@@ -353,7 +353,7 @@ $("#buscar").click(function(){
         type: "POST",
         data: "textobuscar="+texto,
         success:function(respuesta){
-            
+            //alert(respuesta);
             var textoResultado=document.getElementById("textoResultado");
             textoResultado.innerHTML = respuesta;
 
