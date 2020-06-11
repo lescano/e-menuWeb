@@ -40,6 +40,7 @@ public class Alimentos extends HttpServlet {
     List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
     List<Alimento> listaTodo = alimentoContoller.listarTodo();
     ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
+    List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -218,15 +219,52 @@ public class Alimentos extends HttpServlet {
 
     private String BuscarString(String textoABuscar) {
         String ret="";
-        if(textoABuscar.length()<=0){
+        String todo="";
+        String primeraPalabra="";
+        
+        String[] parte = textoABuscar.split(" ");
+        primeraPalabra=parte[0];
+        
+        if(textoABuscar.length()<=0){                               //caso que no haya nada que buscar
             ret="-1";
             return ret;
         }
+        if(primeraPalabra.length()>=4){                             //si la primer palabra es >4 busco categoria sugerida
+            ret=ret+buscarCategoria(primeraPalabra);
+        }
+        todo=buscarEnLista(textoABuscar);                           //busco el texto
+        if(todo.length()<=0){                                       //si no encuentro, busco la primer palabra
+            todo="no//";                                            //le aviso que no se encontraron resultados
+            todo=todo+buscarEnLista(primeraPalabra);                
+            if(buscarEnLista(primeraPalabra).length()<=0){          //no se encontraron resultados en la segunda busqueda
+                todo="no//no//";
+            }
+            
+        }
+        ret=ret+todo;
+        return ret;
+    }
+    private String buscarEnLista(String textoABuscar){
+        String ret="";
         for(int i=0;i<listaTodo.size();i++){
             if (listaTodo.get(i).getNombre().toLowerCase().startsWith(textoABuscar.toLowerCase())){
-               ret=ret+listaTodo.get(i).getId().toString()+"-"+listaTodo.get(i).getNombre()+"//";
+               ret=ret+listaTodo.get(i).getId().toString()+"-"+
+                       listaTodo.get(i).getNombre()+"-"+
+                       listaTodo.get(i).getIngredientes()+"-"+
+                       listaTodo.get(i).getPrecio()+"-"+
+                       listaTodo.get(i).getTiempoPreparacion()
+                       +"//";
             }
          }
+        return ret;
+    }
+    private String buscarCategoria(String textoABuscar){
+        String ret="";
+        for(int j=0;j<listaCategorias.size();j++){
+                if(listaCategorias.get(j).getNombre().toLowerCase().contains(textoABuscar.toLowerCase())){
+                    ret=ret+"categoria"+"//"+listaCategorias.get(j).getId()+"//"+listaCategorias.get(j).getNombre()+"'";
+                }
+            }
         return ret;
     }
     

@@ -13,19 +13,52 @@ $("#buscar").click(function(){
         type: "POST",
         data: "textobuscar="+texto,
         success:function(respuesta){
-            var mostrar="";
-            var alimento = respuesta.split('//');
+            var mostrar="",mostrarCategorias="",segundaParte="";
+            var categoria = respuesta.split("'");
+            var continuar=0;
             
+            if(respuesta.localeCompare("-1")===0){
+                mostrar+= "<br><p>No se encontraron resultados</p>";
+            }else{
+            if(categoria[0].split('//')[0].localeCompare("categoria")===0){  //me fijo si vienen categorias
+                
+                for(i=0;i<categoria.length-1;i++){
+                    var id= categoria[i].split('//')[1];
+                    var nombre= categoria[i].split('//')[2];
+                    mostrarCategorias+="Estas buscando <a href='#'>"+nombre+"</a>?<br>";
+                }
+                mostrar+=mostrarCategorias;
+                segundaParte=categoria[categoria.length-1];
+                
+            }else{
+                segundaParte=respuesta;
+            }
             
-            for (i = 0; i < alimento.length; i++) {
-                var nombre=alimento[i].split('-')[1];
-                var id=alimento[i].split('-')[0];
-                mostrar += 
+            var alimento = segundaParte.split('//');
+            if(alimento[0].localeCompare("no")===0&&alimento[1].localeCompare("no")===0){           
+                    mostrar += "<br><p>No se encontraron resultados</p>";
+                    continuar=2;
+                }else{
+                    if(alimento[0].localeCompare("no")===0&&alimento[1].localeCompare("no")!=0){  
+                       mostrar += "<p>No se encontraron resultados, busquedas relacionadas:</p>"; 
+                       continuar=1;
+                    }
+                }
+            for (i = 0+continuar; i < alimento.length-1; i++) {
+                //se realizo busqueda con la primer palabra y se no encontraron resultados
+                        var partes = alimento[i].split('-');
+                        var id = partes[0];
+                        var nombre = partes[1];
+                        var ingredientes = partes[2];
+                        var precio = partes[3];
+                        var tiempo = partes[4];
+
+                        mostrar += 
                 `
                <div class="card-body p-1 m-1 shadow-sm">
     <h4 class="card-title m-0 p-0" id="alimento<%= i %>">`+ nombre +`</h4>
     <input id="idAlimento<%= i %>" value="`+ id +`" style="display:none;">
-    <p class="card-text p-0 m-1">"<%= alimento.getIngredientes() %>"</p>
+    <p class="card-text p-0 m-1">`+ ingredientes +`</p>
     <div class="caja" style="display: none;">
         <ul class="nav nav-tabs " id="myTab`+ i +`" role="tablist">
             <li class="nav-item">
@@ -54,7 +87,7 @@ $("#buscar").click(function(){
                         </div>
                     </div>
                     <div class="w-100 m-0 p-0">
-                        <h5 class="float-left mb-1" type='text' >Total: $</h5><h5 type='text' id="precioAlimentos`+ i +`"> <%= alimento.getPrecio() %></h5>
+                        <h5 class="float-left mb-1" type='text' >Total: $</h5><h5 type='text' id="precioAlimentos`+ i +`"> `+ precio +`</h5>
                     </div>
 
             </div>
@@ -71,7 +104,7 @@ $("#buscar").click(function(){
             </div>
         </div>
         <div class="tab-pane fade" id="profile`+ i +`" role="tabpanel" aria-labelledby="profile-tab">
-            <p class="mt-2">Tiempo de Preparacion: <%= alimento.getTiempoPreparacion() %> min</p>
+            <p class="mt-2">Tiempo de Preparacion: `+ tiempo +` min</p>
             <p>Calorias: 500</p>
         </div>
         <div class="tab-pane fade" id="contact`+ i +`" role="tabpanel" aria-labelledby="contact-tab">
@@ -134,7 +167,11 @@ $("#buscar").click(function(){
     </div>
                 `;
                 
+            
             }
+            }
+        
+            
             
             var textoResultado=document.getElementById("textoResultado");
             textoResultado.innerHTML = mostrar;
