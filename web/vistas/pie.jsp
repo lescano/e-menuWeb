@@ -37,6 +37,7 @@
 <!-- Bootstrap -->
 <script src="vistas/assets/js/bootstrap.min.js"></script>
 <script src="vistas/assets/js/scripts.js" type="text/javascript"></script>
+<script src="vistas/assets/js/busqueda.js" type="text/javascript"></script>
 
     </body>
 </html>
