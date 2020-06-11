@@ -353,9 +353,13 @@ $("#buscar").click(function(){
         type: "POST",
         data: "textobuscar="+texto,
         success:function(respuesta){
-            //alert(respuesta);
+            var mostrar="";
+            var alimento = respuesta.split('//');
+            for (i = 0; i < alimento.length; i++) {
+                mostrar += alimento[i] + "</br>";
+            }
             var textoResultado=document.getElementById("textoResultado");
-            textoResultado.innerHTML = respuesta;
+            textoResultado.innerHTML = mostrar;
 
         },
         error: function() {

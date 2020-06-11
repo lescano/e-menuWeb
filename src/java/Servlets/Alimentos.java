@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Alimentos extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
     List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
+    List<Alimento> listaTodo = alimentoContoller.listarTodo();
     ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
 
     /**
@@ -67,7 +68,8 @@ public class Alimentos extends HttpServlet {
             if(request.getParameterMap().containsKey("textobuscar")){
                 String buscar=request.getParameter("textobuscar");
                 //out.write("Se ha solicitado buscar"+buscar);
-                out.write(String.valueOf(listaAlimentos));
+                String ret=BuscarString(buscar);
+                out.write(ret);
                 caso = "buscar";
             }
             
@@ -212,6 +214,20 @@ public class Alimentos extends HttpServlet {
     
     Mesa getMesaPorId(int numMesa){
         return pedidosController.buscarMesaPorNum(numMesa);
+    }
+
+    private String BuscarString(String textoABuscar) {
+        String ret="";
+        if(textoABuscar.length()<=0){
+            ret="-1";
+            return ret;
+        }
+        for(int i=0;i<listaTodo.size();i++){
+            if (listaTodo.get(i).getNombre().toLowerCase().startsWith(textoABuscar.toLowerCase())){
+               ret=ret+listaTodo.get(i).getId().toString()+"-"+listaTodo.get(i).getNombre()+"//";
+            }
+         }
+        return ret;
     }
     
 }
