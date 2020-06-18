@@ -22,6 +22,7 @@ $(document).ready(function(){
 });
 
 function mostrar(value){
+ 
     var caja = document.getElementsByClassName("caja")[value];
     var boton = document.getElementsByClassName("botonGira")[value];
     

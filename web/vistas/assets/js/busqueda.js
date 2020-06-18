@@ -98,7 +98,7 @@ $("#buscar").click(function(){
                         <textarea class="form-control float-left" rows="2" style="resize: none;" id="aclaracion<%= i %>"></textarea>
                     </div>
                     <div class="col-5 p-0 ">
-                        <button type="button" id="agregarAlPedido`+ i +`"  class="btn btn-success w-20 py-1 px-0" onclick="agregar(<%= i %>)">Añadir al Pedido</button>
+                        <button type="button" id="agregarAlPedido`+ i +`"class="btn btn-success w-20 py-1 px-0" onclick="agregar(`+ i +`)">Añadir al Pedido</button>
                     </div>
                 </div>
             </div>
