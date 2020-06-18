@@ -45,7 +45,7 @@
     <% } %>  
     </div>
 </div>
-<div class="container" id="container-busqueda" style="">
+<div class="container" id="container-busqueda" style="display:none">
     <h5 class="m-1">Resultado de la busqueda<button id="cancelarBusqueda" class="btn bg-danger ml-2">X</button></h5>
     <p id="textoResultado"></p>
 </div>
