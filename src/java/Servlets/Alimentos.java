@@ -77,12 +77,18 @@ public class Alimentos extends HttpServlet {
             if(caso == null){
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
+                request.setAttribute("categoria", categoria);
             
                 if(categoria != null){
 //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
                     request.setAttribute("alimentos", alimentoDeCategoria);
-                    request.setAttribute("foto", categoria.getImagen());
+                }
+                
+                if(categoria.getSecundaria() != null){
+                    Categoria secundaria = categoria.getSecundaria();
+                    List<Plato>  acompaniamiento = getAlimentos(secundaria.getId());
+                    request.setAttribute("acompaniamiento", acompaniamiento);
                 }
             }
             

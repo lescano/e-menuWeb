@@ -3,6 +3,7 @@
 }
 .altura{
     height: 11vh;
+    padding: 1vh;
 }
 
 .inputWidth{
@@ -264,9 +265,27 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: .3s ease all;
-    width: 55%;
-    line-height: 0;
-    margin-bottom: 0;
+    width: 35%;
+    line-height: unset;
+    margin-bottom: unset;
+    font-weight: bold;
+}
+
+.gustos{
+    display: flex;
+    flex-flow: wrap;
+    padding-top: 1vh;
+    align-items: last baseline;
+    justify-content: space-between;
+}
+
+.gustos h5{
+    align-items: self-end;
+    padding: 0 1vh 0 1vh;
+}
+
+.gustos label{
+    padding: 0 1em 1em 1em;
 }
 
 /* ------------------------- */

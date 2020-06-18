@@ -335,3 +335,29 @@ function validate_isRUT(rut)
 	}
 	return false;
 }
+
+
+//window.onload = function() {
+//  var el = document.getElementById('pedidoNuevo');
+//
+//  var firing = false;
+//  var timer;
+//  
+//  el.onclick = function() {
+//    if(firing){
+//      dobleClick();
+//      clearTimeout(timer);
+//      firing = false;
+//      return;
+//  }
+//    firing = true;
+//    timer = setTimeout(function() { 
+//       alert('Un click');
+//       firing = false;
+//    }, 300);
+//  };
+//};
+//
+//function dobleClick(){
+//    alert('Doble click');
+//}
