@@ -82,6 +82,7 @@ public class Alimentos extends HttpServlet {
                 if(categoria != null){
 //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
+                    //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
                 }
                 

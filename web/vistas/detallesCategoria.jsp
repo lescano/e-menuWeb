@@ -20,6 +20,7 @@
     Blob imagen = categoria.getImagen() ;
     String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
 %>
+<div id="container-categorias">
 <div class="m-0 p-0 overflow-hidden " type="button" style="border:none;">
                     <div class="containerTextCat bg-primary">
                         <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>"/>  
@@ -154,6 +155,11 @@
     i++;
     }
 %>
-
+</div>
+</div>
+<div class="container" id="container-busqueda" style="display:none;">
+    <h5 class="m-1">Resultado de la busqueda<button id="cancelarBusqueda" class="btn bg-danger ml-2">X</button></h5>
+    <p id="textoResultado"></p>
+</div>
 <jsp:include page="pie.jsp"/> 
 

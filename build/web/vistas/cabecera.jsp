@@ -19,6 +19,7 @@
             <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
             <script src="vistas/assets/js/bootstrap.min.js" type="text/javascript"></script>
             <script src="https://kit.fontawesome.com/87277c0c3b.js" crossorigin="anonymous"></script>
+            
         </head>
         <body>
             <div class="carrito bg-primary shadow rounded p-1" onclick="verPedido()" id="resumen">
