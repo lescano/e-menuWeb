@@ -4,6 +4,7 @@
     Author     : vanessa
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="Logica.Alimento"%>
 <%@page import="Logica.enum_Estado"%>
 <%@page import="java.util.ArrayList"%>
@@ -27,6 +28,8 @@
         int total=0;
         String mozo="";
         String clave = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        
         for(Categoria aux : categorias){
             String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
             if(indice%2==0&&indice!=0){
@@ -68,14 +71,14 @@
         %>
         <tr id="numPedido<%= cant %>" >
                 <td><%= cant %></td>
-                <td><%= pedido.getFecha_hora() %></td>
+                <td><%= sdf.format(pedido.getFecha_hora()) %></td>
                 <td>$ <%= pedido.getPrecio_total() %></td>
                 <td><input type="button" id="btnPagar<%= cant %>" class="btnPagar" value="PAGAR" onclick="pagar( '<%= mozo %>', '<%= pedido.getId() %>', <%= cant %>)"></td>
             </tr>
         <% } %>
             </table>
             <div id="totalPedidos">
-                <h3>$ <%= total %></h3>
+                <h3>Total: $ <%= total %></h3>
             </div>
             <input type="button" id="solicitarPagar" class="btn-submit" value="PAGAR TODO" onclick="pagarTodo( '<%= mozo %>' )">
             <input type="button" id="pedidoNuevo" class="btn-submit" value="PEDIDO NUEVO" onclick="comprobarClave( '<%= clave %>','<%= mozo %>' )">

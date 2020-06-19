@@ -4,6 +4,7 @@
     Author     : Danilo
 --%>
 
+<%@page import="Logica.Categoria"%>
 <%@page import="Logica.Plato"%>
 <%@page import="java.sql.Blob"%>
 <%@page import="java.util.List"%>
@@ -14,15 +15,16 @@
 
 <% 
     List<Plato> lista = (List<Plato>) request.getAttribute("alimentos");
-    Blob imagen = (Blob) request.getAttribute("foto");
+    List<Plato> acompaniamiento = (List<Plato>) request.getAttribute("acompaniamiento");
+    Categoria categoria = (Categoria) request.getAttribute("categoria");
+    Blob imagen = categoria.getImagen() ;
     String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
-
 %>
 <div id="container-categorias">
 <div class="m-0 p-0 overflow-hidden " type="button" style="border:none;">
                     <div class="containerTextCat bg-primary">
                         <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>"/>  
-                        <div class="centeredText">Nombre Cat</div>
+                        <div class="centeredText"><%= categoria.getNombre() %></div>
                     </div>
 </div>
 <!--<div class="m-0 p-0 divPrincipioPlatos">
@@ -32,7 +34,6 @@
     
 <%  int i = 0;
     for(Plato alimento : lista){
-    
 %>
 
  <div class="card-body p-1 m-1 shadow-sm">
@@ -53,34 +54,36 @@
         </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home<%= i %>" role="tabpanel" aria-labelledby="home-tab">
-
-                <div class="container pl-1">
-                    <div class="row my-2">
-                        <div class="col-6">
-                            <h5 class="float-left mb-1"> Cantidad: </h5><h5 class="float-left mb-1" id="cantidadAlimentos<%= i %>">1</h5>
+               <div class="gustos gustosSup">
+                    <div class="gustos">
+                        <div class="">
+                            <button id="botonMenos" type="button" class=" btn btn-dark" onclick="disminuircantidad(<%= i %>)">-</button>
                         </div>
-                        <div class="col-1 ml-2">
-                            <button id="botonMenos" type="button" class=" btn btn-dark float-left " onclick="disminuircantidad(<%= i %>)">-</button>
+                        <div class="">
+                            <h5 class="" id="cantidadAlimentos<%= i %>" style="padding-left: 1em;padding-right: 1em;">1</h5>
                         </div>
-                        <div class="col-1 ml-1">
+                        <div class="">
                             <button id="botonMas" type="button" class=" btn btn-dark" onclick="aumentarcantidad(<%= i %>)">+</button>
                         </div>
                     </div>
-                    <div class="w-100 m-0 p-0">
-                        <h5 class="float-left mb-1" type='text' >Total: $</h5><h5 type='text' id="precioAlimentos<%= i %>"> <%= alimento.getPrecio() %></h5>
+                    <div class="gustos">
+                        <h5 class="mb-1" type='text' >Total: $</h5><h5 type='text' id="precioAlimentos<%= i %>"> <%= (int)alimento.getPrecio() %></h5>
                     </div>
-
-            </div>
-            <p class="m-0 ml-1 p-0">Alguna aclaracion?</p>   
-            <div class="container altura mb-1">
-                <div class="row">
-                    <div class="col-7 pb-1 ml-0 pl-0">
-                        <textarea class="form-control float-left" rows="2" style="resize: none;" id="aclaracion<%= i %>"></textarea>
-                    </div>
-                    <div class="col-5 p-0 ">
+                    <div class="">
                         <button type="button" id="agregarAlPedido<%= i %>"  class="btn btn-success w-20 py-1 px-0" onclick="agregar(<%= i %>)">Añadir al Pedido</button>
                     </div>
+            </div>
+            <div class="container altura mb-1">
+                <div class="row">
+                    <textarea class="form-control float-left" rows="2" style="resize: none;" id="aclaracion<%= i %>" placeholder="Alguna aclaracion?"></textarea>
                 </div>
+            </div>
+            <div class="gustos">
+                <%if(acompaniamiento != null){
+                    for(Plato acompa : acompaniamiento){ %>
+                        <label><input type="checkbox" onclick='agregarGusto("<%= acompa.getNombre() %>")' value="first_checkbox"> <%= acompa.getNombre() %></label>
+           <%         }
+                    }   %>
             </div>
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
@@ -139,7 +142,7 @@
         </div>
     </div>
   </div>
-                    <div class=" bg-transparent border d-flex justify-content-center divFlecha m-0 p-0">
+                    <div class=" bg-transparent d-flex justify-content-center divFlecha m-0 p-0">
                         <buttom  class="botonDesplegar p-1 m-0" type="submit"  value="" onclick="mostrar(<%= i%>)" >
                             <img  class="botonDesplegar botonGira p-0 m-0 h-100" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
                         </buttom>  
