@@ -38,7 +38,9 @@ import javax.servlet.http.HttpServletResponse;
 public class Alimentos extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
     List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
-    ictrl_Pedido controladorPedido = Fabrica.getInstancia().getPedidoController();
+    List<Alimento> listaTodo = alimentoContoller.listarTodo();
+    ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
+    List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,15 +58,38 @@ public class Alimentos extends HttpServlet {
             
             String caso = (String) request.getSession().getAttribute("caso");
             
-            if(!request.getParameterMap().containsKey("caso")){
+            if(request.getParameterMap().containsKey("pedido")){
+                caso = "finalizo";
+                out.write(request.getParameter("password")); 
+            }
+            if(request.getParameterMap().containsKey("pagar")){
+                caso = "pagar";
+                out.write("Se ha solicitado el pago."); 
+            }
+            if(request.getParameterMap().containsKey("textobuscar")){
+                String buscar=request.getParameter("textobuscar");
+                //out.write("Se ha solicitado buscar"+buscar);
+                String ret=BuscarString(buscar);
+                out.write(ret);
+                caso = "buscar";
+            }
+            
+            if(caso == null){
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
+                request.setAttribute("categoria", categoria);
             
                 if(categoria != null){
 //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
+                    //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
-                    request.setAttribute("foto", categoria.getImagen());
+                }
+                
+                if(categoria.getSecundaria() != null){
+                    Categoria secundaria = categoria.getSecundaria();
+                    List<Plato>  acompaniamiento = getAlimentos(secundaria.getId());
+                    request.setAttribute("acompaniamiento", acompaniamiento);
                 }
             }
             
@@ -76,7 +101,6 @@ public class Alimentos extends HttpServlet {
                     response.sendRedirect("inicio");
                     break;
                 default:
-                    response.sendRedirect("ERROR");
                     break;
             }
 
@@ -114,15 +138,19 @@ public class Alimentos extends HttpServlet {
         if(request.getParameterMap().containsKey("pedido")){
             String pedido = (String) request.getParameter("pedido");        //Este dato me lo manda del javascript por ajax
             String[] p = pedido.split("\\,");                               //Lo parceo ya que los datos vienen en un string
-            List<Alimento> alimentosPedidos = new ArrayList<Alimento>();    
+            List<Alimento> alimentosPedidos = new ArrayList<>();    
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
             int precio_total = 0;
-            String pass = (String) request.getSession().getAttribute("contrasenia");    //La contraseña que el usuario puso cuando ingreso
-            
-            String idMesa = (String) request.getSession().getAttribute("mesa");
-            List<Observaciones> observaciones = new ArrayList<Observaciones>();
+            String pass = (String) request.getParameter("password");    //La contraseña que el usuario puso cuando ingreso
+            Long rut = null;
+            if(!request.getParameter("rut").equals("")){
+                rut = Long.parseLong(request.getParameter("rut"));
+            }
+            int numMesa = (int) request.getSession().getAttribute("mesa");
+            List<Observaciones> observaciones = new ArrayList<>();
             Pago pago = new Pago();
+            pago.setRut(rut);
                     
  //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
 
@@ -131,16 +159,33 @@ public class Alimentos extends HttpServlet {
                 Alimento ap = getAlimentoPorId(idAlimento);
                 alimentosPedidos.add(ap);
                 alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
-                precio_total += ap.getPrecio();
+                precio_total += ap.getPrecio()*Integer.parseInt(p[i+2]);
+                Observaciones obs = new Observaciones();
+                obs.setAlimento(ap);
+                if(i+4 < p.length){
+                    obs.setObservacion(p[i+4]);
+                }
+                observaciones.add(obs);
             }
 
-            Mesa mesa = getMesaPorId("41");
+            Mesa mesa = getMesaPorId(numMesa);
             Pedidos nuevo = new Pedidos(fecha,precio_total,pass,enum_Estado.Pendiente,mesa,alimentosPedidos,observaciones,pago,alimentos_cantidad);
 
-            Conexion.getInstance().alta(pago);
+            for(Observaciones o : observaciones){
+                o.setPedido(nuevo);
+            }
+            pago.setPedido(nuevo);
             Conexion.getInstance().alta(nuevo);
-            pago.setPedido(controladorPedido.getUltimoInsertado());
-            Conexion.getInstance().modificar(pago);
+        }
+        if(request.getParameterMap().containsKey("pagar")){
+            if(request.getParameter("idPedido") == null ){
+                int numMesa = (int) request.getSession().getAttribute("mesa");
+                pedidosController.solicitarPagarTodo(numMesa);
+            }else{
+                String idPedido = (String) request.getParameter("idPedido");
+                Long id = Long.parseLong(idPedido);
+                pedidosController.solicitarPago(id);
+            }
         }
     }
 
@@ -175,8 +220,59 @@ public class Alimentos extends HttpServlet {
         return null;
     }
     
-    Mesa getMesaPorId(String id){
-        return controladorPedido.buscarMesaPorId(Integer.parseInt(id));
+    Mesa getMesaPorId(int numMesa){
+        return pedidosController.buscarMesaPorNum(numMesa);
+    }
+
+    private String BuscarString(String textoABuscar) {
+        String ret="";
+        String todo="";
+        String primeraPalabra="";
+        
+        String[] parte = textoABuscar.split(" ");
+        primeraPalabra=parte[0];
+        
+        if(textoABuscar.length()<=0){                               //caso que no haya nada que buscar
+            ret="-1";
+            return ret;
+        }
+        if(primeraPalabra.length()>=4){                             //si la primer palabra es >4 busco categoria sugerida
+            ret=ret+buscarCategoria(primeraPalabra);
+        }
+        todo=buscarEnLista(textoABuscar);                           //busco el texto
+        if(todo.length()<=0){                                       //si no encuentro, busco la primer palabra
+            todo="no//";                                            //le aviso que no se encontraron resultados
+            todo=todo+buscarEnLista(primeraPalabra);                
+            if(buscarEnLista(primeraPalabra).length()<=0){          //no se encontraron resultados en la segunda busqueda
+                todo="no//no//";
+            }
+            
+        }
+        ret=ret+todo;
+        return ret;
+    }
+    private String buscarEnLista(String textoABuscar){
+        String ret="";
+        for(int i=0;i<listaTodo.size();i++){
+            if (listaTodo.get(i).getNombre().toLowerCase().startsWith(textoABuscar.toLowerCase())){
+               ret=ret+listaTodo.get(i).getId().toString()+"-"+
+                       listaTodo.get(i).getNombre()+"-"+
+                       listaTodo.get(i).getIngredientes()+"-"+
+                       listaTodo.get(i).getPrecio()+"-"+
+                       listaTodo.get(i).getTiempoPreparacion()
+                       +"//";
+            }
+         }
+        return ret;
+    }
+    private String buscarCategoria(String textoABuscar){
+        String ret="";
+        for(int j=0;j<listaCategorias.size();j++){
+                if(listaCategorias.get(j).getNombre().toLowerCase().contains(textoABuscar.toLowerCase())){
+                    ret=ret+"categoria"+"//"+listaCategorias.get(j).getId()+"//"+listaCategorias.get(j).getNombre()+"'";
+                }
+            }
+        return ret;
     }
     
 }

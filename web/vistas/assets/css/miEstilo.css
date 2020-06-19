@@ -1,8 +1,54 @@
+.divFlecha{
+    height: 2em;
+}
+.altura{
+    height: 11vh;
+    padding: 1vh;
+}
 
+.inputWidth{
+    width: 60px;
+}
+.inputWidthTotal{
+    width: 100px;
+    outline: none;
+}
+.inputWidthTotal, textarea:focus, input:focus{
+    outline: none;
+}
+.containerText {
+  position: relative;
+  width: 49.9vw;
+  height: 22vw;
+}
+.containerTextCat{
+  position: relative;
+  width: 100vw;
+  height: 22vw;
+}
+.centeredText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 1000;
+  text-shadow: 0px 0px 4px black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  transform: translate(-50%, -50%);  
+}
 .aImagen{
-    display: box;
-    width: 49vw !important;
-    height: auto !important;
+        display: block;
+
+}
+.landscape img {
+    width: 100%;
+    height: auto;
+}
+.portrait img {
+    height: 100%;
+    width: auto;
 }
 /*sidebR*/
 body {
@@ -54,7 +100,7 @@ body {
     height: auto;
 }
 .imgNavbar{
-    width: 40px;
+    width: 2.5em;
     height: auto;
 }
 .fotoIcono{
@@ -78,12 +124,12 @@ body {
     margin: 10px;
 }
 .carrito_icono{
-    width: 60px;
+    width: 3.5em;
     height: auto;
 }
 .botonDesplegar{
-    width: 50px;
-    height: 50px;
+    height: 1.5em;
+    width: auto;
     background: none;
     color: inherit;
     border: none;
@@ -91,8 +137,13 @@ body {
     outline: inherit;
 }
 .imagenPrincipioPlatos{
-    width: 100%;
-    height: auto;
+    /*width: 100%;
+    height: auto;*/
+    /*transform: translate(0, -25%);  */
+}
+.divPrincipioPlatos{
+    height:100px;
+    overflow: hidden;
 }
 
 .carrito.bg-primary.shadow.rounded{
@@ -196,6 +247,45 @@ body {
 
 .popup form .btn-submit:hover {
 	background: rgba(94,125,227, .9);
+}
+
+.pedido{
+    display: none;
+}
+
+.popup form input.btnPagar{
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid #BBBBBB;
+    height: 30px;
+    color: #fff;
+    background: #15A701;
+    border-radius: 3px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s ease all;
+    width: 35%;
+    line-height: unset;
+    margin-bottom: unset;
+    font-weight: bold;
+}
+
+.gustos{
+    display: flex;
+    flex-flow: wrap;
+    padding-top: 1vh;
+    align-items: last baseline;
+    justify-content: space-between;
+}
+
+.gustos h5{
+    align-items: self-end;
+    padding: 0 1vh 0 1vh;
+}
+
+.gustos label{
+    padding: 0 1em 1em 1em;
 }
 
 /* ------------------------- */

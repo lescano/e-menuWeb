@@ -1,4 +1,9 @@
 
+//Variables que voy a usar en la ventana popup del pedido
+var btnAbrirPopup = document.getElementById('resumen'),
+          overlay = document.getElementById('overlay'),
+            popup = document.getElementById('popup');
+
 $(document).ready(function(){
 //muestro el carrito
     var data = JSON.parse(sessionStorage.getItem("pedido"));
@@ -17,6 +22,7 @@ $(document).ready(function(){
 });
 
 function mostrar(value){
+ 
     var caja = document.getElementsByClassName("caja")[value];
     var boton = document.getElementsByClassName("botonGira")[value];
     
@@ -48,8 +54,8 @@ window.addEventListener( "pageshow", function ( event ) {
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
     var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
-    var nuevoPrecio = $("#precioAlimentos"+value).val();
-    var nuevoCantidad = $("#cantidadAlimentos"+value).val();
+    var nuevoPrecio = $("#precioAlimentos"+value).text();
+    var nuevoCantidad = $("#cantidadAlimentos"+value).text();
     var idAlimento = $("#idAlimento"+value).val();
     var aclaracion = $("#aclaracion"+value).val();
     
@@ -63,35 +69,26 @@ function agregar(value){
     data.push(agregar);
     sessionStorage.setItem('pedido',JSON.stringify(data));
     
+    var cantidad = parseInt(nuevoCantidad);
+    var precioAl = parseInt(nuevoPrecio);
+    var precioInicial = precioAl/cantidad;
+    $('#cantidadAlimentos'+value).text(1);
+    $('#precioAlimentos'+value).text(precioInicial);
+    
     $('#resumen').show();
 }
-//Variables que voy a usar en la ventana popup del pedido
-var btnAbrirPopup = document.getElementById('resumen'),
-          overlay = document.getElementById('overlay'),
-            popup = document.getElementById('popup');
 
 //Cuando le dan click al carrito muestro el pedido
 btnAbrirPopup.addEventListener('click', function(){
     $('#resumen').hide();
+    $("#aceptar").hide();
+    $("#siguiente").show();
+    $("#tituloPedido").text("TU PEDIDO");
     overlay.classList.add('active');
     popup.classList.add('active');
     
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var total = 0;
-    var i = 0;
-
-//Armo la tabla de pedidos entry[0] es el nombre entry[1] es el precio entry[2] es la cantidad
-    for (let entry of data) {
-        $("#pedido").append('<tr id="opcion'+i+'">\n\
-                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
-                                <td>'+entry[2]+'</td>\n\
-                                <td>'+entry[0]+'</td>\n\
-                                <td>'+entry[1]+'</td>\n\
-                            </tr>');
-        i++;
-        total = parseInt(total) + parseInt(entry[1]);
-    }
-    $("#total").append("<h4>Total: $"+total+"</h4>");
+    cargarPedido(data);
 });
 
 //Cuando el usuario hace click afuera de la pantalla se cierra y borra toda la lista que habia mostrado
@@ -105,19 +102,36 @@ window.onclick = function(event) {
   }
 };
 
+//Cuando acepta el pedido se manda la info a la base de datos a traves del servlet Alimentos
 $("#aceptar").click(function (e){
     e.preventDefault();
-    var data = JSON.parse(sessionStorage.getItem("pedido"));
-    $.ajax({
-        url: "/e-menuWeb/alimentos",
-        type: "POST",
-        data: "pedido="+data
-    })
-    sessionStorage.setItem('pedido',null);
-    overlay.classList.remove('active');
-    popup.classList.remove('active');
+    if($("#passwd").val()){
+        var passwd = $("#passwd").val();
+        var clave = sessionStorage.getItem("clave");
+        if( clave === null){
+            guardarPedido(passwd);
+        }else{
+            if( clave === passwd){
+                guardarPedido(passwd);
+            }else{
+                $("#passwd").val("");
+                $("#passwd").attr("placeholder", "Hay una clave activa, repitala.");
+            }
+        }
+    }else{
+        $("#passwd").css('background-color', 'lightcoral');
+    }
+});
+
+$("#siguiente").click(function (e){
+    e.preventDefault();
+    $("#tituloPedido").text("Clave de seguridad");
     $( "#pedido *" ).remove();
     $("#total h4").remove();
+    $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido.">');
+    $("#pedido").append('<input type="text" id="rut" placeholder="Si quiere factura con rut, escribalo.">');
+    $("#siguiente").hide();
+    $("#aceptar").show();
 });
 
 //Cuando el usuario cancela se cierra y borra toda la lista que habia mostrado
@@ -130,80 +144,43 @@ $("#cancelar").click(function (e){
     $("#total h4").remove();
 });
 
-function aumentarcantidad(){
-    //En este bloque se consulta una variable de session 
-    //para saber si es la primera vez que entra a la funcion o no
-    //en caso de ser la primera vez se va a guardar en la session el precio del alimento
-    //para despues poder sumarlo cuando se aumente la cantidad
-    var data = JSON.parse(sessionStorage.getItem("precio"));
-    var cantidad = document.getElementById('cantidadAlimentos');
-    var precioAl = document.getElementById('precioAlimentos');
-    if(data === null){
-        var p = [$("#precioAlimentos").val()];
-        sessionStorage.setItem('precio', JSON.stringify(p));
-    }else{
-        //en este if controlo que si se setea una cantidad menor a uno, esa cantidad sea uno
-        //el precio queda acorde a la cantidad
-        if (cantidad.value < 1){
-            cantidad.value = 1;
-            precioAl.value = data;
-        }
-        //si la cantidad es 1 o mas la cantidad se aumenta y el precio tambien
-        else {
-            cantidad.value = ++cantidad.value;
-            precioAl.value = parseInt(precioAl.value)+parseInt(data);
-        }
-    }
+function aumentarcantidad(item){
+    var cant = $('#cantidadAlimentos'+item).text();
+    var prAl = $('#precioAlimentos'+item).text();
+    
+    var cantidad = parseInt(cant);
+    var precioAl = parseInt(prAl);
+    var precioInicial = precioAl/cantidad;
+    $('#cantidadAlimentos'+item).text(cantidad+1);
+    $('#precioAlimentos'+item).text(precioInicial*(cantidad+1));
+    
 }
 
-function disminuircantidad(){
+function disminuircantidad(item){
+    var cant = $('#cantidadAlimentos'+item).text();
+    var prAl = $('#precioAlimentos'+item).text();
     
-    var data = JSON.parse(sessionStorage.getItem("precio"));
-    var cantidad = document.getElementById('cantidadAlimentos');
-    var precioAl = document.getElementById('precioAlimentos');
-    if(data === null){
-        var p = [$("#precioAlimentos").val()];
-        sessionStorage.setItem('precio', JSON.stringify(p));
-    }else{
-        //en este primer if disminuto la cantidad si el valor es 2 o mas,
-        //entonces al disminuir la menor cantidad que queda es 1
-        //tambien se disminuye el precio
-        if (cantidad.value > 1){
-            cantidad.value = --cantidad.value;
-            precioAl.value = parseInt(precioAl.value)-parseInt(data);
-        }
-        //si se setea un valor 1 o menor a la cantidad, el valor de la cantidad queda en 1
-        //el precio queda como al principio
-        else{
-            cantidad.value = 1;
-            precioAl.value = data;
-        }
+    var cantidad = parseInt(cant);
+    var precioAl = parseInt(prAl);
+    var precioInicial = precioAl/cantidad;
+    
+    if(cantidad > 1){
+        $('#cantidadAlimentos'+item).text(cantidad-1);
+        $('#precioAlimentos'+item).text(precioInicial*(cantidad-1));        
     }
-   }
+}
    
 //Para eliminar los productos que el usuario quiera de la lista
 function eliminar (eliminar){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var total = 0;
-    var i =0;
  //borro todo
     $( "#pedido *" ).remove();
     $("#total h4").remove();
     
     data.splice(eliminar, 1); 
     sessionStorage.setItem('pedido',JSON.stringify(data));
- //Vuelvo a crear la tabla 
-    for (let entry of data) {
-        $("#pedido").append('<tr id="opcion'+i+'">\n\
-                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
-                                <td>'+entry[2]+'</td>\n\
-                                <td>'+entry[0]+'</td>\n\
-                                <td>'+entry[1]+'</td>\n\
-                            </tr>');
-        i++;
-        total = parseInt(total) + parseInt(entry[1]);
-    }
-    $("#total").append("<h4>Total: $"+total+"</h4>");
+
+    cargarPedido(data);
     
     if(data.length < 1){
         $("#total h4").remove();
@@ -212,3 +189,176 @@ function eliminar (eliminar){
         popup.classList.remove('active');
     }
 }
+
+$(".containerText").each(function(){            //esto es para que las imagenes queden bien sean del tamano que sean
+    var refRatio = 240/300;
+    var imgH = $(this).children("img").height();
+    var imgW = $(this).children("img").width();
+
+    if ( (imgW/imgH) < refRatio ) { 
+        $(this).addClass("landscape");
+    } else {
+        $(this).addClass("portrait");
+    }
+});
+
+$("#pagar").click(function (e){
+    e.preventDefault();
+    var mozo = sessionStorage.getItem("mozo");
+    pagar(mozo);
+});
+
+function cargarPedido(data){
+    
+    var total = 0;
+    var i =0;
+    
+     //Vuelvo a crear la tabla 
+    for (let entry of data) {
+        $("#pedido").append('<tr id="opcion'+i+'">\n\
+                                <td><i class="fas fa-times" id="fas'+i+'" onclick="eliminar('+i+')"></i></td>\n\
+                                <td>'+entry[2]+'</td>\n\
+                                <td>'+entry[0]+'</td>\n\
+                                <td>$'+entry[1]+'</td>\n\
+                                <td>'+entry[4]+'</td>\n\
+                            </tr>');
+        i++;
+        total = parseInt(total) + parseInt(entry[1]);
+    }
+    $("#total").append("<h4>Total: $"+total+"</h4>");
+}
+
+function pagarTodo(mozo){
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "pagar=si",
+        success:function(){
+                sessionStorage.setItem('clave',null);
+                sessionStorage.setItem('mozo',null);
+                $("#overlayPedido").removeClass("active");
+                $("#popupPedido").removeClass("active");
+                $("#pagar").removeClass("pedido");
+                alert("En un instante sera atendido por "+mozo);
+                $("#overlayPedido").removeClass("active");
+                $("#popupPedido").removeClass("active");
+        },
+        error: function() {
+            alert("Ocurrio un error, informelo.");
+        }
+    });
+}
+
+function pagar(mozo, idPedido, n){
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "pagar=si&idPedido="+idPedido,
+        success:function(){
+                sessionStorage.setItem('clave',null);
+                sessionStorage.setItem('mozo',null);
+                $("#numPedido"+n).css("text-decoration", "line-through");
+                $("#numPedido"+n).css("text-decoration-thickness", ".2em");
+                $("#btnPagar"+n).css("background-color", "red");
+                $("#btnPagar"+n).attr("disabled", true);
+                alert("En un instante sera atendido por "+mozo);
+        },
+        error: function() {
+            alert("Ocurrio un error, informelo.");
+        }
+    });
+}
+
+function comprobarClave(claveActual,mozo){
+    sessionStorage.setItem('clave',claveActual);
+    sessionStorage.setItem('mozo',mozo);
+    $("#overlayPedido").removeClass("active");
+    $("#popupPedido").removeClass("active");
+    $("#pagar").removeClass("pedido");
+}
+
+function guardarPedido(passwd){
+    var rut = $("#rut").val();
+    let valido = validate_isRUT(rut);
+    if( valido !== true){
+        $("#rut").val("");
+        $("#rut").attr("placeholder", "Aparentemente el RUT no es valido, verifiquelo.");
+        $("#rut").css('background-color', 'lightcoral');
+    }else{
+        var data = JSON.parse(sessionStorage.getItem("pedido"));
+        $.ajax({
+            url: "/e-menuWeb/alimentos",
+            type: "POST",
+            data: "pedido="+data+"&password="+passwd+"&rut="+rut,
+            success: function(respuesta) {
+                sessionStorage.setItem('clave',respuesta);
+            },
+            error: function() {
+                alert("Ocurrio un error, informelo.");
+            }
+        });
+        sessionStorage.setItem('pedido',null);
+        overlay.classList.remove('active');
+        popup.classList.remove('active');
+        $( "#pedido *" ).remove();
+        $("#total h4").remove();
+        $("#pagar").removeClass("pedido");
+    }
+}
+
+function validate_isRUT(rut)
+{
+	if (rut.length != 12){
+		return false;
+	}
+	if (!/^([0-9])*$/.test(rut)){
+               return false;
+  	}
+	var dc = rut.substr(11, 1);
+	var rut = rut.substr(0, 11);
+	var total = 0;
+	var factor = 2;
+ 
+	for (i = 10; i >= 0; i--) {
+		total += (factor * rut.substr(i, 1));
+		factor = (factor == 9)?2:++factor;
+	}
+ 
+	var dv = 11 - (total % 11);
+ 
+	if (dv == 11){
+		dv = 0;
+	}else if(dv == 10){
+		dv = 1;
+	}
+	if(dv == dc){
+		return true;
+	}
+	return false;
+}
+
+
+//window.onload = function() {
+//  var el = document.getElementById('pedidoNuevo');
+//
+//  var firing = false;
+//  var timer;
+//  
+//  el.onclick = function() {
+//    if(firing){
+//      dobleClick();
+//      clearTimeout(timer);
+//      firing = false;
+//      return;
+//  }
+//    firing = true;
+//    timer = setTimeout(function() { 
+//       alert('Un click');
+//       firing = false;
+//    }, 300);
+//  };
+//};
+//
+//function dobleClick(){
+//    alert('Doble click');
+//}

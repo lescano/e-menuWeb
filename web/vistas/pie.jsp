@@ -8,7 +8,7 @@
 
 <div class="overlay" id="overlay">
     <div class="popup" id="popup">
-        <h3>TU PEDIDO</h3>
+        <h3 id="tituloPedido"></h3>
         <form>
             <table class="contenedor-inputs" id="pedido">
         <%-- Con javascript le meto el contenido --%>
@@ -18,6 +18,7 @@
         <%-- Con javascript le meto el contenido --%>
             </div>
             <input type="submit" id="cancelar" class="btn-submit" value="CANCELAR">
+            <input type="submit" id="siguiente" class="btn-submit" value="SIGUIENTE">
             <input type="submit" id="aceptar" class="btn-submit" value="ACEPTAR">
         </form>
     </div>
@@ -33,17 +34,12 @@
 
 <!-- jQuery -->
 <script src="vistas/assets/js/jquery.js"></script>
-<!-- jQuery Easing -->
-<!--<script src="vistas/assets/js/jquery.easing.1.3.js"></script>-->
 <!-- Bootstrap -->
 <script src="vistas/assets/js/bootstrap.min.js"></script>
+
 <script src="vistas/assets/js/scripts.js" type="text/javascript"></script>
-<!-- Waypoints -->
-<!--<script src="vistas/assets/js/jquery.waypoints.min.js"></script>-->
-<!-- Main JS -->
-<!--<script src="vistas/assets/js/main.js"></script>-->     
-<!--<script src="vistas/assets/bootstrap4/jquery-3.4.1.slim.min.js"></script>-->
-<!--<script src="vistas/assets/bootstrap4/popper.min.js"></script>-->
+<script src="vistas/assets/js/busqueda.js" type="text/javascript"></script>
+
 
     </body>
 </html>
