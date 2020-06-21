@@ -8,6 +8,7 @@
 <%@page import="Logica.Plato"%>
 <%@page import="java.sql.Blob"%>
 <%@page import="java.util.List"%>
+<%@page import="Logica.Resenia"%>
 <%@page import="Logica.Alimento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -93,36 +94,37 @@
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
             <div id="carouselExampleControls<%= i %>" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
+                    
+                    <%  
+                    int cant = 0;
+                    
+                    for(Resenia resenia : alimento.getResenias()){
+                        cant++;
+                    %>
                     <div class="carousel-item active">
                         <div class="card m-1 mx-5">
                             <div class="card-header">
-                                Usuario1
+                                <%= resenia.getAutor() %>
                             </div>
                             <div class="card-body">
-                                <p class="card-text">Muy bueno el chivito, lo recomiendo!</p>
+                                <p class="card-text"><%= resenia.getDescipcion() %></p>
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
-                                Usuario2
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">buenardo ese chivito.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5 ">
-                            <div class="card-header">
-                                Usuario3
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">no me gusto</p>
+                    <%                      
+                        }
+                    if(cant<=0){
+                        %>
+                        <div class="carousel-item active">
+                            <div class="card m-1 mx-5">
+                                <div class="card-header">
+                                    No hay reseñas sobre este plato
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <%  
+                    }
+                    %>
                 </div>
                 <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
@@ -133,11 +135,15 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+                
             <div class="input-group my-1">
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="comente aqui..." aria-describedby="basic-addon2">
+                <textarea rows="2"  placeholder="Comentario" id="nombre<%= alimento.getId()%>"></textarea>
+                <div class="w-100"></div>
+                <input type="text"  placeholder="Nombre" id="descripcion<%= alimento.getId()%>">
                 <div class="input-group-append">
-                    <button class="btn btn-success input-group-text" id="basic-addon2<%= i %>">Comentar</button>
+                    <button class="btn btn-success input-group-text " onclick="comentar(<%= alimento.getId()%>)" >Comentar</button>
                 </div>
+                
             </div>
         </div>
     </div>

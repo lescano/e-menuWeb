@@ -11,6 +11,7 @@ import Logica.Alimento;
 import Logica.Categoria;
 import Logica.Fabrica;
 import Logica.Mesa;
+import Logica.Resenia;
 import Logica.Observaciones;
 import Logica.Pago;
 import Logica.Plato;
@@ -73,6 +74,16 @@ public class Alimentos extends HttpServlet {
                 out.write(ret);
                 caso = "buscar";
             }
+            if(request.getParameterMap().containsKey("comentar")){
+                String datos=request.getParameter("comentar");
+                String respuesta="nada en servlet";
+                respuesta=comentar(datos);
+                if(respuesta.length()<=0){
+                    respuesta="no funciono";
+                }
+                out.write(respuesta);
+                caso = "comentar";
+            }
             
             if(caso == null){
                 caso = "detallesCategoria";
@@ -82,8 +93,10 @@ public class Alimentos extends HttpServlet {
                 if(categoria != null){
 //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
+                    List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
                     //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
+                    request.setAttribute("resenias", resenias);
                 }
                 
                 if(categoria.getSecundaria() != null){
@@ -273,6 +286,22 @@ public class Alimentos extends HttpServlet {
                 }
             }
         return ret;
+    }
+
+    private String comentar(String datos) {
+        int id;
+        String ret="";
+        String autor;
+        String descripcion;
+        
+        String[] parte = datos.split("/");
+        id=Integer.parseInt(parte[0]);
+        autor=parte[1];
+        descripcion=parte[2];
+        //ret=String.valueOf(id);
+        ret=alimentoContoller.altaResenia(autor, descripcion, null, id);
+        return ret;
+
     }
     
 }

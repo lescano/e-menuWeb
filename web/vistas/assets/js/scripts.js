@@ -362,3 +362,26 @@ function validate_isRUT(rut)
 //function dobleClick(){
 //    alert('Doble click');
 //}
+
+///////////////////////////////////////////////////////comentar************************************************************************************
+function comentar(id){
+  var nombre=document.getElementById("nombre"+id).value;
+  var descripcion=document.getElementById("descripcion"+id).value;
+  alert(id);
+  //containerCat.style.display = "none";
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "comentar="+id+"/"+nombre+"/"+descripcion,
+        success:function(respuesta){
+            alert(respuesta);
+            //var textoResultado=document.getElementById("textoResultado");
+            //textoResultado.innerHTML = mostrar;
+
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+}
+///////////////////////////////////////////////////////comentar-FIN************************************************************************************
