@@ -92,11 +92,12 @@ public class Alimentos extends HttpServlet {
             
                 if(categoria != null){
 //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
+                    this.listaAlimentos = this.alimentoContoller.listarPlatos();  //esto es para actualizar por si hay nuevos comentarios
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
-                    List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
+                    //List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
                     //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
-                    request.setAttribute("resenias", resenias);
+                    //request.setAttribute("resenias", resenias);
                 }
                 
                 if(categoria.getSecundaria() != null){

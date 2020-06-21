@@ -92,8 +92,8 @@
             <p>Calorias: 500</p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
-            <div id="carouselExampleControls<%= i %>" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
+           
+                
                     
                     <%  
                     int cant = 0;
@@ -101,16 +101,11 @@
                     for(Resenia resenia : alimento.getResenias()){
                         cant++;
                     %>
-                    <div class="carousel-item active">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
+                 
                                 <%= resenia.getAutor() %>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text"><%= resenia.getDescipcion() %></p>
-                            </div>
-                        </div>
-                    </div>
+                            <%= resenia.getDescipcion() %>
+                      
+               
                     <%                      
                         }
                     if(cant<=0){
@@ -124,17 +119,12 @@
                         </div>
                         <%  
                     }
+
                     %>
-                </div>
-                <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next " href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" style="filter: brightness(0);" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+                    
+                
+                
+                
                 
             <div class="input-group my-1">
                 <textarea rows="2"  placeholder="Comentario" id="nombre<%= alimento.getId()%>"></textarea>
