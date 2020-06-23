@@ -42,7 +42,6 @@ public class Alimentos extends HttpServlet {
     List<Alimento> listaTodo = alimentoContoller.listarTodo();
     ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
     List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -78,26 +77,35 @@ public class Alimentos extends HttpServlet {
                 String datos=request.getParameter("comentar");
                 String respuesta="nada en servlet";
                 respuesta=comentar(datos);
+                this.listaAlimentos = this.alimentoContoller.listarPlatos();
                 if(respuesta.length()<=0){
                     respuesta="no funciono";
                 }
                 out.write(respuesta);
                 caso = "comentar";
             }
-            
+            if(request.getParameterMap().containsKey("actualizar")){
+                String datos=request.getParameter("actualizar");
+                String respuesta=actualizar(datos);
+
+                out.write(respuesta);
+                caso = "actualizar";
+            }
             if(caso == null){
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
                 request.setAttribute("categoria", categoria);
             
                 if(categoria != null){
-//Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
-                    this.listaAlimentos = this.alimentoContoller.listarPlatos();  //esto es para actualizar por si hay nuevos comentarios
+                    //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
+                    //this.listaAlimentos = this.alimentoContoller.refresh();
+                    //this.listaAlimentos = this.alimentoContoller.listarPlatos();  //esto es para actualizar por si hay nuevos comentarios
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
                     //List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
                     //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
                     //request.setAttribute("resenias", resenias);
+                    
                 }
                 
                 if(categoria.getSecundaria() != null){
@@ -296,13 +304,46 @@ public class Alimentos extends HttpServlet {
         String descripcion;
         
         String[] parte = datos.split("/");
+        //actualizar(parte[0]);
         id=Integer.parseInt(parte[0]);
         autor=parte[1];
         descripcion=parte[2];
+        
+        //
         //ret=String.valueOf(id);
+        //sacar el plato y actualizarlo 
+        //guardar plato
+        
         ret=alimentoContoller.altaResenia(autor, descripcion, null, id);
         return ret;
+    }
 
+    private String actualizar(String datos) {
+       //
+       int cont=0;
+       String ret="";
+       int id = Integer.parseInt(datos);
+       Plato aux=null;
+       for(Plato plato : listaAlimentos){
+            if(plato.getId()==id){            
+                aux=plato;
+            }
+        }
+       if(aux!=null){
+            alimentoContoller.refresh(aux);
+            for(Resenia resenia : aux.getResenias()){
+                ret+=resenia.getAutor()+"-"+resenia.getDescipcion()+"//";
+                cont++;
+            }
+       }else{
+          ret+="error"; 
+       }
+       
+       //
+       if(cont==0){
+           return "error";
+       }
+       return ret; 
     }
     
 }

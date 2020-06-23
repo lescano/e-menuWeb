@@ -44,13 +44,13 @@
     <div class="caja" style="display: none;">
         <ul class="nav nav-tabs " id="myTab<%= i %>" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab<%= i %>" data-toggle="tab" href="#home<%= i %>" role="tab" aria-controls="home" aria-selected="true">Añadir</a>
+                <a class="nav-link text-dark" id="home-tab<%= i %>" data-toggle="tab" href="#home<%= i %>" role="tab" aria-controls="home" aria-selected="true">Añadir</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab<%= i %>" data-toggle="tab" href="#profile<%= i %>" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
+                <a class="nav-link text-dark" id="profile-tab<%= i %>" data-toggle="tab" href="#profile<%= i %>" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab<%= i %>" data-toggle="tab" href="#contact<%= i %>" role="tab" aria-controls="contact" aria-selected="false">Reseñas</a>
+                    <button class="nav-link bg-white border-bottom text-dark" onclick="actualizarComentarios(<%= alimento.getId()%>)" id="contact-tab<%= i %>" data-toggle="tab" href="#contact<%= i %>" role="tab" aria-controls="contact" aria-selected="false">Reseñas</button>
             </li>
         </ul>
     <div class="tab-content" id="myTabContent">
@@ -92,48 +92,27 @@
             <p>Calorias: 500</p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
-           
-                
-                    
-                    <%  
-                    int cant = 0;
-                    
-                    for(Resenia resenia : alimento.getResenias()){
-                        cant++;
-                    %>
-                 
-                                <%= resenia.getAutor() %>
-                            <%= resenia.getDescipcion() %>
-                      
-               
-                    <%                      
-                        }
-                    if(cant<=0){
-                        %>
-                        <div class="carousel-item active">
-                            <div class="card m-1 mx-5">
-                                <div class="card-header">
-                                    No hay reseñas sobre este plato
-                                </div>
-                            </div>
-                        </div>
-                        <%  
-                    }
-
-                    %>
-                    
-                
-                
-                
-                
+            <div id="carouselExampleControls<%= alimento.getId()%>" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="comentarios<%= alimento.getId()%>">
+            
+                </div>
+                <a class="carousel-control-prev " href="#carouselExampleControls<%= alimento.getId()%>" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next " href="#carouselExampleControls<%= alimento.getId()%>" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" style="filter: brightness(0);" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>        
+                                                                                
             <div class="input-group my-1">
-                <textarea rows="2"  placeholder="Comentario" id="nombre<%= alimento.getId()%>"></textarea>
+                <textarea class="w-100" rows="2"  placeholder="Comentario" id="nombre<%= alimento.getId()%>" style="resize: none;"></textarea>
                 <div class="w-100"></div>
                 <input type="text"  placeholder="Nombre" id="descripcion<%= alimento.getId()%>">
                 <div class="input-group-append">
                     <button class="btn btn-success input-group-text " onclick="comentar(<%= alimento.getId()%>)" >Comentar</button>
-                </div>
-                
+                </div>               
             </div>
         </div>
     </div>
