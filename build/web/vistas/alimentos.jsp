@@ -31,21 +31,23 @@
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         
         for(Categoria aux : categorias){
-            String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
-            if(indice%2==0&&indice!=0){
-                %> <div class="w-100"></div> <% 
-            }
-            indice++;
-        %>
-        <div class="col-6 m-0 p-0">
-            <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
-                <div class="containerText bg-primary">
-                    <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
-                    <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
-                </div>
-            </button>
-        </div>
-    <% } %>  
+            if(!aux.isMostrar()){
+                String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
+                if(indice%2==0&&indice!=0){
+                    %> <div class="w-100"></div> <% 
+                }
+                indice++;
+            %>
+            <div class="col-6 m-0 p-0">
+                <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
+                    <div class="containerText bg-primary">
+                        <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
+                        <div class="centeredText"><%=aux.getNombre().toUpperCase()%></div>
+                    </div>
+                </button>
+            </div>
+    <% }
+            } %>  
     </div>
 </div>
 <div class="container" id="container-busqueda" style="display:none">

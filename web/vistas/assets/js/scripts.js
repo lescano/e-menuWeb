@@ -7,6 +7,7 @@ var btnAbrirPopup = document.getElementById('resumen'),
 $(document).ready(function(){
 //muestro el carrito
     var data = JSON.parse(sessionStorage.getItem("pedido"));
+    var gusto = JSON.parse(sessionStorage.getItem("gusto"));
     if(data !== null){
         if(data.length > 0){
             $('#resumen').show();
@@ -53,7 +54,7 @@ window.addEventListener( "pageshow", function ( event ) {
 //Va agregando pedidos al carrito
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
+    var nuevoAlimento = $("#alimento"+value).text();
     var nuevoPrecio = $("#precioAlimentos"+value).text();
     var nuevoCantidad = $("#cantidadAlimentos"+value).text();
     var idAlimento = $("#idAlimento"+value).val();
@@ -209,10 +210,8 @@ $("#pagar").click(function (e){
 });
 
 function cargarPedido(data){
-    
     var total = 0;
     var i =0;
-    
      //Vuelvo a crear la tabla 
     for (let entry of data) {
         $("#pedido").append('<tr id="opcion'+i+'">\n\
@@ -234,8 +233,8 @@ function pagarTodo(mozo){
         type: "POST",
         data: "pagar=si",
         success:function(){
-                sessionStorage.setItem('clave',null);
-                sessionStorage.setItem('mozo',null);
+                sessionStorage.removeItem('clave');
+                sessionStorage.removeItem('mozo');
                 $("#overlayPedido").removeClass("active");
                 $("#popupPedido").removeClass("active");
                 $("#pagar").removeClass("pedido");
@@ -255,8 +254,8 @@ function pagar(mozo, idPedido, n){
         type: "POST",
         data: "pagar=si&idPedido="+idPedido,
         success:function(){
-                sessionStorage.setItem('clave',null);
-                sessionStorage.setItem('mozo',null);
+                sessionStorage.removeItem('clave');
+                sessionStorage.removeItem('mozo');
                 $("#numPedido"+n).css("text-decoration", "line-through");
                 $("#numPedido"+n).css("text-decoration-thickness", ".2em");
                 $("#btnPagar"+n).css("background-color", "red");
@@ -280,16 +279,29 @@ function comprobarClave(claveActual,mozo){
 function guardarPedido(passwd){
     var rut = $("#rut").val();
     let valido = validate_isRUT(rut);
-    if( valido !== true){
+    if( valido !== true && rut !== ""){
         $("#rut").val("");
         $("#rut").attr("placeholder", "Aparentemente el RUT no es valido, verifiquelo.");
         $("#rut").css('background-color', 'lightcoral');
     }else{
         var data = JSON.parse(sessionStorage.getItem("pedido"));
+        var acompaniamiento = [];
+        var c;
+        var al;
+        for (let entry of data) {
+            al = entry[0].split(' ').join('_');
+            c = JSON.parse(sessionStorage.getItem(al));
+            if(c !== null){
+                if (c.length > 0) {
+                    acompaniamiento.push(entry[3]);
+                    acompaniamiento.push(c);
+                }
+            }
+        }
         $.ajax({
             url: "/e-menuWeb/alimentos",
             type: "POST",
-            data: "pedido="+data+"&password="+passwd+"&rut="+rut,
+            data: "pedido="+data+"&password="+passwd+"&rut="+rut+"&extra="+acompaniamiento,
             success: function(respuesta) {
                 sessionStorage.setItem('clave',respuesta);
             },
@@ -297,7 +309,7 @@ function guardarPedido(passwd){
                 alert("Ocurrio un error, informelo.");
             }
         });
-        sessionStorage.setItem('pedido',null);
+        sessionStorage.removeItem('pedido');
         overlay.classList.remove('active');
         popup.classList.remove('active');
         $( "#pedido *" ).remove();
@@ -335,6 +347,32 @@ function validate_isRUT(rut)
 		return true;
 	}
 	return false;
+}
+
+function agregarGusto(alimento, agregarGusto, cantidad){
+    var gusto = JSON.parse(sessionStorage.getItem(alimento));
+    if(gusto === null){
+        gusto = [];
+        gusto.push(agregarGusto);
+    }else{
+        var pos = gusto.indexOf(agregarGusto);
+        if(pos >= 0){
+            gusto.splice(pos, 1);
+            $(".max_extra h6").css("fontSize", "initial");
+            $(".max_extra h6").css("color", "cornflowerblue");
+        }else{
+            if(gusto.length >= cantidad){
+                $("#"+alimento+"-"+agregarGusto).prop('checked', false);
+                $(".max_extra h6").css("fontSize", "large");
+                $(".max_extra h6").css("color", "crimson");
+            }else{
+                gusto.push(agregarGusto);
+                $(".max_extra h6").css("fontSize", "initial");
+                $(".max_extra h6").css("color", "cornflowerblue");
+            }
+        }
+    }
+    sessionStorage.setItem(alimento,JSON.stringify(gusto));
 }
 
 

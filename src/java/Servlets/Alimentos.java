@@ -138,6 +138,8 @@ public class Alimentos extends HttpServlet {
         if(request.getParameterMap().containsKey("pedido")){
             String pedido = (String) request.getParameter("pedido");        //Este dato me lo manda del javascript por ajax
             String[] p = pedido.split("\\,");                               //Lo parceo ya que los datos vienen en un string
+            String extra = (String) request.getParameter("extra");        //Este dato me lo manda del javascript por ajax
+            String[] e = extra.split("\\,");
             List<Alimento> alimentosPedidos = new ArrayList<>();    
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
@@ -154,14 +156,32 @@ public class Alimentos extends HttpServlet {
                     
  //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
 
-            for(int i=0; i<p.length; i= i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
-                String idAlimento = p[i+3];         
+            for(int i=0; i<p.length; i=i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
+                String idAlimento = p[i+3];
                 Alimento ap = getAlimentoPorId(idAlimento);
+                Observaciones obs = new Observaciones();
+                obs.setAlimento(ap);
+                for(int j=0; j<e.length; j++){
+                    if(e[j].equals(idAlimento)){                       
+                        e[j] = "";                                      //Borro el id que ya capture
+                        j++;
+                        while(!isParsable(e[j])){                       //Si en e no hay un idAlimento entonces es un gusto
+                            Observaciones ext = new Observaciones();
+                            ext.setObservacion(e[j]);
+                            ext.setAlimento(ap);
+                            observaciones.add(ext);
+                            e[j] = "";                                  //Voy borrando los gustos que ya agrege
+                            if(e.length>=j+2){                          //Si no hay mas elementos salgo del ciclo
+                                j++;
+                            }else{
+                                break;
+                            }
+                        }
+                    }
+                }
                 alimentosPedidos.add(ap);
                 alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
                 precio_total += ap.getPrecio()*Integer.parseInt(p[i+2]);
-                Observaciones obs = new Observaciones();
-                obs.setAlimento(ap);
                 if(i+4 < p.length){
                     obs.setObservacion(p[i+4]);
                 }
@@ -274,5 +294,25 @@ public class Alimentos extends HttpServlet {
             }
         return ret;
     }
+    
+    public static boolean isParsable(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
+    
+   private  static Object[]  remueveElement(Object[] arrayObjetos, int i) {
+    Object[] nuevoArray = new Object[arrayObjetos.length - 1];
+     if (i > 0){
+           System.arraycopy(arrayObjetos, 0, nuevoArray, 0, i);
+     }
+     if (nuevoArray.length > i){
+      System.arraycopy(arrayObjetos, i + 1, nuevoArray, i, nuevoArray.length - i);
+     }
+     return nuevoArray;
+   }
     
 }

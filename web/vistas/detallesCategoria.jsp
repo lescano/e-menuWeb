@@ -78,13 +78,24 @@
                     <textarea class="form-control float-left" rows="2" style="resize: none;" id="aclaracion<%= i %>" placeholder="Alguna aclaracion?"></textarea>
                 </div>
             </div>
-            <div class="gustos">
-                <%if(acompaniamiento != null){
-                    for(Plato acompa : acompaniamiento){ %>
-                        <label><input type="checkbox" onclick='agregarGusto("<%= acompa.getNombre() %>")' value="first_checkbox"> <%= acompa.getNombre() %></label>
-           <%         }
-                    }   %>
-            </div>
+            <section class="gustos">
+            <%if(acompaniamiento != null){
+                String nombre, extra;
+                for(Plato acompa : acompaniamiento){ 
+                    nombre = alimento.getNombre().replace(" ", "_");
+                    extra = acompa.getNombre().replace(" ", "_");
+            %>
+                    <div>
+                        <input value="" id="<%= nombre %>-<%= extra %>" type="checkbox" onclick='agregarGusto("<%= nombre %>","<%= extra %>", "<%= categoria.getCantAdicionales() %>")'/>
+                        <label for="<%= nombre %>-<%= extra %>"><%= acompa.getNombre() %></label>
+                    </div>
+       <%         }
+                }   %>
+                
+                </section>
+                <div class="max_extra">
+                    <h6>Puede seleccionar máximo <%= categoria.getCantAdicionales() %>.</h6>
+                </div>
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= alimento.getTiempoPreparacion() %> min</p>
