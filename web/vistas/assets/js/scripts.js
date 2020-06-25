@@ -400,3 +400,85 @@ function agregarGusto(alimento, agregarGusto, cantidad){
 //function dobleClick(){
 //    alert('Doble click');
 //}
+
+///////////////////////////////////////////////////////comentar************************************************************************************
+function comentar(id){
+  var nombre=document.getElementById("nombre"+id).value;
+  var descripcion=document.getElementById("descripcion"+id).value;
+  document.getElementById("nombre"+id).value="";
+  document.getElementById("descripcion"+id).value="";
+  //alert(id);
+  //containerCat.style.display = "none";
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "comentar="+id+"/"+nombre+"/"+descripcion,
+        success:function(respuesta){
+            actualizarComentarios(id)
+            //alert(respuesta);
+            //var textoResultado=document.getElementById("textoResultado");
+            //textoResultado.innerHTML = mostrar;
+
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+}
+///////////////////////////////////////////////////////comentar-FIN************************************************************************************
+function actualizarComentarios(id){
+  //var nombre=document.getElementById("nombre"+id).value;
+  //var descripcion=document.getElementById("descripcion"+id).value;
+  //alert(id);
+  //containerCat.style.display = "none";
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "actualizar="+id,
+        success:function(respuesta){
+            //alert(respuesta);
+            var componente=document.getElementById("comentarios"+id);
+            if(!(respuesta==="error")){                
+                var partes = respuesta.split('//');
+                var activo="";
+                var final="";
+                for (i = 0; i < partes.length-1; i++) {
+                    if(i===partes.length-2){
+                        activo="active";
+                    }else{
+                        activo="";
+                    }
+                    final+=`
+                        <div class="carousel-item `+activo+`">
+                            <div class="card m-1 mx-5">
+                                <div class="card-header">
+                                    `+partes[i].split('-')[0]+`
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        `+partes[i].split('-')[1]+`
+                                    </p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } 
+            }else{
+                final+=`
+                        <div class="carousel-item active">
+                            <div class="card m-1 mx-5">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        no hay comentarios
+                                    </p>
+                                </div>
+                            </div>
+                        </div>`;
+            }
+            componente.innerHTML=final;
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+}

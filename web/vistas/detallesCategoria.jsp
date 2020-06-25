@@ -8,6 +8,7 @@
 <%@page import="Logica.Plato"%>
 <%@page import="java.sql.Blob"%>
 <%@page import="java.util.List"%>
+<%@page import="Logica.Resenia"%>
 <%@page import="Logica.Alimento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -43,13 +44,13 @@
     <div class="caja" style="display: none;">
         <ul class="nav nav-tabs " id="myTab<%= i %>" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab<%= i %>" data-toggle="tab" href="#home<%= i %>" role="tab" aria-controls="home" aria-selected="true">Añadir</a>
+                <a class="nav-link text-dark" id="home-tab<%= i %>" data-toggle="tab" href="#home<%= i %>" role="tab" aria-controls="home" aria-selected="true">Añadir</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab<%= i %>" data-toggle="tab" href="#profile<%= i %>" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
+                <a class="nav-link text-dark" id="profile-tab<%= i %>" data-toggle="tab" href="#profile<%= i %>" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab<%= i %>" data-toggle="tab" href="#contact<%= i %>" role="tab" aria-controls="contact" aria-selected="false">Reseñas</a>
+                    <button class="nav-link bg-white border-bottom text-dark" onclick="actualizarComentarios(<%= alimento.getId()%>)" id="contact-tab<%= i %>" data-toggle="tab" href="#contact<%= i %>" role="tab" aria-controls="contact" aria-selected="false">Reseñas</button>
             </li>
         </ul>
     <div class="tab-content" id="myTabContent">
@@ -102,53 +103,27 @@
             <p>Calorias: 500</p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
-            <div id="carouselExampleControls<%= i %>" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
-                                Usuario1
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Muy bueno el chivito, lo recomiendo!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
-                                Usuario2
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">buenardo ese chivito.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5 ">
-                            <div class="card-header">
-                                Usuario3
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">no me gusto</p>
-                            </div>
-                        </div>
-                    </div>
+            <div id="carouselExampleControls<%= alimento.getId()%>" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="comentarios<%= alimento.getId()%>">
+            
                 </div>
-                <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
+                <a class="carousel-control-prev " href="#carouselExampleControls<%= alimento.getId()%>" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next " href="#carouselExampleControls" role="button" data-slide="next">
+                <a class="carousel-control-next " href="#carouselExampleControls<%= alimento.getId()%>" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" style="filter: brightness(0);" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
+            </div>        
+                                                                                
             <div class="input-group my-1">
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="comente aqui..." aria-describedby="basic-addon2">
+                <textarea class="w-100" rows="2"  placeholder="Comentario" id="nombre<%= alimento.getId()%>" style="resize: none;"></textarea>
+                <div class="w-100"></div>
+                <input type="text"  placeholder="Nombre" id="descripcion<%= alimento.getId()%>">
                 <div class="input-group-append">
-                    <button class="btn btn-success input-group-text" id="basic-addon2<%= i %>">Comentar</button>
-                </div>
+                    <button class="btn btn-success input-group-text " onclick="comentar(<%= alimento.getId()%>)" >Comentar</button>
+                </div>               
             </div>
         </div>
     </div>
