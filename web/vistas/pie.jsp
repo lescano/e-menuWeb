@@ -31,6 +31,8 @@
   </div>
 </footer>
 </div>
+            
+
 
 <!-- jQuery -->
 <script src="vistas/assets/js/jquery.js"></script>

@@ -235,8 +235,6 @@ function pagarTodo(mozo){
         success:function(){
                 sessionStorage.removeItem('clave');
                 sessionStorage.removeItem('mozo');
-                $("#overlayPedido").removeClass("active");
-                $("#popupPedido").removeClass("active");
                 $("#pagar").removeClass("pedido");
                 alert("En un instante sera atendido por "+mozo);
                 $("#overlayPedido").removeClass("active");
@@ -254,13 +252,26 @@ function pagar(mozo, idPedido, n){
         type: "POST",
         data: "pagar=si&idPedido="+idPedido,
         success:function(){
+                var inicial = $("#totalPedidos h3").text().split("$ ");
+                var actual = $("#numPedido"+1+" td:nth-child(3)").text().split("$ ");
+                var total = inicial[1]-actual[1];
                 sessionStorage.removeItem('clave');
                 sessionStorage.removeItem('mozo');
                 $("#numPedido"+n).css("text-decoration", "line-through");
                 $("#numPedido"+n).css("text-decoration-thickness", ".2em");
                 $("#btnPagar"+n).css("background-color", "red");
                 $("#btnPagar"+n).attr("disabled", true);
+                $("#totalPedidos h3").remove();
+                $("#totalPedidos").append("<h3>Total: $"+total+"</h3>");
                 alert("En un instante sera atendido por "+mozo);
+                if(total <= 0){
+                    sessionStorage.removeItem('clave');
+                    sessionStorage.removeItem('mozo');
+                    $("#pagar").removeClass("pedido");
+                    alert("En un instante sera atendido por "+mozo);
+                    $("#overlayPedido").removeClass("active");
+                    $("#popupPedido").removeClass("active");
+                }
         },
         error: function() {
             alert("Ocurrio un error, informelo.");

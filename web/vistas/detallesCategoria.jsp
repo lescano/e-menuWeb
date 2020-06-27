@@ -94,9 +94,11 @@
                 }   %>
                 
                 </section>
-                <div class="max_extra">
-                    <h6>Puede seleccionar máximo <%= categoria.getCantAdicionales() %>.</h6>
-                </div>
+                <% if(categoria.getCantAdicionales() > 0){ %>
+                    <div class="max_extra">
+                        <h6>Puede seleccionar máximo <%= categoria.getCantAdicionales() %>.</h6>
+                    </div>
+                <% } %>
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= alimento.getTiempoPreparacion() %> min</p>
@@ -128,11 +130,11 @@
         </div>
     </div>
   </div>
-                    <div class=" bg-transparent d-flex justify-content-center divFlecha m-0 p-0">
-                        <buttom  class="botonDesplegar p-1 m-0" type="submit"  value="" onclick="mostrar(<%= i%>)" >
-                            <img  class="botonDesplegar botonGira p-0 m-0 h-100" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
-                        </buttom>  
-                    </div>           
+    <div class=" bg-transparent d-flex justify-content-center divFlecha m-0 p-0">
+        <buttom  class="botonDesplegar p-1 m-0" type="submit"  value="" onclick="mostrar(<%= i%>)" >
+            <img  class="botonDesplegar botonGira p-0 m-0 h-100" src="vistas/assets/images/iconos/ic_keyboard_arrow_down_black_48dp.png">
+        </buttom>  
+    </div>           
   </div>
   
     

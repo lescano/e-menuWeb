@@ -181,6 +181,7 @@ public class Alimentos extends HttpServlet {
             for(int i=0; i<p.length; i=i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
                 String idAlimento = p[i+3];
                 Alimento ap = getAlimentoPorId(idAlimento);
+                String comentario = "";
                 Observaciones obs = new Observaciones();
                 obs.setAlimento(ap);
                 for(int j=0; j<e.length; j++){
@@ -188,10 +189,7 @@ public class Alimentos extends HttpServlet {
                         e[j] = "";                                      //Borro el id que ya capture
                         j++;
                         while(!isParsable(e[j])){                       //Si en e no hay un idAlimento entonces es un gusto
-                            Observaciones ext = new Observaciones();
-                            ext.setObservacion(e[j]);
-                            ext.setAlimento(ap);
-                            observaciones.add(ext);
+                            comentario = comentario.concat(e[j]+" ");
                             e[j] = "";                                  //Voy borrando los gustos que ya agrege
                             if(e.length>=j+2){                          //Si no hay mas elementos salgo del ciclo
                                 j++;
@@ -205,8 +203,9 @@ public class Alimentos extends HttpServlet {
                 alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
                 precio_total += ap.getPrecio()*Integer.parseInt(p[i+2]);
                 if(i+4 < p.length){
-                    obs.setObservacion(p[i+4]);
+                    comentario = comentario.concat(p[i+4]);
                 }
+                obs.setObservacion(comentario);
                 observaciones.add(obs);
             }
 
