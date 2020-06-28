@@ -379,6 +379,10 @@ section {
     color: cornflowerblue;
 }
 
+.contenedor-inputs input[type=text]{
+    display: block;
+}
+
 /* ------------------------- */
 /* ANIMACIONES */
 /* ------------------------- */
