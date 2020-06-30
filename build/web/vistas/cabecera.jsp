@@ -26,6 +26,7 @@
                 <img class="carrito_icono float-left m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
                 <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
             </div>
+            
 
         <div class="d-flex " id="wrapper">
 
