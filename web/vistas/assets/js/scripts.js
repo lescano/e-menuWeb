@@ -495,3 +495,7 @@ function actualizarComentarios(id){
         }
     });
 }
+$("#boton-ayuda").click(function(){
+  $("#wrapper").toggleClass("toggled");
+ 
+ })
