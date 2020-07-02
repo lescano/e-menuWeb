@@ -229,29 +229,57 @@ function cargarPedido(data){
 }
 
 function pagarTodo(mozo){
+    if(clickeo){
+      pagarTodoMetodo(mozo, "tarjeta");
+      clearTimeout(retardo);
+      clickeo = false;
+    }else{
+        clickeo = true;
+        retardo = setTimeout(function() { 
+           pagarTodoMetodo(mozo, "efectivo");
+           clickeo = false;
+        }, 300);
+    }
+}
+function pagarTodoMetodo(mozo,tipoPago){
     $.ajax({
-        url: "/e-menuWeb/alimentos",
-        type: "POST",
-        data: "pagar=si",
-        success:function(){
-                sessionStorage.removeItem('clave');
-                sessionStorage.removeItem('mozo');
-                $("#pagar").removeClass("pedido");
-                alert("En un instante sera atendido por "+mozo);
-                $("#overlayPedido").removeClass("active");
-                $("#popupPedido").removeClass("active");
-        },
-        error: function() {
-            alert("Ocurrio un error, informelo.");
-        }
-    });
+    url: "/e-menuWeb/alimentos",
+    type: "POST",
+    data: "tipoPago="+tipoPago,
+    success:function(){
+            sessionStorage.removeItem('clave');
+            sessionStorage.removeItem('mozo');
+            $("#pagar").removeClass("pedido");
+            alert("En un instante sera atendido por "+mozo);
+            $("#overlayPedido").removeClass("active");
+            $("#popupPedido").removeClass("active");
+    },
+    error: function() {
+        alert("Ocurrio un error, informelo.");
+    }
+});
 }
 
+var clickeo = false;
+var retardo;
 function pagar(mozo, idPedido, n){
+    if(clickeo){
+      pagarParticular(mozo, idPedido, n, "tarjeta");
+      clearTimeout(retardo);
+      clickeo = false;
+    }else{
+        clickeo = true;
+        retardo = setTimeout(function() { 
+           pagarParticular(mozo, idPedido, n, "efectivo");
+           clickeo = false;
+        }, 300);
+    }
+}
+function pagarParticular(mozo, idPedido, n, tipoPago){
     $.ajax({
         url: "/e-menuWeb/alimentos",
         type: "POST",
-        data: "pagar=si&idPedido="+idPedido,
+        data: "idPedido="+idPedido+"&tipoPago="+tipoPago,
         success:function(){
                 var inicial = $("#totalPedidos h3").text().split("$ ");
                 var actual = $("#numPedido"+n+" td:nth-child(3)").text().split("$ ");
@@ -388,32 +416,6 @@ function agregarGusto(alimento, agregarGusto, cantidad){
     sessionStorage.setItem(alimento,JSON.stringify(gusto));
 }
 
-
-//window.onload = function() {
-//  var el = document.getElementById('pedidoNuevo');
-//
-//  var firing = false;
-//  var timer;
-//  
-//  el.onclick = function() {
-//    if(firing){
-//      dobleClick();
-//      clearTimeout(timer);
-//      firing = false;
-//      return;
-//  }
-//    firing = true;
-//    timer = setTimeout(function() { 
-//       alert('Un click');
-//       firing = false;
-//    }, 300);
-//  };
-//};
-//
-//function dobleClick(){
-//    alert('Doble click');
-//}
-
 ///////////////////////////////////////////////////////comentar************************************************************************************
 function comentar(id){
   var nombre=document.getElementById("nombre"+id).value;
@@ -495,3 +497,7 @@ function actualizarComentarios(id){
         }
     });
 }
+$("#boton-ayuda").click(function(){
+  $("#wrapper").toggleClass("toggled");
+ 
+ })

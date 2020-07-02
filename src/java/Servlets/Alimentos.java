@@ -62,7 +62,7 @@ public class Alimentos extends HttpServlet {
                 caso = "finalizo";
                 out.write(request.getParameter("password")); 
             }
-            if(request.getParameterMap().containsKey("pagar")){
+            if(request.getParameterMap().containsKey("tipoPago")){
                 caso = "pagar";
                 out.write("Se ha solicitado el pago."); 
             }
@@ -218,14 +218,15 @@ public class Alimentos extends HttpServlet {
             pago.setPedido(nuevo);
             Conexion.getInstance().alta(nuevo);
         }
-        if(request.getParameterMap().containsKey("pagar")){
+        if(request.getParameterMap().containsKey("tipoPago")){
+            String tipoPago = (String) request.getParameter("tipoPago");
             if(request.getParameter("idPedido") == null ){
                 int numMesa = (int) request.getSession().getAttribute("mesa");
-                pedidosController.solicitarPagarTodo(numMesa);
+                pedidosController.solicitarPagarTodo(numMesa,tipoPago);
             }else{
                 String idPedido = (String) request.getParameter("idPedido");
                 Long id = Long.parseLong(idPedido);
-                pedidosController.solicitarPago(id);
+                pedidosController.solicitarPago(id,tipoPago);
             }
         }
     }
