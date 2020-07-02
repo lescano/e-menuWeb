@@ -27,7 +27,37 @@
                 <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
             </div>
             
-
+       <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Preguntas frecuentes</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <!--<span aria-hidden="true">&times;</span>-->
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="mb-4">
+            <h5>Como Añadir platos a tu pedido?</h5>
+            <p>Seleccione la categoria o realize una busqueda en el menu lateral, luego haga click en la cantidad que desea pedir, 
+            y haga click en añadir a pedido</p>
+          </div>
+          <div class="my-4">
+            <h5>Como ver el costo total del pedido?</h5>
+            <p>Haga click en el boton "Resumen del pedido"</p>
+          </div>
+          <div class="my-4">
+            <h5>Donde estan las bebidas?</h5>
+            <p>Puede buscarlas o seleccionar la categorias bebida</p>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>       
+      </div>
+    </div>
+  </div>
+</div>   
         <div class="d-flex " id="wrapper">
 
             <!-- Sidebar -->
@@ -51,14 +81,17 @@
                                 <p>Redes:</p>
                             </div>
                             <div class="col m-0 p-0">
-                                <button class="btn m-0 p-0"><img  class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/instagram.png" alt=""/></button>
+                                <a href="https://www.instagram.com/" class="btn m-0 p-0" target="_blank"><img  class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/instagram.png" alt=""/></a>
                             </div>
                             <div class="col m-0 p-0">
-                                <button class="btn m-0 p-0"><img class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/fb.png" alt=""/></button>
+                                <a class="btn m-0 p-0"  href="https://www.facebook.com/" target="_blank"><img class="m-0 p-0" width="30" height="auto" src="vistas/assets/images/iconos/fb.png" alt=""/></a>
                             </div>
                         </div>
                     </div>
-                        <a href="#" class="list-group-item list-group-item-action bg-light">Ayuda</a>
+                        <button id="boton-ayuda" type="button" class="list-group-item list-group-item-action bg-light" data-toggle="modal" data-target="#exampleModal">
+                            Ayuda
+                        </button>
+                        <a href="mailto:someone@yoursite.com" class="list-group-item list-group-item-action bg-light">Contactenos</a>
                     </div>
             </div>
 
