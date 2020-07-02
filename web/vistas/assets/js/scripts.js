@@ -7,6 +7,7 @@ var btnAbrirPopup = document.getElementById('resumen'),
 $(document).ready(function(){
 //muestro el carrito
     var data = JSON.parse(sessionStorage.getItem("pedido"));
+    var gusto = JSON.parse(sessionStorage.getItem("gusto"));
     if(data !== null){
         if(data.length > 0){
             $('#resumen').show();
@@ -40,20 +41,20 @@ function mostrar(value){
 }
 
 //para obligar a la pagina que se recarge cuando navegas con la flecha para atras del navegador
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted || 
-                         ( typeof window.performance != "undefined" && 
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    // Handle page restore.
-    window.location.reload();
-  }
-});
+//window.addEventListener( "pageshow", function ( event ) {
+//  var historyTraversal = event.persisted || 
+//                         ( typeof window.performance != "undefined" && 
+//                              window.performance.navigation.type === 2 );
+//  if ( historyTraversal ) {
+//    // Handle page restore.
+//    window.location.reload();
+//  }
+//});
 
 //Va agregando pedidos al carrito
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
-    var nuevoAlimento = document.querySelector("#alimento"+value).textContent;
+    var nuevoAlimento = $("#alimento"+value).text();
     var nuevoPrecio = $("#precioAlimentos"+value).text();
     var nuevoCantidad = $("#cantidadAlimentos"+value).text();
     var idAlimento = $("#idAlimento"+value).val();
@@ -128,7 +129,7 @@ $("#siguiente").click(function (e){
     $("#tituloPedido").text("Clave de seguridad");
     $( "#pedido *" ).remove();
     $("#total h4").remove();
-    $("#pedido").append('<input type="text" id="passwd" placeholder="Para identificar su pedido.">');
+    $("#pedido").append('<input type="text" id="passwd" placeholder="Sugerimos nombre y apellido.">');
     $("#pedido").append('<input type="text" id="rut" placeholder="Si quiere factura con rut, escribalo.">');
     $("#siguiente").hide();
     $("#aceptar").show();
@@ -204,15 +205,14 @@ $(".containerText").each(function(){            //esto es para que las imagenes 
 
 $("#pagar").click(function (e){
     e.preventDefault();
-    var mozo = sessionStorage.getItem("mozo");
-    pagar(mozo);
+    window.location.reload();
+//    var mozo = sessionStorage.getItem("mozo");
+//    pagar(mozo);
 });
 
 function cargarPedido(data){
-    
     var total = 0;
     var i =0;
-    
      //Vuelvo a crear la tabla 
     for (let entry of data) {
         $("#pedido").append('<tr id="opcion'+i+'">\n\
@@ -234,10 +234,8 @@ function pagarTodo(mozo){
         type: "POST",
         data: "pagar=si",
         success:function(){
-                sessionStorage.setItem('clave',null);
-                sessionStorage.setItem('mozo',null);
-                $("#overlayPedido").removeClass("active");
-                $("#popupPedido").removeClass("active");
+                sessionStorage.removeItem('clave');
+                sessionStorage.removeItem('mozo');
                 $("#pagar").removeClass("pedido");
                 alert("En un instante sera atendido por "+mozo);
                 $("#overlayPedido").removeClass("active");
@@ -255,12 +253,25 @@ function pagar(mozo, idPedido, n){
         type: "POST",
         data: "pagar=si&idPedido="+idPedido,
         success:function(){
-                sessionStorage.setItem('clave',null);
-                sessionStorage.setItem('mozo',null);
+                var inicial = $("#totalPedidos h3").text().split("$ ");
+                var actual = $("#numPedido"+n+" td:nth-child(3)").text().split("$ ");
+                var total = inicial[1]-actual[1];
+                sessionStorage.removeItem('clave');
+                sessionStorage.removeItem('mozo');
                 $("#numPedido"+n).css("text-decoration", "line-through");
                 $("#numPedido"+n).css("text-decoration-thickness", ".2em");
                 $("#btnPagar"+n).css("background-color", "red");
                 $("#btnPagar"+n).attr("disabled", true);
+                $("#totalPedidos h3").remove();
+                $("#totalPedidos").append("<h3>Total: $ "+total+"</h3>");
+                
+                if(total <= 0 || total === "NaN"){
+                    sessionStorage.removeItem('clave');
+                    sessionStorage.removeItem('mozo');
+                    $("#pagar").removeClass("pedido");
+                    $("#overlayPedido").removeClass("active");
+                    $("#popupPedido").removeClass("active");
+                }
                 alert("En un instante sera atendido por "+mozo);
         },
         error: function() {
@@ -280,24 +291,38 @@ function comprobarClave(claveActual,mozo){
 function guardarPedido(passwd){
     var rut = $("#rut").val();
     let valido = validate_isRUT(rut);
-    if( valido !== true){
+    if( valido !== true && rut !== ""){
         $("#rut").val("");
         $("#rut").attr("placeholder", "Aparentemente el RUT no es valido, verifiquelo.");
         $("#rut").css('background-color', 'lightcoral');
     }else{
         var data = JSON.parse(sessionStorage.getItem("pedido"));
+        var acompaniamiento = [];
+        var c;
+        var al;
+        for (let entry of data) {
+            al = entry[0].split(' ').join('_');
+            c = JSON.parse(sessionStorage.getItem(al));
+            if(c !== null){
+                if (c.length > 0) {
+                    acompaniamiento.push(entry[3]);
+                    acompaniamiento.push(c);
+                }
+            }
+        }
         $.ajax({
             url: "/e-menuWeb/alimentos",
             type: "POST",
-            data: "pedido="+data+"&password="+passwd+"&rut="+rut,
+            data: "pedido="+data+"&password="+passwd+"&rut="+rut+"&extra="+acompaniamiento,
             success: function(respuesta) {
                 sessionStorage.setItem('clave',respuesta);
+                alert("En el menu lateral tiene la opción de pagar.");
             },
             error: function() {
                 alert("Ocurrio un error, informelo.");
             }
         });
-        sessionStorage.setItem('pedido',null);
+        sessionStorage.removeItem('pedido');
         overlay.classList.remove('active');
         popup.classList.remove('active');
         $( "#pedido *" ).remove();
@@ -337,6 +362,32 @@ function validate_isRUT(rut)
 	return false;
 }
 
+function agregarGusto(alimento, agregarGusto, cantidad){
+    var gusto = JSON.parse(sessionStorage.getItem(alimento));
+    if(gusto === null){
+        gusto = [];
+        gusto.push(agregarGusto);
+    }else{
+        var pos = gusto.indexOf(agregarGusto);
+        if(pos >= 0){
+            gusto.splice(pos, 1);
+            $(".max_extra h6").css("fontSize", "initial");
+            $(".max_extra h6").css("color", "cornflowerblue");
+        }else{
+            if(gusto.length >= cantidad){
+                $("#"+alimento+"-"+agregarGusto).prop('checked', false);
+                $(".max_extra h6").css("fontSize", "large");
+                $(".max_extra h6").css("color", "crimson");
+            }else{
+                gusto.push(agregarGusto);
+                $(".max_extra h6").css("fontSize", "initial");
+                $(".max_extra h6").css("color", "cornflowerblue");
+            }
+        }
+    }
+    sessionStorage.setItem(alimento,JSON.stringify(gusto));
+}
+
 
 //window.onload = function() {
 //  var el = document.getElementById('pedidoNuevo');
@@ -362,3 +413,85 @@ function validate_isRUT(rut)
 //function dobleClick(){
 //    alert('Doble click');
 //}
+
+///////////////////////////////////////////////////////comentar************************************************************************************
+function comentar(id){
+  var nombre=document.getElementById("nombre"+id).value;
+  var descripcion=document.getElementById("descripcion"+id).value;
+  document.getElementById("nombre"+id).value="";
+  document.getElementById("descripcion"+id).value="";
+  //alert(id);
+  //containerCat.style.display = "none";
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "comentar="+id+"/"+nombre+"/"+descripcion,
+        success:function(respuesta){
+            actualizarComentarios(id)
+            //alert(respuesta);
+            //var textoResultado=document.getElementById("textoResultado");
+            //textoResultado.innerHTML = mostrar;
+
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+}
+///////////////////////////////////////////////////////comentar-FIN************************************************************************************
+function actualizarComentarios(id){
+  //var nombre=document.getElementById("nombre"+id).value;
+  //var descripcion=document.getElementById("descripcion"+id).value;
+  //alert(id);
+  //containerCat.style.display = "none";
+    $.ajax({
+        url: "/e-menuWeb/alimentos",
+        type: "POST",
+        data: "actualizar="+id,
+        success:function(respuesta){
+            //alert(respuesta);
+            var componente=document.getElementById("comentarios"+id);
+            if(!(respuesta==="error")){                
+                var partes = respuesta.split('//');
+                var activo="";
+                var final="";
+                for (i = 0; i < partes.length-1; i++) {
+                    if(i===partes.length-2){
+                        activo="active";
+                    }else{
+                        activo="";
+                    }
+                    final+=`
+                        <div class="carousel-item `+activo+`">
+                            <div class="card m-1 mx-5">
+                                <div class="card-header">
+                                    `+partes[i].split('-')[0]+`
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        `+partes[i].split('-')[1]+`
+                                    </p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } 
+            }else{
+                final+=`
+                        <div class="carousel-item active">
+                            <div class="card m-1 mx-5">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        no hay comentarios
+                                    </p>
+                                </div>
+                            </div>
+                        </div>`;
+            }
+            componente.innerHTML=final;
+        },
+        error: function() {
+            alert("Ocurrio un error");
+        }
+    });
+}

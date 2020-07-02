@@ -11,6 +11,7 @@ import Logica.Alimento;
 import Logica.Categoria;
 import Logica.Fabrica;
 import Logica.Mesa;
+import Logica.Resenia;
 import Logica.Observaciones;
 import Logica.Pago;
 import Logica.Plato;
@@ -41,7 +42,6 @@ public class Alimentos extends HttpServlet {
     List<Alimento> listaTodo = alimentoContoller.listarTodo();
     ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
     List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -73,17 +73,39 @@ public class Alimentos extends HttpServlet {
                 out.write(ret);
                 caso = "buscar";
             }
-            
+            if(request.getParameterMap().containsKey("comentar")){
+                String datos=request.getParameter("comentar");
+                String respuesta="nada en servlet";
+                respuesta=comentar(datos);
+                this.listaAlimentos = this.alimentoContoller.listarPlatos();
+                if(respuesta.length()<=0){
+                    respuesta="no funciono";
+                }
+                out.write(respuesta);
+                caso = "comentar";
+            }
+            if(request.getParameterMap().containsKey("actualizar")){
+                String datos=request.getParameter("actualizar");
+                String respuesta=actualizar(datos);
+
+                out.write(respuesta);
+                caso = "actualizar";
+            }
             if(caso == null){
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
                 request.setAttribute("categoria", categoria);
             
                 if(categoria != null){
-//Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
+                    //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
+                    //this.listaAlimentos = this.alimentoContoller.refresh();
+                    //this.listaAlimentos = this.alimentoContoller.listarPlatos();  //esto es para actualizar por si hay nuevos comentarios
                     List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
+                    //List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
                     //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
+                    //request.setAttribute("resenias", resenias);
+                    
                 }
                 
                 if(categoria.getSecundaria() != null){
@@ -138,6 +160,8 @@ public class Alimentos extends HttpServlet {
         if(request.getParameterMap().containsKey("pedido")){
             String pedido = (String) request.getParameter("pedido");        //Este dato me lo manda del javascript por ajax
             String[] p = pedido.split("\\,");                               //Lo parceo ya que los datos vienen en un string
+            String extra = (String) request.getParameter("extra");        //Este dato me lo manda del javascript por ajax
+            String[] e = extra.split("\\,");
             List<Alimento> alimentosPedidos = new ArrayList<>();    
             HashMap<Integer, Integer> alimentos_cantidad= new HashMap<>();
             Date fecha = Calendar.getInstance().getTime();                  //Obtengo la fecha actual
@@ -154,17 +178,34 @@ public class Alimentos extends HttpServlet {
                     
  //[nuevoAlimento,nuevoPrecio,nuevoCantidad,idAlimento,aclaracion];       Asi viene del javascript    
 
-            for(int i=0; i<p.length; i= i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
-                String idAlimento = p[i+3];         
+            for(int i=0; i<p.length; i=i+5){       //Ya que los datos quedaron en un array de string tengo que recorrerlos y avanzar de a 5 elementos 
+                String idAlimento = p[i+3];
                 Alimento ap = getAlimentoPorId(idAlimento);
+                String comentario = "";
+                Observaciones obs = new Observaciones();
+                obs.setAlimento(ap);
+                for(int j=0; j<e.length; j++){
+                    if(e[j].equals(idAlimento)){                       
+                        e[j] = "";                                      //Borro el id que ya capture
+                        j++;
+                        while(!isParsable(e[j])){                       //Si en e no hay un idAlimento entonces es un gusto
+                            comentario = comentario.concat(e[j]+" ");
+                            e[j] = "";                                  //Voy borrando los gustos que ya agrege
+                            if(e.length>=j+2){                          //Si no hay mas elementos salgo del ciclo
+                                j++;
+                            }else{
+                                break;
+                            }
+                        }
+                    }
+                }
                 alimentosPedidos.add(ap);
                 alimentos_cantidad.put(Integer.parseInt(idAlimento), Integer.parseInt(p[i+2]));
                 precio_total += ap.getPrecio()*Integer.parseInt(p[i+2]);
-                Observaciones obs = new Observaciones();
-                obs.setAlimento(ap);
                 if(i+4 < p.length){
-                    obs.setObservacion(p[i+4]);
+                    comentario = comentario.concat(p[i+4]);
                 }
+                obs.setObservacion(comentario);
                 observaciones.add(obs);
             }
 
@@ -274,5 +315,74 @@ public class Alimentos extends HttpServlet {
             }
         return ret;
     }
+
+    private String comentar(String datos) {
+        int id;
+        String ret="";
+        String autor;
+        String descripcion;
+        
+        String[] parte = datos.split("/");
+        //actualizar(parte[0]);
+        id=Integer.parseInt(parte[0]);
+        autor=parte[1];
+        descripcion=parte[2];
+        
+        //
+        //ret=String.valueOf(id);
+        //sacar el plato y actualizarlo 
+        //guardar plato
+        
+        ret=alimentoContoller.altaResenia(autor, descripcion, null, id);
+        return ret;
+    }
+
+    private String actualizar(String datos) {
+       //
+       int cont=0;
+       String ret="";
+       int id = Integer.parseInt(datos);
+       Plato aux=null;
+       for(Plato plato : listaAlimentos){
+            if(plato.getId()==id){            
+                aux=plato;
+            }
+        }
+       if(aux!=null){
+            alimentoContoller.refresh(aux);
+            for(Resenia resenia : aux.getResenias()){
+                ret+=resenia.getAutor()+"-"+resenia.getDescipcion()+"//";
+                cont++;
+            }
+       }else{
+          ret+="error"; 
+       }
+       
+       //
+       if(cont==0){
+           return "error";
+       }
+       return ret; 
+    }
+    
+    public static boolean isParsable(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
+    
+   private  static Object[]  remueveElement(Object[] arrayObjetos, int i) {
+    Object[] nuevoArray = new Object[arrayObjetos.length - 1];
+     if (i > 0){
+           System.arraycopy(arrayObjetos, 0, nuevoArray, 0, i);
+     }
+     if (nuevoArray.length > i){
+      System.arraycopy(arrayObjetos, i + 1, nuevoArray, i, nuevoArray.length - i);
+     }
+     return nuevoArray;
+   }
     
 }

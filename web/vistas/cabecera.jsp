@@ -26,6 +26,7 @@
                 <img class="carrito_icono float-left m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
                 <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
             </div>
+            
 
         <div class="d-flex " id="wrapper">
 
@@ -59,21 +60,14 @@
                     </div>
                         <a href="#" class="list-group-item list-group-item-action bg-light">Ayuda</a>
                     </div>
-
             </div>
 
             <div id="page-content-wrapper">
                 <nav class="menosAlto navbar navbar-expand navbar-dark bg-dark">
             <button class="btn m-0 p-0" id="menu-toggle"><img class="imgNavbar p-0 m-0" src="vistas/assets/images/e_menu.png" alt=""></button>
 
-
             <div class="navbar-collapse ml-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto"> 
                 </ul>
-                
-                <!--<a href="#">
-                <span  class="text-white small" href="#">Leer Codigo QR</span>
-                <img class="nav-item imgNavbar fotoIcono" src="vistas/assets/images/iconos/ic_linked_camera_black_48dp.png" alt="">
-                </a>-->
             </div>
         </nav>
