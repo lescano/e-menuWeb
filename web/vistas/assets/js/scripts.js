@@ -75,6 +75,15 @@ function agregar(value){
     var precioInicial = precioAl/cantidad;
     $('#cantidadAlimentos'+value).text(1);
     $('#precioAlimentos'+value).text(precioInicial);
+    var c;
+    var al;
+    al = nuevoAlimento.split(' ').join('_');             //Recorro lo que guarde en el pedido y consulto si
+    c = JSON.parse(sessionStorage.getItem(al));     // hay un gusto para ese alimento, si es asi al gusto 
+    if(c !== null){                                 // le agrego el id del alimento
+        if (c.length > 0) {
+            $("#"+al+"-"+c).prop('checked', false);
+        }
+    }
     
     $('#resumen').show();
 }
@@ -206,8 +215,6 @@ $(".containerText").each(function(){            //esto es para que las imagenes 
 $("#pagar").click(function (e){
     e.preventDefault();
     window.location.reload();
-//    var mozo = sessionStorage.getItem("mozo");
-//    pagar(mozo);
 });
 
 function cargarPedido(data){
@@ -329,9 +336,9 @@ function guardarPedido(passwd){
         var c;
         var al;
         for (let entry of data) {
-            al = entry[0].split(' ').join('_');
-            c = JSON.parse(sessionStorage.getItem(al));
-            if(c !== null){
+            al = entry[0].split(' ').join('_');             //Recorro lo que guarde en el pedido y consulto si
+            c = JSON.parse(sessionStorage.getItem(al));     // hay un gusto para ese alimento, si es asi al gusto 
+            if(c !== null){                                 // le agrego el id del alimento
                 if (c.length > 0) {
                     acompaniamiento.push(entry[3]);
                     acompaniamiento.push(c);

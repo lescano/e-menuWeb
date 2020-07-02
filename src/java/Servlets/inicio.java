@@ -72,7 +72,9 @@ public class inicio extends HttpServlet {
                     request.getSession().setAttribute("mesa", nMesa);
                     pedidos=pedidosController.consultaPedidosMesa(nMesa);
                     if(!pedidos.isEmpty()){
-                        request.getSession().setAttribute("pedidos", pedidos);
+                        request.setAttribute("pedidos", pedidos);
+                    }else{
+                        request.setAttribute("pedidos", null);
                     }
                     request.setAttribute("categorias", listaCategorias);
                     request.getRequestDispatcher("vistas/inicio.jsp").forward(request, response);

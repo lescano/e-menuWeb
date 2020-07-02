@@ -39,17 +39,23 @@
       </div>
       <div class="modal-body">
           <div class="mb-4">
-            <h5>Como Añadir platos a tu pedido?</h5>
-            <p>Seleccione la categoria o realize una busqueda en el menu lateral, luego haga click en la cantidad que desea pedir, 
-            y haga click en añadir a pedido</p>
+            <h5>¿Como Añadir platos a tu pedido?</h5>
+            <p>Seleccione la categoría o realice una búsqueda en el menú lateral, luego haga click en la cantidad que desea pedir, 
+            y haga click en añadir a pedido.</p>
           </div>
           <div class="my-4">
-            <h5>Como ver el costo total del pedido?</h5>
-            <p>Haga click en el boton "Resumen del pedido"</p>
+            <h5>¿Como ver el costo total del pedido?</h5>
+            <p>Haga click en el botón "Resumen del pedido".</p>
           </div>
           <div class="my-4">
-            <h5>Donde estan las bebidas?</h5>
-            <p>Puede buscarlas o seleccionar la categorias bebida</p>
+            <h5>¿Donde estan las bebidas?</h5>
+            <p>Puede buscarlas o seleccionar la categorías bebida.</p>
+          </div>
+          <div class="mb-4">
+            <h5>¿Como solicito el pago?</h5>
+            <p>Si usted ya realizo su pedido en el menú lateral tendrá la opción de solicitar su pago. Podrá hacerlo individualmente 
+                por cada pedido que haya realizado o puede solicitar pagar todo. Si quiere pagar con efectivo, tan solo haga click 
+                en el botón "Pagar" o "Pagar Todo". Si quiere pagar con tarjeta haga doble click en el botón "Pagar" o "Pagar Todo". </p>
           </div>
       </div>
       <div class="modal-footer">
