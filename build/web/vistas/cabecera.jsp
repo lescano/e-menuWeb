@@ -21,7 +21,7 @@
             <script src="https://kit.fontawesome.com/87277c0c3b.js" crossorigin="anonymous"></script>
             
         </head>
-        <body>
+        <body onload="guardarUrl()">
             <div class="carrito bg-primary shadow rounded p-1" onclick="verPedido()" id="resumen">
                 <img class="carrito_icono float-left m-0 " src="vistas/assets/images/iconos/ic_shopping_cart_black_48dp.png" alt="">  
                 <h6 class="float-left p-2" >Resumen<br>del Pedido</h6>           
@@ -76,7 +76,7 @@
                             <button class="btn input-group-text lighten-2" id="buscar">Buscar</button>
                         </div>
                     </div>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Ver menu</a>    
+                    <button onclick="irAPaginaPrincipal()" href="#" class="list-group-item list-group-item-action bg-light">Ver menu</button>    
                     <a href="#" class="list-group-item list-group-item-action bg-light">Añadir reseña</a>
                     <a href="#" class="list-group-item list-group-item-action bg-light pedido" id="pagar">Pagar</a> 
 

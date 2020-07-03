@@ -519,3 +519,12 @@ $("#boton-ayuda").click(function(){
   $("#wrapper").toggleClass("toggled");
  
  })
+function guardarUrl(){
+    if(localStorage.getItem('urlBase')==null){
+        localStorage.setItem('urlBase', window.location.href);
+    }
+    //alert("Page location is " + window.location.href);
+}
+function irAPaginaPrincipal(){
+    window.location.replace(localStorage.getItem('urlBase'));
+}
