@@ -95,6 +95,13 @@ public class Alimentos extends HttpServlet {
                 caso = "detallesCategoria";
                 Categoria categoria = (Categoria) request.getSession().getAttribute("categoria");
                 request.setAttribute("categoria", categoria);
+                int nMesa = (int)request.getSession().getAttribute("mesa");
+                List <Pedidos> pedidos=pedidosController.consultaPedidosMesa(nMesa);
+                if(!pedidos.isEmpty()){
+                    request.setAttribute("pedidos", pedidos);
+                }else{
+                    request.setAttribute("pedidos", null);
+                }
             
                 if(categoria != null){
                     //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.

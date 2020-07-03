@@ -10,7 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <% 
-    List<Pedidos> pedidos = (List<Pedidos>)request.getSession().getAttribute("pedidos");
+    List<Pedidos> pedidos = (List<Pedidos>)request.getAttribute("pedidos");
     int cant=0;
     int total=0;
     String mozo="";

@@ -102,7 +102,7 @@
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= alimento.getTiempoPreparacion() %> min</p>
-            <p>Calorias: 500</p>
+            <p>Calorias: <%= alimento.getCalorias() %></p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
             <div id="carouselExampleControls<%= alimento.getId()%>" class="carousel slide" data-ride="carousel">
