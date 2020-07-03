@@ -434,6 +434,10 @@ function agregarGusto(alimento, agregarGusto, cantidad){
 function comentar(id){
   var nombre=document.getElementById("nombre"+id).value;
   var descripcion=document.getElementById("descripcion"+id).value;
+  if(nombre==""||descripcion==""){
+      alert("Para poder comentar rellene los campos");
+      return;
+  }
   document.getElementById("nombre"+id).value="";
   document.getElementById("descripcion"+id).value="";
   //alert(id);
