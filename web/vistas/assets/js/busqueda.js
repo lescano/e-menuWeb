@@ -68,7 +68,7 @@ $("#buscar").click(function(){
                 <a class="nav-link" id="profile-tab`+ u +`" data-toggle="tab" href="#profile`+ u +`" role="tab" aria-controls="profile" aria-selected="false">Detalles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab`+ u +`" data-toggle="tab" href="#contact`+ u +`" role="tab" aria-controls="contact" aria-selected="false">Reseñas</a>
+                <a class="nav-link" id="contact-tab`+ u +`" data-toggle="tab" href="#contact`+ u +`" role="tab" aria-controls="contact" aria-selected="false" onclick="actualizarComentarios(`+ id +`)">Reseñas</a>
             </li>
         </ul>
     <div class="tab-content" id="myTabContent">
@@ -108,53 +108,27 @@ $("#buscar").click(function(){
             <p>Calorias: 500</p>
         </div>
         <div class="tab-pane fade" id="contact`+ u +`" role="tabpanel" aria-labelledby="contact-tab">
-            <div id="carouselExampleControls`+ u +`" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
-                                Usuario1
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Muy bueno el chivito, lo recomiendo!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5">
-                            <div class="card-header">
-                                Usuario2
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">buenardo ese chivito.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card m-1 mx-5 ">
-                            <div class="card-header">
-                                Usuario3
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">no me gusto</p>
-                            </div>
-                        </div>
-                    </div>
+            <div id="carouselExampleControls`+ id +`" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="comentarios`+ id +`">
+            
                 </div>
-                <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
+                <a class="carousel-control-prev " href="#carouselExampleControls`+ id +`" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" style="filter: brightness(0);" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next " href="#carouselExampleControls" role="button" data-slide="next">
+                <a class="carousel-control-next " href="#carouselExampleControls`+ id +`" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" style="filter: brightness(0);" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
+            </div>        
+                                                                                
             <div class="input-group my-1">
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="comente aqui..." aria-describedby="basic-addon2">
+                <textarea class="w-100" rows="2"  placeholder="Comentario" id="nombre`+ id +`" style="resize: none;"></textarea>
+                <div class="w-100"></div>
+                <input type="text"  placeholder="Nombre" id="descripcion`+ id +`">
                 <div class="input-group-append">
-                    <button class="btn btn-success input-group-text" id="basic-addon2`+ u +`">Comentar</button>
-                </div>
+                    <button class="btn btn-success input-group-text " onclick="comentar(`+ id +`)" >Comentar</button>
+                </div>               
             </div>
         </div>
     </div>
