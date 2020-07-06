@@ -76,8 +76,7 @@
                             <button class="btn input-group-text lighten-2" id="buscar">Buscar</button>
                         </div>
                     </div>
-                    <button onclick="irAPaginaPrincipal()" href="#" class="list-group-item list-group-item-action bg-light">Ver menu</button>    
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Añadir reseña</a>
+                    <button onclick="irAPaginaPrincipal()" href="#" class="list-group-item list-group-item-action bg-light">Ver menu</button>                        
                     <a href="#" class="list-group-item list-group-item-action bg-light pedido" id="pagar">Pagar</a> 
 
                     <div class="container list-group-item list-group-item-action bg-light ">

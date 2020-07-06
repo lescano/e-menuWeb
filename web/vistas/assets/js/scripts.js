@@ -470,11 +470,11 @@ function actualizarComentarios(id){
         data: "actualizar="+id,
         success:function(respuesta){
             //alert(respuesta);
+            var final="";
             var componente=document.getElementById("comentarios"+id);
             if(!(respuesta==="error")){                
                 var partes = respuesta.split('//');
-                var activo="";
-                var final="";
+                var activo="";               
                 for (i = 0; i < partes.length-1; i++) {
                     if(i===partes.length-2){
                         activo="active";
