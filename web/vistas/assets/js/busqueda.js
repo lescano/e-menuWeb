@@ -1,10 +1,10 @@
 $("#buscar").click(function(){
-  $("#wrapper").toggleClass("toggled");
+  //$("#wrapper").toggleClass("toggled");
   
-  var containerCat=document.getElementById("container-categorias");
-  var containerBus=document.getElementById("container-busqueda");
-  containerCat.style.display = "none";
-  containerBus.style.display = "block";
+  //var containerCat=document.getElementById("container-categorias");
+  //var containerBus=document.getElementById("container-busqueda");
+  //containerCat.style.display = "none";
+  //containerBus.style.display = "block";
   
   var texto=document.getElementById("texto-Buscar").value;
 
@@ -13,6 +13,8 @@ $("#buscar").click(function(){
         type: "POST",
         data: "textobuscar="+texto,
         success:function(respuesta){
+            alert(respuesta);
+            return;
             var mostrar="",mostrarCategorias="",segundaParte="";
             var categoria = respuesta.split("'");
             var continuar=0;
@@ -148,7 +150,9 @@ $("#buscar").click(function(){
             
             
             var textoResultado=document.getElementById("textoResultado");
-            textoResultado.innerHTML = mostrar;
+            // Simulate an HTTP redirect:
+            //window.location.replace("/e-menuWeb/resultadoBusqueda");
+            //textoResultado.innerHTML = mostrar;
 
         },
         error: function() {

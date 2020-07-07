@@ -1,3 +1,6 @@
+.elementoCat{
+
+}
 .divFlecha{
     height: 2em;
 }
@@ -20,6 +23,8 @@
   position: relative;
   width: 49.9vw;
   height: 22vw;
+  max-width: 600px;
+  max-height: 300px;
 }
 .containerTextCat{
   position: relative;
