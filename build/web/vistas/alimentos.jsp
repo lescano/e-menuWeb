@@ -16,7 +16,7 @@
 <%@page import="Logica.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     
-<div class="container" id="container-categorias">
+<div class="pl-3" id="container-categorias">
     <div class="row py-1">
       <% 
         List<Categoria> categorias = (List<Categoria>)request.getAttribute("categorias");
@@ -24,12 +24,10 @@
         for(Categoria aux : categorias){
             if(!aux.isMostrar()){
                 String imagenBase64 = new String(aux.getImagen().getBytes(1l, (int) aux.getImagen().length()));
-                if(indice%2==0&&indice!=0){
-                    %> <div class="w-100"></div> <% 
-                }
+                
                 indice++;
             %>
-            <div class="col-6 m-0 p-0">
+            <div class="col m-0 p-0" style="flex-grow: 0 !important;">
                 <button class="m-0 p-0 overflow-hidden " type="button" onclick="location.href='?caso=<%= aux.getNombre()%>';" style="border:none;">
                     <div class="containerText bg-primary">
                         <img class="aImagen m-0 p-0" src="data:image/jpeg;base64,<%= imagenBase64 %>" alt="<%= aux.getNombre() %>"/>  
