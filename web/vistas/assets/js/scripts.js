@@ -23,10 +23,17 @@ $(document).ready(function(){
 });
 
 function mostrar(value){
- 
-    var caja = document.getElementsByClassName("caja")[value];
-    var boton = document.getElementsByClassName("botonGira")[value];
-    
+    var caja=null;
+    var boton=null;
+    if(value>=100){  //cualquier cosa preguntar a luis
+        var res=value%100;
+        caja = document.getElementsByClassName("cajaAux")[res];
+        boton = document.getElementsByClassName("botonGiraAux")[res];
+    }else{
+        caja = document.getElementsByClassName("caja")[value];
+        boton = document.getElementsByClassName("botonGira")[value];
+    }
+
     if(caja.style.display=="none"){
         caja.style.display="block";
         boton.style.webkitTransform = "rotate(" + -180 + "deg)";
@@ -427,6 +434,10 @@ function agregarGusto(alimento, agregarGusto, cantidad){
 function comentar(id){
   var nombre=document.getElementById("nombre"+id).value;
   var descripcion=document.getElementById("descripcion"+id).value;
+  if(nombre==""||descripcion==""){
+      alert("Para poder comentar rellene los campos");
+      return;
+  }
   document.getElementById("nombre"+id).value="";
   document.getElementById("descripcion"+id).value="";
   //alert(id);
@@ -508,3 +519,12 @@ $("#boton-ayuda").click(function(){
   $("#wrapper").toggleClass("toggled");
  
  })
+function guardarUrl(){
+    if(localStorage.getItem('urlBase')==null){
+        localStorage.setItem('urlBase', window.location.href);
+    }
+    //alert("Page location is " + window.location.href);
+}
+function irAPaginaPrincipal(){
+    window.location.replace(localStorage.getItem('urlBase'));
+}
