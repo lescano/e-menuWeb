@@ -15,6 +15,9 @@ $("#buscar").click(function(){
         success:function(respuesta){
             alert(respuesta);
             return;
+            
+            
+            
             var mostrar="",mostrarCategorias="",segundaParte="";
             var categoria = respuesta.split("'");
             var continuar=0;

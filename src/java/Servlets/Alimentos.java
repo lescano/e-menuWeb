@@ -129,6 +129,8 @@ public class Alimentos extends HttpServlet {
                     response.sendRedirect("inicio");
                     break;
                 case "buscar":
+                    System.out.println("HOLA!");
+                    response.sendRedirect(response.getContentType() + "/vistas/resultadoBusqueda.jsp");
                     //request.getRequestDispatcher("vistas/resultadoBusqueda.jsp").forward(request, response);
                     //response.sendRedirect("inicio");
                     break;
