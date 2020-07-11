@@ -68,9 +68,10 @@ public class Alimentos extends HttpServlet {
             }
             if(request.getParameterMap().containsKey("texto-Buscar")){
                 String buscar=request.getParameter("texto-Buscar");
-//                String ret=BuscarString(buscar);
+               String ret=BuscarString(buscar);
 //                out.write(ret);
-//                request.setAttribute("resBusqueda", ret);
+               request.setAttribute("resBusqueda", ret);
+                //System.out.println("HOLA estoy aca!");
                 caso = "buscar";
             }
             if(request.getParameterMap().containsKey("comentar")){

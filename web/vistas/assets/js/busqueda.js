@@ -31,7 +31,7 @@
 ////                for(i=0;i<categoria.length-1;i++){
 ////                    var id= categoria[i].split('//')[1];
 ////                    var nombre= categoria[i].split('//')[2];
-////                    mostrarCategorias+=`Estas buscando <button class="btn btn-primary" onclick= "location.href='?caso=`+nombre+`'; ">`+nombre+`</button>?<br>`;
+///                   mostrarCategorias+=`Estas buscando <button class="btn btn-primary" onclick= "location.href='?caso=`+nombre+`'; ">`+nombre+`</button>?<br>`;
 ////                }
 ////                mostrar+=mostrarCategorias;
 ////                segundaParte=categoria[categoria.length-1];
