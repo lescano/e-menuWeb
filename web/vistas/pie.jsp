@@ -16,6 +16,7 @@
     String mozo="";
     String clave = "";
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    boolean hayPedido = false;
 %>
 
 <div class="overlay" id="overlay">
@@ -37,9 +38,10 @@
 </div>
     <% 
         if(pedidos != null){
+            hayPedido = true;
     %>
-<div class="overlay active" id="overlayPedido">
-    <div class="popup active" id="popupPedido">
+<div class="overlay" id="overlayPedido">
+    <div class="popup" id="popupPedido">
         <h3 id="tituloPedido">Pedidos realizados</h3>
         <form>
             <table class="contenedor-inputs" >
@@ -68,6 +70,16 @@
         </form>
     </div>
 </div>
+<script async="true">
+    var hayPedido = <%= hayPedido %>;
+    if(hayPedido && sessionStorage.getItem("pedirNuevo") === null){
+        document.querySelector("#overlayPedido").classList.add('active');
+        document.querySelector("#popupPedido").classList.add('active');
+    }
+    if(sessionStorage.getItem("pedirNuevo") !== null){
+        document.querySelector("#pagar").classList.remove('pedido');
+    }
+</script>
 <% } %>
 
 <div>

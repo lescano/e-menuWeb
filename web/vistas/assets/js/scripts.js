@@ -1,3 +1,13 @@
+//para obligar a la pagina que se recarge cuando navegas con la flecha para atras del navegador
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance !== "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
 
 //Variables que voy a usar en la ventana popup del pedido
 var btnAbrirPopup = document.getElementById('resumen'),
@@ -47,17 +57,6 @@ function mostrar(value){
    }
 }
 
-//para obligar a la pagina que se recarge cuando navegas con la flecha para atras del navegador
-//window.addEventListener( "pageshow", function ( event ) {
-//  var historyTraversal = event.persisted || 
-//                         ( typeof window.performance != "undefined" && 
-//                              window.performance.navigation.type === 2 );
-//  if ( historyTraversal ) {
-//    // Handle page restore.
-//    window.location.reload();
-//  }
-//});
-
 //Va agregando pedidos al carrito
 function agregar(value){
     var data = JSON.parse(sessionStorage.getItem("pedido"));
@@ -86,9 +85,13 @@ function agregar(value){
     var al;
     al = nuevoAlimento.split(' ').join('_');             //Recorro lo que guarde en el pedido y consulto si
     c = JSON.parse(sessionStorage.getItem(al));     // hay un gusto para ese alimento, si es asi al gusto 
-    if(c !== null){                                 // le agrego el id del alimento
-        if (c.length > 0) {
-            $("#"+al+"-"+c).prop('checked', false);
+    if(c != null){
+        for(let item of c){
+            if(c !== null){                                 // le agrego el id del alimento
+                if (c.length > 0) {
+                    $("#"+al+"-"+item).prop('checked', false);
+                }
+            }
         }
     }
     
@@ -221,6 +224,7 @@ $(".containerText").each(function(){            //esto es para que las imagenes 
 
 $("#pagar").click(function (e){
     e.preventDefault();
+    sessionStorage.removeItem('pedirNuevo');
     window.location.reload();
 });
 
@@ -263,6 +267,7 @@ function pagarTodoMetodo(mozo,tipoPago){
     success:function(){
             sessionStorage.removeItem('clave');
             sessionStorage.removeItem('mozo');
+            sessionStorage.removeItem('pedirNuevo');
             $("#pagar").removeClass("pedido");
             alert("En un instante sera atendido por "+mozo);
             $("#overlayPedido").removeClass("active");
@@ -310,6 +315,7 @@ function pagarParticular(mozo, idPedido, n, tipoPago){
                 if(total <= 0 || total === "NaN"){
                     sessionStorage.removeItem('clave');
                     sessionStorage.removeItem('mozo');
+                    sessionStorage.removeItem('pedirNuevo');
                     $("#pagar").removeClass("pedido");
                     $("#overlayPedido").removeClass("active");
                     $("#popupPedido").removeClass("active");
@@ -325,6 +331,7 @@ function pagarParticular(mozo, idPedido, n, tipoPago){
 function comprobarClave(claveActual,mozo){
     sessionStorage.setItem('clave',claveActual);
     sessionStorage.setItem('mozo',mozo);
+    sessionStorage.setItem('pedirNuevo',true);
     $("#overlayPedido").removeClass("active");
     $("#popupPedido").removeClass("active");
     $("#pagar").removeClass("pedido");
