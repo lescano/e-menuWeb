@@ -38,7 +38,7 @@
             
             String[] alimento = segundaParte.split("//");
             if(alimento[0].equals("no")&&alimento[1].equals("no")){           
-                    mostrar += "<br><p>No se encontraron resultados</p>";
+                    mostrar += "<br><p>No se encontraron resultados con ese nombre</p>";
                     continuar=2;
                 }else{
                     if(alimento[0].equals("no")&&!(alimento[1].equals("no"))){  
@@ -54,6 +54,7 @@
                         String ingredientes = partes[2];
                         String precio = partes[3];
                         String tiempo = partes[4];
+                        String calorias = partes[5];
                         int u = i+100; 
                         
                         
@@ -105,7 +106,7 @@
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= tiempo %> min</p>
-            <p>Calorias: sin hacer</p>
+            <p>Calorias: <%=calorias%></p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
             <div id="carouselExampleControls<%= id%>" class="carousel slide" data-ride="carousel">
