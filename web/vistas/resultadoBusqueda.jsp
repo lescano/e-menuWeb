@@ -26,10 +26,15 @@
                 
                 for(int i=0;i<categoria.length-1;i++){
                     String id= categoria[i].split("//")[1];
-                    String nombre= categoria[i].split("//")[2];
-                    mostrarCategorias+="Estas buscando <button class='btn btn-primary' onclick='location.href='?caso="+nombre+"';'>"+nombre+"</button>?<br>";
+                    String nombre= categoria[i].split("//")[2];//location.href='?caso=Promos';
+                    //String dir="location.href='?caso="+nombre+"'";
+                    //mostrarCategorias+="Estas buscando <button class='btn btn-primary' onclick='"+dir+"'>"+nombre+"</button>?<br>";
+                    %>   
+                        Estas buscando
+                        <button class='btn btn-primary' onclick="location.href='?caso=<%=nombre%>';"><%=  nombre  %></button>?<br>
+                    <%
                 }
-                mostrar+=mostrarCategorias;
+                //mostrar+=mostrarCategorias;
                 segundaParte=categoria[categoria.length-1];
                 
             }else{
