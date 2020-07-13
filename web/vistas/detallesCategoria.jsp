@@ -15,11 +15,12 @@
 <jsp:include page="cabecera.jsp" />
 
 <% 
-    List<Plato> lista = (List<Plato>) request.getAttribute("alimentos");
+    List<Alimento> lista = (List<Alimento>) request.getAttribute("alimentos");
     List<Plato> acompaniamiento = (List<Plato>) request.getAttribute("acompaniamiento");
     Categoria categoria = (Categoria) request.getAttribute("categoria");
     Blob imagen = categoria.getImagen() ;
     String imagenBase64 = new String(imagen.getBytes(1l, (int) imagen.length()));
+    Plato plato = null ;
 %>
 <div id="container-categorias">
 <div class="m-0 p-0 overflow-hidden " type="button" style="border:none;">
@@ -34,7 +35,7 @@
 <div class="card mx-1 shadow">
     
 <%  int i = 0;
-    for(Plato alimento : lista){
+    for(Alimento alimento : lista){
 %>
 
  <div class="card-body p-1 m-1 shadow-sm">
@@ -102,7 +103,11 @@
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= alimento.getTiempoPreparacion() %> min</p>
-            <p>Calorias: <%= alimento.getCalorias() %></p>
+            <% if(alimento instanceof Plato){ 
+                plato = (Plato)alimento;
+            %>
+            <p>Calorias: <%= plato.getCalorias() %></p>
+            <% } %>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
             <div id="carouselExampleControls<%= alimento.getId()%>" class="carousel slide" data-ride="carousel">

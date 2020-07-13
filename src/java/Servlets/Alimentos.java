@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Alimentos", urlPatterns = {"/alimentos"})
 public class Alimentos extends HttpServlet {
     IAlimentoController alimentoContoller = Fabrica.getInstancia().getAlimentoController();
-    List<Plato> listaAlimentos = alimentoContoller.listarPlatos();
+    List<Alimento> listaAlimentos = alimentoContoller.listarAlimentos();
     List<Alimento> listaTodo = alimentoContoller.listarTodo();
     ictrl_Pedido pedidosController = Fabrica.getInstancia().getPedidoController();
     List<Categoria> listaCategorias =  alimentoContoller.listarCategoria();
@@ -78,7 +78,7 @@ public class Alimentos extends HttpServlet {
                 String datos=request.getParameter("comentar");
                 String respuesta="nada en servlet";
                 respuesta=comentar(datos);
-                this.listaAlimentos = this.alimentoContoller.listarPlatos();
+                this.listaAlimentos = this.alimentoContoller.listarAlimentos();
                 if(respuesta.length()<=0){
                     respuesta="no funciono";
                 }
@@ -108,7 +108,7 @@ public class Alimentos extends HttpServlet {
                     //Obtenemos la lista de alimentos que tienen esa categoria y lo mandamos a mostrar.
                     //this.listaAlimentos = this.alimentoContoller.refresh();
                     //this.listaAlimentos = this.alimentoContoller.listarPlatos();  //esto es para actualizar por si hay nuevos comentarios
-                    List<Plato>  alimentoDeCategoria = getAlimentos(categoria.getId());
+                    List<Alimento>  alimentoDeCategoria = getAlimentos(categoria.getId());
                     //List<Resenia> resenias = alimentoContoller.consultaTodasResenia();
                     //aca tengo que setear los comentarios
                     request.setAttribute("alimentos", alimentoDeCategoria);
@@ -118,7 +118,7 @@ public class Alimentos extends HttpServlet {
                 
                 if(categoria.getSecundaria() != null){
                     Categoria secundaria = categoria.getSecundaria();
-                    List<Plato>  acompaniamiento = getAlimentos(secundaria.getId());
+                    List<Alimento>  acompaniamiento = getAlimentos(secundaria.getId());
                     request.setAttribute("acompaniamiento", acompaniamiento);
                 }
             }
@@ -130,7 +130,7 @@ public class Alimentos extends HttpServlet {
                     response.sendRedirect("inicio");
                     break;
                 case "buscar":
-                    System.out.println("HOLA!");
+//                    System.out.println("HOLA!");
                     //response.sendRedirect(response.getContentType() + "/vistas/resultadoBusqueda.jsp");
                     request.getRequestDispatcher("vistas/resultadoBusqueda.jsp").forward(request, response);
                     //response.sendRedirect("inicio");
@@ -254,10 +254,10 @@ public class Alimentos extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    List<Plato> getAlimentos(Long id){
-        List<Plato> alimentoDeCategoria = new ArrayList<Plato>();
+    List<Alimento> getAlimentos(Long id){
+        List<Alimento> alimentoDeCategoria = new ArrayList<Alimento>();
 
-        for (Plato aux : listaAlimentos){
+        for (Alimento aux : listaAlimentos){
             if(aux.getCategoria().getId() == id ){
                 alimentoDeCategoria.add(aux);
             }
@@ -267,7 +267,7 @@ public class Alimentos extends HttpServlet {
     
     Alimento getAlimentoPorId(String id){
         Long idAlimento = Long.parseLong(id);
-        for (Plato aux : listaAlimentos){
+        for (Alimento aux : listaAlimentos){
             if(aux.getId() == idAlimento ){
                 return aux;
             }
@@ -356,25 +356,28 @@ public class Alimentos extends HttpServlet {
        int cont=0;
        String ret="";
        int id = Integer.parseInt(datos);
-       Plato aux=null;
-       for(Plato plato : listaAlimentos){
+       Alimento aux=null;
+       for(Alimento plato : listaAlimentos){
             if(plato.getId()==id){            
                 aux=plato;
             }
         }
-       if(aux!=null){
-            alimentoContoller.refresh(aux);
-            for(Resenia resenia : aux.getResenias()){
-                ret+=resenia.getAutor()+"-"+resenia.getDescipcion()+"//";
-                cont++;
-            }
-       }else{
-          ret+="error"; 
-       }
-       
-       //
-       if(cont==0){
-           return "error";
+       if(aux instanceof Plato){
+           Plato auxPlato = (Plato) aux;
+            if(auxPlato!=null){
+                alimentoContoller.refresh(auxPlato);
+                for(Resenia resenia : auxPlato.getResenias()){
+                    ret+=resenia.getAutor()+"-"+resenia.getDescipcion()+"//";
+                    cont++;
+                }
+           }else{
+              ret+="error"; 
+           }
+
+           //
+           if(cont==0){
+               return "error";
+           }
        }
        return ret; 
     }
