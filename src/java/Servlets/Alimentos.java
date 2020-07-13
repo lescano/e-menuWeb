@@ -314,7 +314,8 @@ public class Alimentos extends HttpServlet {
                        listaTodo.get(i).getNombre()+"-"+
                        listaTodo.get(i).getIngredientes()+"-"+
                        listaTodo.get(i).getPrecio()+"-"+
-                       listaTodo.get(i).getTiempoPreparacion()
+                       listaTodo.get(i).getTiempoPreparacion()+"-"+
+                       listaTodo.get(i).getCalorias()
                        +"//";
             }
          }

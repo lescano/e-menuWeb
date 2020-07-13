@@ -1,6 +1,12 @@
-.elementoCat{
-
+.inputBuscar{
+    width: 65%;
+    display: inline-block;
 }
+.botonBuscar{
+    width: 10%;
+    display: inline-block;
+}
+
 .divFlecha{
     height: 2em;
 }

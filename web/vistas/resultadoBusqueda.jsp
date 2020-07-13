@@ -15,8 +15,6 @@
     </head>
     <% 
     String respuesta=(String)request.getAttribute("resBusqueda");
-    
-    
             String mostrar="",mostrarCategorias="",segundaParte=""; 
             String[] categoria = respuesta.split("'");
             int continuar=0;
@@ -28,10 +26,15 @@
                 
                 for(int i=0;i<categoria.length-1;i++){
                     String id= categoria[i].split("//")[1];
-                    String nombre= categoria[i].split("//")[2];
-                    mostrarCategorias+="Estas buscando <button class='btn btn-primary' onclick='location.href='?caso="+nombre+"';'>"+nombre+"</button>?<br>";
+                    String nombre= categoria[i].split("//")[2];//location.href='?caso=Promos';
+                    //String dir="location.href='?caso="+nombre+"'";
+                    //mostrarCategorias+="Estas buscando <button class='btn btn-primary' onclick='"+dir+"'>"+nombre+"</button>?<br>";
+                    %>   
+                        Estas buscando
+                        <button class='btn btn-primary' onclick="location.href='?caso=<%=nombre%>';"><%=  nombre  %></button>?<br>
+                    <%
                 }
-                mostrar+=mostrarCategorias;
+                //mostrar+=mostrarCategorias;
                 segundaParte=categoria[categoria.length-1];
                 
             }else{
@@ -40,7 +43,7 @@
             
             String[] alimento = segundaParte.split("//");
             if(alimento[0].equals("no")&&alimento[1].equals("no")){           
-                    mostrar += "<br><p>No se encontraron resultados</p>";
+                    mostrar += "<br><p>No se encontraron resultados con ese nombre</p>";
                     continuar=2;
                 }else{
                     if(alimento[0].equals("no")&&!(alimento[1].equals("no"))){  
@@ -56,11 +59,11 @@
                         String ingredientes = partes[2];
                         String precio = partes[3];
                         String tiempo = partes[4];
+                        String calorias = partes[5];
                         int u = i+100; 
                         
                         
-                        
-                        
+                        if(!precio.equals("0")&&!precio.equals("0.0")){
                         %>
                         <div class="card-body p-1 m-1 shadow-sm">
     <h4 class="card-title m-0 p-0" id="alimento<%= i %>"><%= nombre %></h4>
@@ -108,7 +111,7 @@
         </div>
         <div class="tab-pane fade" id="profile<%= i %>" role="tabpanel" aria-labelledby="profile-tab">
             <p class="mt-2">Tiempo de Preparacion: <%= tiempo %> min</p>
-            <p>Calorias: sin hacer</p>
+            <p>Calorias: <%=calorias%></p>
         </div>
         <div class="tab-pane fade" id="contact<%= i %>" role="tabpanel" aria-labelledby="contact-tab">
             <div id="carouselExampleControls<%= id%>" class="carousel slide" data-ride="carousel">
@@ -143,6 +146,7 @@
     </div>           
   </div>
                         <%
+            }
             }
             }        
             

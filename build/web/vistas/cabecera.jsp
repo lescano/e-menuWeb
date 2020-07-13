@@ -72,8 +72,8 @@
                     <h2 class="mx-3 my-3">E-Menu</h2>
                     <div class="input-group md-form form-sm form-2 py-1 px-1">
                         <form method="POST" action="/e-menuWeb/alimentos">
-                            <input class="form-control my-0 py-1" type="text" placeholder="Buscar plato..." aria-label="Search" id="texto-Buscar" name="texto-Buscar">
-                            <div class="input-group-append">
+                            <input class=" inputBuscar form-control my-0 py-1" type="text" placeholder="Buscar plato..." aria-label="Search" id="texto-Buscar" name="texto-Buscar">
+                            <div class="botonBuscar input-group-append">
                                 <button class="btn input-group-text lighten-2" id="buscar">Buscar</button>
                             </div>
                         </form>
