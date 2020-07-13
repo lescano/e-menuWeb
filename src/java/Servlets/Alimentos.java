@@ -66,11 +66,12 @@ public class Alimentos extends HttpServlet {
                 caso = "pagar";
                 out.write("Se ha solicitado el pago."); 
             }
-            if(request.getParameterMap().containsKey("textobuscar")){
-                String buscar=request.getParameter("textobuscar");
-                //out.write("Se ha solicitado buscar"+buscar);
-                String ret=BuscarString(buscar);
-                out.write(ret);
+            if(request.getParameterMap().containsKey("texto-Buscar")){
+                String buscar=request.getParameter("texto-Buscar");
+               String ret=BuscarString(buscar);
+//                out.write(ret);
+               request.setAttribute("resBusqueda", ret);
+                //System.out.println("HOLA estoy aca!");
                 caso = "buscar";
             }
             if(request.getParameterMap().containsKey("comentar")){
@@ -121,13 +122,18 @@ public class Alimentos extends HttpServlet {
                     request.setAttribute("acompaniamiento", acompaniamiento);
                 }
             }
-            
             switch(caso){
                 case "detallesCategoria":
                     request.getRequestDispatcher("vistas/detallesCategoria.jsp").forward(request, response);
                     break;
                 case "inicio":
                     response.sendRedirect("inicio");
+                    break;
+                case "buscar":
+                    System.out.println("HOLA!");
+                    //response.sendRedirect(response.getContentType() + "/vistas/resultadoBusqueda.jsp");
+                    request.getRequestDispatcher("vistas/resultadoBusqueda.jsp").forward(request, response);
+                    //response.sendRedirect("inicio");
                     break;
                 default:
                     break;
