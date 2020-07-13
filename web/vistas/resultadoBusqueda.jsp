@@ -15,8 +15,6 @@
     </head>
     <% 
     String respuesta=(String)request.getAttribute("resBusqueda");
-    
-    
             String mostrar="",mostrarCategorias="",segundaParte=""; 
             String[] categoria = respuesta.split("'");
             int continuar=0;
@@ -59,8 +57,7 @@
                         int u = i+100; 
                         
                         
-                        
-                        
+                        if(!precio.equals("0")&&!precio.equals("0.0")){
                         %>
                         <div class="card-body p-1 m-1 shadow-sm">
     <h4 class="card-title m-0 p-0" id="alimento<%= i %>"><%= nombre %></h4>
@@ -143,6 +140,7 @@
     </div>           
   </div>
                         <%
+            }
             }
             }        
             
